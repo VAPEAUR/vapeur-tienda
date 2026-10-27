@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { enlaceWhatsApp } from "@/lib/contacto";
+import { CORREO_CONTACTO, enlaceWhatsApp } from "@/lib/contacto";
 
 export default function Pie() {
   return (
@@ -53,6 +53,7 @@ export default function Pie() {
       </div>
       <div className="wrap legal">
         <span>Vapeur SpA</span>
+        <a href={`mailto:${CORREO_CONTACTO}`}>{CORREO_CONTACTO}</a>
         <span>Venta exclusiva a mayores de 18 años (Ley 21.642). Pagos con Webpay de Transbank.</span>
       </div>
     </footer>
