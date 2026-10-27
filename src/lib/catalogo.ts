@@ -1,17 +1,11 @@
-// Catálogo de EJEMPLO para el prototipo A. Se reemplaza por Supabase cuando
-// operaciones cargue el stock real. Precios en CLP enteros, IVA incluido.
+// Tipos y datos fijos del catálogo. Los productos se leen de Supabase
+// (src/lib/datos.ts); PRODUCTOS_EJEMPLO solo se usa si faltan las variables
+// de Supabase (desarrollo local) y como carga inicial (supabase/catalogo.sql).
+// Precios en CLP enteros, IVA incluido.
 
-export type Arte =
-  | "pod"
-  | "pod2"
-  | "mod"
-  | "cartucho"
-  | "coil"
-  | "frasco"
-  | "desechable"
-  | "cable"
-  | "estuche"
-  | "bateria";
+export const ARTES = ["pod", "pod2", "mod", "cartucho", "coil", "frasco", "desechable", "cable", "estuche", "bateria"] as const;
+
+export type Arte = (typeof ARTES)[number];
 
 export type Categoria = {
   slug: string;
@@ -56,7 +50,7 @@ export const CATEGORIAS: Categoria[] = [
   { slug: "accesorios", nombre: "Accesorios", bajada: "Cables, estuches y baterías", arte: "estuche" },
 ];
 
-export const PRODUCTOS: Producto[] = [
+export const PRODUCTOS_EJEMPLO: Producto[] = [
   {
     slug: "xros-4-kit-pod",
     categoria: "equipos",
@@ -304,28 +298,8 @@ export const COLORES: Record<string, string> = {
   "Verde bosque": "#2F4A3F",
 };
 
-export function producto(slug: string) {
-  return PRODUCTOS.find((p) => p.slug === slug);
-}
-
 export function categoria(slug: string) {
   return CATEGORIAS.find((c) => c.slug === slug);
-}
-
-export function productosDe(slugCategoria: string) {
-  return PRODUCTOS.filter((p) => p.categoria === slugCategoria);
-}
-
-export function equipos() {
-  return PRODUCTOS.filter((p) => p.categoria === "equipos");
-}
-
-export function repuestosPara(slugEquipo: string) {
-  return PRODUCTOS.filter((p) => p.equipo === slugEquipo);
-}
-
-export function precioKit(kit: Kit) {
-  return kit.productos.reduce((total, slug) => total + (producto(slug)?.precio ?? 0), 0);
 }
 
 export function slugMarca(marca: string) {
@@ -337,10 +311,23 @@ export function slugMarca(marca: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-export function marcas() {
-  return [...new Set(PRODUCTOS.map((p) => p.marca))];
+// Consultas sobre una lista de productos (la que viene de Supabase).
+export function crearCatalogo(productos: Producto[]) {
+  const producto = (slug: string) => productos.find((p) => p.slug === slug);
+  const marcas = () => [...new Set(productos.map((p) => p.marca))];
+  return {
+    productos,
+    producto,
+    productosDe: (slugCategoria: string) => productos.filter((p) => p.categoria === slugCategoria),
+    equipos: () => productos.filter((p) => p.categoria === "equipos"),
+    repuestosPara: (slugEquipo: string) => productos.filter((p) => p.equipo === slugEquipo),
+    marcas,
+    nombreMarca: (slug: string) => marcas().find((m) => slugMarca(m) === slug),
+    productosDeMarca: (slug: string) => productos.filter((p) => slugMarca(p.marca) === slug),
+    // Un kit se muestra solo si todos sus productos están publicados.
+    kits: () => KITS.filter((k) => k.productos.every((s) => producto(s))),
+    precioKit: (kit: Kit) => kit.productos.reduce((total, s) => total + (producto(s)?.precio ?? 0), 0),
+  };
 }
 
-export function productosDeMarca(slug: string) {
-  return PRODUCTOS.filter((p) => slugMarca(p.marca) === slug);
-}
+export type Catalogo = ReturnType<typeof crearCatalogo>;

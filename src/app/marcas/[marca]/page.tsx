@@ -1,26 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
-import { marcas, productosDeMarca, slugMarca } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 
 type Props = { params: Promise<{ marca: string }> };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return marcas().map((m) => ({ marca: slugMarca(m) }));
-}
-
-function nombreMarca(slug: string) {
-  return marcas().find((m) => slugMarca(m) === slug);
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { nombreMarca } = await obtenerCatalogo();
   return { title: nombreMarca((await params).marca) };
 }
 
 export default async function PaginaMarca({ params }: Props) {
   const slug = (await params).marca;
+  const { nombreMarca, productosDeMarca } = await obtenerCatalogo();
   const nombre = nombreMarca(slug);
   if (!nombre) notFound();
   return (

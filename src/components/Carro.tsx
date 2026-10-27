@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { producto } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
 
 // Carro guardado solo en este navegador (localStorage). El total definitivo
 // lo calculará el servidor al conectar Supabase y Webpay.
@@ -22,24 +22,25 @@ type ContextoCarro = {
 
 const Contexto = createContext<ContextoCarro | null>(null);
 
-function leer(): ItemCarro[] {
+function leer(existe: (slug: string) => boolean): ItemCarro[] {
   try {
     const datos = JSON.parse(localStorage.getItem(CLAVE) ?? "[]");
     if (!Array.isArray(datos)) return [];
-    return datos.filter((i): i is ItemCarro => typeof i?.slug === "string" && !!producto(i.slug));
+    return datos.filter((i): i is ItemCarro => typeof i?.slug === "string" && existe(i.slug));
   } catch {
     return [];
   }
 }
 
 export function CarroProvider({ children }: { children: React.ReactNode }) {
+  const { producto } = useCatalogo();
   const [items, setItems] = useState<ItemCarro[]>([]);
   const [listo, setListo] = useState(false);
 
   useEffect(() => {
-    setItems(leer());
+    setItems(leer((slug) => !!producto(slug)));
     setListo(true);
-  }, []);
+  }, [producto]);
 
   useEffect(() => {
     if (!listo) return;
@@ -58,7 +59,7 @@ export function CarroProvider({ children }: { children: React.ReactNode }) {
       if (i === -1) return [...actual, { slug, variante, cantidad: Math.min(p.stock, cantidad) }];
       return actual.map((it, j) => (j === i ? { ...it, cantidad: Math.min(p.stock, it.cantidad + cantidad) } : it));
     });
-  }, []);
+  }, [producto]);
 
   const cambiarCantidad = useCallback((indice: number, cantidad: number) => {
     setItems((actual) =>
@@ -68,7 +69,7 @@ export function CarroProvider({ children }: { children: React.ReactNode }) {
         return { ...it, cantidad: Math.max(1, Math.min(stock, cantidad)) };
       }),
     );
-  }, []);
+  }, [producto]);
 
   const quitar = useCallback((indice: number) => setItems((actual) => actual.filter((_, j) => j !== indice)), []);
   const vaciar = useCallback(() => setItems([]), []);
@@ -77,7 +78,7 @@ export function CarroProvider({ children }: { children: React.ReactNode }) {
     const cantidadTotal = items.reduce((a, it) => a + it.cantidad, 0);
     const subtotal = items.reduce((a, it) => a + (producto(it.slug)?.precio ?? 0) * it.cantidad, 0);
     return { items, cantidadTotal, subtotal, listo, agregar, cambiarCantidad, quitar, vaciar };
-  }, [items, listo, agregar, cambiarCantidad, quitar, vaciar]);
+  }, [items, listo, producto, agregar, cambiarCantidad, quitar, vaciar]);
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;
 }

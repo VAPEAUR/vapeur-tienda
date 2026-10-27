@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
-import { CATEGORIAS, categoria, productosDe } from "@/lib/catalogo";
+import { CATEGORIAS, categoria } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 
 type Props = { params: Promise<{ categoria: string }> };
 
@@ -20,5 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaCategoria({ params }: Props) {
   const c = categoria((await params).categoria);
   if (!c) notFound();
+  const { productosDe } = await obtenerCatalogo();
   return <PaginaListado titulo={c.nombre} bajada={c.bajada} migas={c.nombre} productos={productosDe(c.slug)} />;
 }

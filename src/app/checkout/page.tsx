@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCarro } from "@/components/Carro";
-import { DESPACHO, producto } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
+import { DESPACHO } from "@/lib/catalogo";
 import { EDAD_MINIMA, calcularEdad } from "@/lib/edad";
 import { clp } from "@/lib/formato";
 import { formatearRut, rutValido } from "@/lib/rut";
@@ -249,10 +250,12 @@ export default function Checkout() {
 
 function Resumen({ subtotal, despacho, total }: { subtotal: number; despacho: number | undefined; total: number }) {
   const { items } = useCarro();
+  const { producto } = useCatalogo();
   return (
     <div className="resumen">
       {items.map((it) => {
-        const p = producto(it.slug)!;
+        const p = producto(it.slug);
+        if (!p) return null;
         return (
           <div key={`${it.slug}-${it.variante}`}>
             <span>

@@ -5,23 +5,20 @@ import Advertencia from "@/components/Advertencia";
 import AgregarAlCarro from "@/components/AgregarAlCarro";
 import ArteProducto from "@/components/ArteProducto";
 import TarjetaProducto, { TextoStock } from "@/components/TarjetaProducto";
-import { PRODUCTOS, categoria, producto, repuestosPara } from "@/lib/catalogo";
+import { categoria } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return PRODUCTOS.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { producto } = await obtenerCatalogo();
   const p = producto((await params).slug);
   return { title: p?.nombre, description: p?.descripcion };
 }
 
 export default async function FichaProducto({ params }: Props) {
+  const { producto, repuestosPara } = await obtenerCatalogo();
   const p = producto((await params).slug);
   if (!p) notFound();
   const cat = categoria(p.categoria);

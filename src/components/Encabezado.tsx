@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCarro } from "@/components/Carro";
-import { CATEGORIAS, equipos, marcas, slugMarca } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
+import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 
 export default function Encabezado() {
   const { cantidadTotal, listo } = useCarro();
+  const { equipos, marcas } = useCatalogo();
   const [abierto, setAbierto] = useState(false);
   const ruta = usePathname();
 

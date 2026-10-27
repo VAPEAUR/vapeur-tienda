@@ -23,6 +23,14 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Textos legales y de advertencia provisorios: los debe validar el abogado (`src/lib/paginas.ts`, `src/components/Advertencia.tsx`).
 - Sitio sin indexar en buscadores hasta el lanzamiento.
 
+## Catálogo en Supabase y panel /admin (sprint 2)
+
+- Los productos viven en la tabla `public.productos` (`supabase/catalogo.sql`). La tienda los lee en cada visita, con 30 segundos de memoria (`src/lib/datos.ts`).
+- Sin `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` (desarrollo local) se usa el catálogo de ejemplo de `src/lib/catalogo.ts`.
+- `/admin`: panel para cargar productos, precios y stock. Entra solo quien tiene usuario en Supabase Auth y fila en `public.administradores`; la base de datos (RLS) rechaza cualquier otro cambio.
+- Puesta en marcha: correr `supabase/catalogo.sql` en el SQL Editor, crear el usuario en Authentication → Users → Add user (marcar *Auto Confirm User*) y correr la línea 4 del mismo archivo con ese correo.
+- Los kits (`KITS`) y las tarifas de despacho (`DESPACHO`) siguen en el código.
+
 ## Prueba técnica Cloudflare + Supabase (temporal)
 
 1. En Supabase → SQL Editor, ejecutar `supabase/prueba_conexion.sql`.

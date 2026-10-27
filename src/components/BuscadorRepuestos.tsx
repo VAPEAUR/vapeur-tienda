@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { equipos } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
 
 export default function BuscadorRepuestos() {
   const router = useRouter();
+  const { equipos } = useCatalogo();
   const [equipo, setEquipo] = useState("");
 
   return (

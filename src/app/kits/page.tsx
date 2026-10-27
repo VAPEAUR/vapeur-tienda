@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
-import { KITS, precioKit, producto } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 
 export const metadata: Metadata = { title: "Kits por nivel" };
 
-export default function PaginaKits() {
+export default async function PaginaKits() {
+  const { producto, kits, precioKit } = await obtenerCatalogo();
   return (
     <div className="wrap pagina">
       <nav className="migas" aria-label="Migas">
@@ -17,7 +18,7 @@ export default function PaginaKits() {
         <p className="muted">Equipo, repuesto y lo necesario para partir. El precio del kit es la suma de sus productos.</p>
       </header>
       <div className="kits">
-        {KITS.map((k) => (
+        {kits().map((k) => (
           <article key={k.nombre} className="kit">
             <div className="arte-kit">
               <ArteProducto arte={k.arte} />
