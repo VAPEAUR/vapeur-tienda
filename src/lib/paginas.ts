@@ -30,7 +30,13 @@ export const AYUDA: Record<string, PaginaInfo> = {
 };
 
 export const LEGAL: Record<string, PaginaInfo> = {
-  terminos: { titulo: "Términos y condiciones", parrafos: ["Texto en preparación con el abogado."] },
+  terminos: {
+    titulo: "Términos y condiciones",
+    parrafos: [
+      "Vapeur SpA, RUT 78.543.954-6, con domicilio en Ahumada 131, oficina 719, Santiago, es la empresa responsable de este sitio.",
+      "El resto de este texto está en preparación con el abogado.",
+    ],
+  },
   privacidad: {
     titulo: "Política de privacidad",
     parrafos: [
