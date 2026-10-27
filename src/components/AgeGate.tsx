@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Advertencia from "@/components/Advertencia";
 
 // Verificación de edad al entrar (Ley 21.642). Se recuerda solo durante la sesión.
 const CLAVE = "vapeur-mayor-de-edad";
@@ -32,29 +33,32 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
   if (estado === "aceptado") return <>{children}</>;
 
   return (
-    <main className="puerta">
+    <div className="puerta">
       {estado === "cargando" ? null : estado === "rechazado" ? (
-        <section className="tarjeta" role="alert">
-          <h1>Vapeur</h1>
-          <p>Este sitio es solo para mayores de 18 años.</p>
+        <section className="puerta-tarjeta" role="alert">
+          <span className="logo-texto">VAPEUR</span>
+          <h1>Este sitio es solo para mayores de 18 años.</h1>
+          <p>No podemos mostrarte productos ni precios.</p>
         </section>
       ) : (
-        <section className="tarjeta" role="dialog" aria-modal="true" aria-labelledby="titulo-edad">
+        <section className="puerta-tarjeta" role="dialog" aria-modal="true" aria-labelledby="titulo-edad">
+          <span className="logo-texto">VAPEUR</span>
           <h1 id="titulo-edad">¿Tienes 18 años o más?</h1>
           <p>
-            Vapeur vende productos de vapeo solo a mayores de edad. Para entrar debes confirmar
-            que tienes 18 años o más.
+            Vapeur vende productos de vapeo solo a mayores de edad. Para entrar debes confirmar que tienes 18 años o
+            más. Te lo volveremos a preguntar al pagar.
           </p>
           <div className="botones">
-            <button type="button" onClick={aceptar}>
+            <button type="button" className="boton" onClick={aceptar}>
               Sí, tengo 18 o más
             </button>
-            <button type="button" className="secundario" onClick={() => setEstado("rechazado")}>
+            <button type="button" className="boton secundario" onClick={() => setEstado("rechazado")}>
               No
             </button>
           </div>
+          <Advertencia />
         </section>
       )}
-    </main>
+    </div>
   );
 }
