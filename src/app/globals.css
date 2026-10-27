@@ -1,42 +1,95 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --fondo: #ffffff;
+  --texto: #1a1a1a;
+  --suave: #5c5c5c;
+  --acento: #1f3a5f;
+  --borde: #d9d9d9;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --fondo: #121212;
+    --texto: #f2f2f2;
+    --suave: #b3b3b3;
+    --acento: #9cc0ea;
+    --borde: #333333;
   }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+html,
+body {
+  min-height: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.inicio,
+.puerta {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.inicio h1 {
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+}
+
+.advertencia {
+  color: var(--suave);
+  font-size: 0.9rem;
+  max-width: 32rem;
+}
+
+.tarjeta {
+  max-width: 28rem;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.botones {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  font: inherit;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: 2px solid var(--acento);
+  background: var(--acento);
+  color: var(--fondo);
+  cursor: pointer;
+}
+
+button.secundario {
+  background: transparent;
+  color: var(--acento);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--texto);
+  outline-offset: 2px;
 }
