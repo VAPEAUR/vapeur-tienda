@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ARTES, CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { COLUMNAS, type FilaProducto } from "@/lib/datos-filas";
 import { clp } from "@/lib/formato";
+import Logo from "@/components/Logo";
 
 // Panel para que la dueña cargue productos, precios y stock. Solo entra quien
 // tiene usuario en Supabase Auth y fila en public.administradores; la base de
@@ -204,6 +205,7 @@ function Ingreso({ supabase }: { supabase: SupabaseClient }) {
         setEnviando(false);
       }}
     >
+      <Logo />
       <h1>Panel de productos</h1>
       <div className="campo">
         <label htmlFor="admin-correo">Correo</label>

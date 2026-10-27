@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Advertencia from "@/components/Advertencia";
+import Logo from "@/components/Logo";
 
 // Verificación de edad al entrar (Ley 21.642). Se recuerda solo durante la sesión.
 // Mientras no se confirma, la tienda queda detrás de un velo translúcido y muy
@@ -52,13 +53,13 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
         <div className={estado === "rechazado" ? "puerta opaca" : "puerta"}>
           {estado === "cargando" ? null : estado === "rechazado" ? (
             <section className="puerta-tarjeta" role="alert">
-              <span className="logo-texto">VAPEUR</span>
+              <Logo />
               <h1>Este sitio es solo para mayores de 18 años.</h1>
               <p>No podemos mostrarte productos ni precios.</p>
             </section>
           ) : (
             <section className="puerta-tarjeta" role="dialog" aria-modal="true" aria-labelledby="titulo-edad">
-              <span className="logo-texto">VAPEUR</span>
+              <Logo />
               <h1 id="titulo-edad">¿Tienes 18 años o más?</h1>
               <p>
                 Vapeur vende productos de vapeo solo a mayores de edad. Para entrar debes confirmar que tienes 18 años o
