@@ -8,6 +8,9 @@ create table if not exists public.prueba_conexion (
 
 alter table public.prueba_conexion enable row level security;
 
+-- El proyecto no expone tablas nuevas solo: se dan permisos explícitos.
+grant select, insert on public.prueba_conexion to anon;
+
 -- Solo para la prueba: la clave pública puede leer y agregar filas, nada más.
 create policy "prueba lectura" on public.prueba_conexion
   for select to anon using (true);
