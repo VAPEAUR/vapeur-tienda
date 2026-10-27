@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Advertencia from "@/components/Advertencia";
 import Logo from "@/components/Logo";
 
 // Verificación de edad al entrar (Ley 21.642). Se recuerda solo durante la sesión.
@@ -73,7 +72,6 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
                   No
                 </button>
               </div>
-              <Advertencia />
             </section>
           )}
         </div>
