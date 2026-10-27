@@ -1627,6 +1627,47 @@ input[aria-invalid="true"] {
   font-size: 14.5px;
 }
 
+.enlace-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.enlace-social:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Botón flotante de WhatsApp ---------- */
+.boton-whatsapp {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(21, 25, 27, 0.3);
+}
+
+.boton-whatsapp:hover {
+  background: #164947;
+}
+
+.pagina-accion {
+  margin-top: 4px;
+}
+
 .pie .columnas {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

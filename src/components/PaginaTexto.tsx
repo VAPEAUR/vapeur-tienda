@@ -11,6 +11,18 @@ export default function PaginaTexto({ seccion, pagina }: { seccion: string; pagi
       {pagina.parrafos.map((p) => (
         <p key={p}>{p}</p>
       ))}
+      {pagina.accion ? (
+        <p className="pagina-accion">
+          <a
+            href={pagina.accion.href}
+            className="boton"
+            target={pagina.accion.externo ? "_blank" : undefined}
+            rel={pagina.accion.externo ? "noopener noreferrer" : undefined}
+          >
+            {pagina.accion.texto}
+          </a>
+        </p>
+      ) : null}
     </div>
   );
 }
