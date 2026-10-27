@@ -3,11 +3,12 @@
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
 import { useCarro } from "@/components/Carro";
-import { producto } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
 import { clp } from "@/lib/formato";
 
 export default function PaginaCarro() {
   const { items, subtotal, listo, cambiarCantidad, quitar } = useCarro();
+  const { producto } = useCatalogo();
 
   if (!listo) return <div className="wrap pagina" />;
 
@@ -25,7 +26,8 @@ export default function PaginaCarro() {
         <>
           <ul className="lineas">
             {items.map((it, i) => {
-              const p = producto(it.slug)!;
+              const p = producto(it.slug);
+              if (!p) return null;
               return (
                 <li key={`${it.slug}-${it.variante}`} className="linea">
                   <Link href={`/producto/${p.slug}`} className="foto">

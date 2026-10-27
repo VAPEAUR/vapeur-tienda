@@ -3,12 +3,14 @@ import ArteProducto from "@/components/ArteProducto";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import QuizEquipo from "@/components/QuizEquipo";
 import TarjetaProducto from "@/components/TarjetaProducto";
-import { CATEGORIAS, KITS, PRODUCTOS, marcas, precioKit, producto } from "@/lib/catalogo";
+import { CATEGORIAS } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 
-export default function Inicio() {
-  const elegidos = PRODUCTOS.filter((p) => p.elegido);
-  const novedades = PRODUCTOS.filter((p) => p.categoria !== "equipos" && p.stock > 0).slice(0, 4);
+export default async function Inicio() {
+  const { productos, producto, marcas, kits, precioKit } = await obtenerCatalogo();
+  const elegidos = productos.filter((p) => p.elegido);
+  const novedades = productos.filter((p) => p.categoria !== "equipos" && p.stock > 0).slice(0, 4);
 
   return (
     <>
@@ -100,7 +102,7 @@ export default function Inicio() {
           <p className="muted">El precio del kit es la suma de sus productos.</p>
         </div>
         <div className="kits">
-          {KITS.map((k) => (
+          {kits().map((k) => (
             <article key={k.nombre} className="kit">
               <div className="arte-kit">
                 <ArteProducto arte={k.arte} />

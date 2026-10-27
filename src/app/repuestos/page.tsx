@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import PaginaListado from "@/components/PaginaListado";
-import { productosDe } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 
 export const metadata: Metadata = { title: "Repuestos" };
 
-export default function PaginaRepuestos() {
+export default async function PaginaRepuestos() {
+  const { productosDe } = await obtenerCatalogo();
   return (
     <PaginaListado
       titulo="Repuestos"

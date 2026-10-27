@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
-import { equipos, producto, repuestosPara } from "@/lib/catalogo";
+import { obtenerCatalogo } from "@/lib/datos";
 
 type Props = { params: Promise<{ equipo: string }> };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return equipos().map((e) => ({ equipo: e.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { producto } = await obtenerCatalogo();
   const e = producto((await params).equipo);
   return { title: e ? `Repuestos para ${e.nombre}` : "Repuestos" };
 }
 
 export default async function RepuestosDeEquipo({ params }: Props) {
+  const { producto, repuestosPara } = await obtenerCatalogo();
   const e = producto((await params).equipo);
   if (!e || e.categoria !== "equipos") notFound();
   return (

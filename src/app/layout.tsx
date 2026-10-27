@@ -3,8 +3,10 @@ import { Archivo, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import AgeGate from "@/components/AgeGate";
 import { CarroProvider } from "@/components/Carro";
+import { CatalogoProvider } from "@/components/Catalogo";
 import Encabezado from "@/components/Encabezado";
 import Pie from "@/components/Pie";
+import { obtenerCatalogo } from "@/lib/datos";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -26,20 +28,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false }, // no indexar hasta el lanzamiento
 };
 
-export default function RootLayout({
+// El catálogo se lee de Supabase en cada visita (con 30 s de memoria en
+// src/lib/datos.ts), así los cambios del panel se ven sin volver a publicar.
+export const dynamic = "force-dynamic";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { productos } = await obtenerCatalogo();
   return (
     <html lang="es-CL" className={`${archivo.variable} ${plex.variable}`}>
       <body>
         <AgeGate>
-          <CarroProvider>
-            <Encabezado />
-            <main className="contenido">{children}</main>
-            <Pie />
-          </CarroProvider>
+          <CatalogoProvider productos={productos}>
+            <CarroProvider>
+              <Encabezado />
+              <main className="contenido">{children}</main>
+              <Pie />
+            </CarroProvider>
+          </CatalogoProvider>
         </AgeGate>
       </body>
     </html>

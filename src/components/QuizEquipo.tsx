@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
-import { producto } from "@/lib/catalogo";
+import { useCatalogo } from "@/components/Catalogo";
 import { clp } from "@/lib/formato";
 
 type Experiencia = "partiendo" | "con-experiencia";
@@ -15,6 +15,7 @@ function recomendar(exp: Experiencia, prio: Prioridad) {
 }
 
 export default function QuizEquipo() {
+  const { producto } = useCatalogo();
   const [exp, setExp] = useState<Experiencia | null>(null);
   const [prio, setPrio] = useState<Prioridad | null>(null);
   const p = exp && prio ? producto(recomendar(exp, prio)) : null;
