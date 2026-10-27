@@ -1,7 +1,7 @@
 // Páginas informativas. Los textos legales son PROVISORIOS hasta que los
 // redacte o revise el abogado; no publicar como definitivos.
 
-import { WHATSAPP_VISIBLE, enlaceWhatsApp } from "@/lib/contacto";
+import { CORREO_CONTACTO, WHATSAPP_VISIBLE, enlaceWhatsApp } from "@/lib/contacto";
 
 export type PaginaInfo = {
   titulo: string;
@@ -33,7 +33,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
     titulo: "Contacto y WhatsApp",
     parrafos: [
       "La forma más rápida de escribirnos es por WhatsApp: resolvemos dudas sobre equipos, repuestos y pedidos.",
-      `También puedes guardar el número ${WHATSAPP_VISIBLE}.`,
+      `También puedes guardar el número ${WHATSAPP_VISIBLE} o escribirnos al correo ${CORREO_CONTACTO}.`,
     ],
     accion: { texto: "Escribir por WhatsApp", href: enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur."), externo: true },
   },
@@ -44,6 +44,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
     titulo: "Términos y condiciones",
     parrafos: [
       "Vapeur SpA, RUT 78.543.954-6, con domicilio en Ahumada 131, oficina 719, Santiago, es la empresa responsable de este sitio.",
+      `Correo de contacto: ${CORREO_CONTACTO}.`,
       "El resto de este texto está en preparación con el abogado.",
     ],
   },
