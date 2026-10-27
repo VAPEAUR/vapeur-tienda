@@ -18,6 +18,15 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Página de inicio provisoria, sin indexar en buscadores.
 - El texto de advertencia es provisorio: lo debe validar el abogado.
 
+## Prueba técnica Cloudflare + Supabase (temporal)
+
+1. En Supabase → SQL Editor, ejecutar `supabase/prueba_conexion.sql`.
+2. En Cloudflare (Workers → vapeur-tienda → Settings → Variables and Secrets) cargar `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
+3. Probar: `GET /api/prueba-supabase` lee y `POST /api/prueba-supabase` escribe una fila.
+4. Al cerrar la decisión de hosting, borrar la ruta y la tabla.
+
+Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
+
 ## Comandos
 
 ```bash
