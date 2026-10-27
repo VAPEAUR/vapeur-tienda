@@ -1,44 +1,30 @@
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
+import Carrusel from "@/components/Carrusel";
+import CarruselPortada from "@/components/CarruselPortada";
 import QuizEquipo from "@/components/QuizEquipo";
 import TarjetaProducto from "@/components/TarjetaProducto";
-import { CATEGORIAS } from "@/lib/catalogo";
+import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 
 export default async function Inicio() {
   const { productos, producto, marcas, kits, precioKit } = await obtenerCatalogo();
   const elegidos = productos.filter((p) => p.elegido);
-  const novedades = productos.filter((p) => p.categoria !== "equipos" && p.stock > 0).slice(0, 4);
+  const novedades = productos.filter((p) => p.categoria !== "equipos" && p.stock > 0).slice(0, 10);
 
   return (
     <>
-      <section className="hero">
-        <div className="wrap hero-grid">
-          <div className="hero-texto">
-            <span className="etiqueta">Tienda de vapeo en Chile</span>
-            <h1>Tu vape, sin vueltas.</h1>
-            <p>Equipos, repuestos y líquidos originales. Te ayudamos a elegir y te lo llevamos a la puerta.</p>
-            <div className="botones">
-              <Link href="/equipos" className="boton">
-                Ver equipos
-              </Link>
-              <Link href="#repuestos" className="boton secundario claro">
-                Busco repuestos
-              </Link>
-            </div>
-          </div>
-          <div className="hero-arte">
-            <ArteProducto arte="pod" color="#A9B1B5" />
-          </div>
-        </div>
-      </section>
+      <CarruselPortada />
 
       <section className="marcas" aria-label="Marcas">
         <div className="wrap fila-marcas">
+          <span className="etiqueta">Marcas originales</span>
           {marcas().map((m) => (
-            <span key={m}>{m}</span>
+            <Link key={m} href={`/marcas/${slugMarca(m)}`}>
+              {m}
+            </Link>
           ))}
         </div>
       </section>
@@ -97,76 +83,130 @@ export default async function Inicio() {
 
       <section className="seccion wrap">
         <div className="titulo-seccion">
-          <span className="etiqueta">Kits por nivel</span>
-          <h2>Todo lo que necesitas, en un solo paso</h2>
-          <p className="muted">El precio del kit es la suma de sus productos.</p>
+          <span className="etiqueta">Cómo funciona</span>
+          <h2>Comprar sin vueltas</h2>
         </div>
-        <div className="kits">
-          {kits().map((k) => (
-            <article key={k.nombre} className="kit">
-              <div className="arte-kit">
-                <ArteProducto arte={k.arte} />
-              </div>
-              <span className="etiqueta">
-                {k.nivel} · {k.para}
-              </span>
-              <h3>{k.nombre}</h3>
-              <ul>
-                {k.productos.map((slug) => {
-                  const p = producto(slug);
-                  return p ? (
-                    <li key={slug}>
-                      <Link href={`/producto/${slug}`}>{p.nombre}</Link>
-                    </li>
-                  ) : null;
-                })}
-              </ul>
-              <span className="precio">{clp(precioKit(k))}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="seccion wrap">
-        <div className="titulo-seccion">
-          <span className="etiqueta">También en la tienda</span>
-          <h2>Repuestos, líquidos y accesorios</h2>
-        </div>
-        <div className="grilla">
-          {novedades.map((p) => (
-            <TarjetaProducto key={p.slug} p={p} />
-          ))}
-        </div>
-      </section>
-
-      <section className="seccion wrap">
-        <div className="titulo-seccion">
-          <span className="etiqueta">Comprar sin vueltas</span>
-          <h2>Así de simple</h2>
-        </div>
-        <ol className="pasos">
+        <ol className="zigzag">
           <li>
-            <b>Eliges</b>
-            <span>Por tipo, por marca o por tu equipo. Si dudas, te ayudamos por WhatsApp.</span>
+            <div className="zz-arte" aria-hidden="true">
+              <ArteProducto arte="cartucho" />
+            </div>
+            <div>
+              <span className="num">Paso 1</span>
+              <h3>Eliges sabiendo qué le sirve a tu equipo</h3>
+              <p className="muted">Cada repuesto dice con qué equipos funciona. Si tienes dudas, nos escribes por WhatsApp antes de comprar.</p>
+            </div>
           </li>
           <li>
-            <b>Pagas con Webpay</b>
-            <span>Crédito, débito o prepago, en el sitio seguro de Transbank. Sin crear cuenta.</span>
+            <div className="zz-arte" aria-hidden="true">
+              <ArteProducto arte="pod2" color="#3A4247" />
+            </div>
+            <div>
+              <span className="num">Paso 2</span>
+              <h3>Pagas con Webpay, sin crear cuenta</h3>
+              <p className="muted">Crédito, débito o prepago en el sitio de Transbank. Ves el total con despacho antes de pagar.</p>
+            </div>
           </li>
           <li>
-            <b>Recibes con tu carnet</b>
-            <span>Entregamos solo a mayores de 18 años, mostrando el carnet.</span>
+            <div className="zz-arte" aria-hidden="true">
+              <ArteProducto arte="estuche" />
+            </div>
+            <div>
+              <span className="num">Paso 3</span>
+              <h3>Recibes en 24 a 48 horas hábiles</h3>
+              <p className="muted">Despacho en Santiago, en mano y solo a una persona mayor de 18 años con carnet.</p>
+            </div>
           </li>
         </ol>
       </section>
 
-      <section className="confianza">
-        <div className="wrap fila-confianza">
-          <span>Productos originales</span>
-          <span>Despacho en Santiago en 24 a 48 h hábiles</span>
-          <span>Garantía legal</span>
-          <span>Ayuda por WhatsApp</span>
+      <section className="seccion wrap duo" aria-label="Información">
+        <div className="duo-uno">
+          <span className="pronto">Próximamente</span>
+          <h3>Guía: qué coil sirve para tu equipo</h3>
+          <p>Cómo leer los ohmios y cuándo cambiar el cartucho. Solo información técnica.</p>
+          <div className="deco" aria-hidden="true">
+            <ArteProducto arte="coil" />
+          </div>
         </div>
+        <div className="duo-dos">
+          <span className="etiqueta">Despacho</span>
+          <h3>En Santiago, de 24 a 48 horas hábiles</h3>
+          <p className="muted">Costo y plazo según tu comuna, a la vista antes de pagar. Entrega solo a mayores de 18 con carnet.</p>
+          <Link href="/ayuda/despacho">Ver despacho y plazos</Link>
+          <div className="deco" aria-hidden="true">
+            <ArteProducto arte="estuche" />
+          </div>
+        </div>
+      </section>
+
+      {novedades.length > 0 ? (
+        <section className="seccion wrap">
+          <div className="titulo-seccion">
+            <span className="etiqueta">También en la tienda</span>
+            <h2>Repuestos, líquidos y accesorios</h2>
+          </div>
+          <Carrusel etiqueta="Repuestos, líquidos y accesorios">
+            {novedades.map((p) => (
+              <TarjetaProducto key={p.slug} p={p} />
+            ))}
+          </Carrusel>
+        </section>
+      ) : null}
+
+      {kits().length > 0 ? (
+        <section className="seccion wrap">
+          <div className="titulo-seccion">
+            <span className="etiqueta">Para cada etapa</span>
+            <h2>Kits por nivel</h2>
+            <p className="muted">El precio del kit es la suma de sus productos.</p>
+          </div>
+          <div className="kits deslizable">
+            {kits().map((k) => (
+              <article key={k.nombre} className="kit">
+                <div className="arte-kit">
+                  <ArteProducto arte={k.arte} />
+                </div>
+                <span className="etiqueta">
+                  {k.nivel} · {k.para}
+                </span>
+                <h3>{k.nombre}</h3>
+                <ul>
+                  {k.productos.map((slug) => {
+                    const p = producto(slug);
+                    return p ? (
+                      <li key={slug}>
+                        <Link href={`/producto/${slug}`}>{p.nombre}</Link>
+                      </li>
+                    ) : null;
+                  })}
+                </ul>
+                <span className="precio">{clp(precioKit(k))}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="seccion wrap">
+        <ul className="confianza">
+          <li>
+            <b>Originales</b>
+            <span>Compramos a distribuidores autorizados, con garantía legal.</span>
+          </li>
+          <li>
+            <b>Webpay</b>
+            <span>Crédito, débito o prepago, en el sitio de Transbank.</span>
+          </li>
+          <li>
+            <b>Despacho</b>
+            <span>Costo y plazo a la vista antes de pagar.</span>
+          </li>
+          <li>
+            <b>WhatsApp</b>
+            <span>Te ayudamos a elegir el repuesto correcto.</span>
+          </li>
+        </ul>
       </section>
     </>
   );
