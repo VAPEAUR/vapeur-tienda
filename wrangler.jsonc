@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "vapeur-tienda",
+  "compatibility_date": "2026-10-01",
+  // Conserva las variables cargadas en el panel de Cloudflare en cada deploy
+  "keep_vars": true,
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Auto-referencia que pide OpenNext; el nombre debe ser igual a "name"
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "vapeur-tienda"
+    }
+  ]
+}
