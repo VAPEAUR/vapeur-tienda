@@ -1,7 +1,13 @@
 // Páginas informativas. Los textos legales son PROVISORIOS hasta que los
 // redacte o revise el abogado; no publicar como definitivos.
 
-export type PaginaInfo = { titulo: string; parrafos: string[] };
+import { WHATSAPP_VISIBLE, enlaceWhatsApp } from "@/lib/contacto";
+
+export type PaginaInfo = {
+  titulo: string;
+  parrafos: string[];
+  accion?: { texto: string; href: string; externo?: boolean };
+};
 
 export const AYUDA: Record<string, PaginaInfo> = {
   despacho: {
@@ -25,7 +31,11 @@ export const AYUDA: Record<string, PaginaInfo> = {
   },
   contacto: {
     titulo: "Contacto y WhatsApp",
-    parrafos: ["Escríbenos por WhatsApp o al correo de contacto. Datos en preparación."],
+    parrafos: [
+      "La forma más rápida de escribirnos es por WhatsApp: resolvemos dudas sobre equipos, repuestos y pedidos.",
+      `También puedes guardar el número ${WHATSAPP_VISIBLE}.`,
+    ],
+    accion: { texto: "Escribir por WhatsApp", href: enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur."), externo: true },
   },
 };
 
