@@ -36,7 +36,7 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
 2. La prueba técnica (ruta `/api/prueba-supabase` y tabla `prueba_conexion`) se aprobó el 27-oct-2026 y se borró.
 
-Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
+Rama de producción en Cloudflare: `main` (desde el 27-oct-2026). Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
 
 ## Comandos
 
