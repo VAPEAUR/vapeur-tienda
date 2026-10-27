@@ -12,11 +12,16 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Webpay Plus de Transbank — por conectar
 - Blue Express — por conectar
 
-## Qué hay hoy
+## Qué hay hoy (prototipo A · Grafito y petróleo)
 
 - Verificación de edad al entrar (se recuerda solo durante la sesión del navegador).
-- Página de inicio provisoria, sin indexar en buscadores.
-- El texto de advertencia es provisorio: lo debe validar el abogado.
+- Inicio con portada, categorías, "Repuestos para tu equipo", Elegidos por Vapeur, quiz "¿Qué equipo es para ti?", kits por nivel y pasos de compra.
+- Listados por categoría, marca y equipo (`/equipos`, `/marcas/[marca]`, `/repuestos/[equipo]`), kits y ficha de producto.
+- Carro en el navegador y checkout en 2 pasos: valida RUT (módulo 11) y fecha de nacimiento, y bloquea a menores de 18.
+- **Pago simulado**: Webpay se conecta cuando Transbank apruebe la afiliación.
+- Catálogo, fotos (dibujos SVG) y tarifas de despacho son **de ejemplo** (`src/lib/catalogo.ts`) hasta conectar Supabase y el courier.
+- Textos legales y de advertencia provisorios: los debe validar el abogado (`src/lib/paginas.ts`, `src/components/Advertencia.tsx`).
+- Sitio sin indexar en buscadores hasta el lanzamiento.
 
 ## Prueba técnica Cloudflare + Supabase (temporal)
 
