@@ -212,7 +212,7 @@ export default function Checkout() {
                 <span>Por ahora despachamos solo en la Región Metropolitana.</span>
               ) : (
                 <span>
-                  Courier · 24 a 48 h hábiles · <b className="tab">{clp(costoDespacho ?? 0)}</b>
+                  Courier a domicilio · <b className="tab">{clp(costoDespacho ?? 0)}</b>
                 </span>
               )}
               <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>

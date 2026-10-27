@@ -7,7 +7,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
   despacho: {
     titulo: "Despacho y plazos",
     parrafos: [
-      "Despachamos con courier a domicilio. En Santiago el plazo es de 24 a 48 horas hábiles desde la confirmación del pago.",
+      "Despachamos con courier a domicilio. El plazo depende de tu comuna y te lo confirmamos antes de pagar.",
       "El costo depende de tu comuna y lo ves antes de pagar.",
       "El pedido se entrega solo a una persona mayor de 18 años que muestre su carnet.",
     ],
