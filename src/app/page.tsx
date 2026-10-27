@@ -113,7 +113,7 @@ export default async function Inicio() {
             </div>
             <div>
               <span className="num">Paso 3</span>
-              <h3>Recibes en 24 a 48 horas hábiles</h3>
+              <h3>Recibes en tu casa, con plazo según tu comuna</h3>
               <p className="muted">Despacho en Santiago, en mano y solo a una persona mayor de 18 años con carnet.</p>
             </div>
           </li>
@@ -131,8 +131,8 @@ export default async function Inicio() {
         </div>
         <div className="duo-dos">
           <span className="etiqueta">Despacho</span>
-          <h3>En Santiago, de 24 a 48 horas hábiles</h3>
-          <p className="muted">Costo y plazo según tu comuna, a la vista antes de pagar. Entrega solo a mayores de 18 con carnet.</p>
+          <h3>Costo y plazo según tu comuna</h3>
+          <p className="muted">Los ves antes de pagar. Entrega solo a mayores de 18 con carnet.</p>
           <Link href="/ayuda/despacho">Ver despacho y plazos</Link>
           <div className="deco" aria-hidden="true">
             <ArteProducto arte="estuche" />

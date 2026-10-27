@@ -62,7 +62,7 @@ export default async function FichaProducto({ params }: Props) {
           ) : null}
 
           <ul className="garantias">
-            <li>Despacho en Santiago: 24 a 48 h hábiles. Costo visible antes de pagar.</li>
+            <li>Despacho a domicilio: costo y plazo según tu comuna, visibles antes de pagar.</li>
             <li>Se entrega solo a una persona mayor de 18 años con carnet.</li>
             <li>Producto original con garantía legal.</li>
           </ul>
