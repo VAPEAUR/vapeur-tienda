@@ -41,6 +41,11 @@ export default async function RootLayout({
   return (
     <html lang="es-CL" className={`${archivo.variable} ${plex.variable}`}>
       <body>
+        {/* Advertencia sanitaria fija arriba, visible también sobre la puerta de edad. */}
+        <div className="franja" role="note">
+          <span>Los productos con NICOTINA son altamente ADICTIVOS.</span>
+          <span>Venta exclusiva para mayores de 18 años.</span>
+        </div>
         <AgeGate>
           <CatalogoProvider productos={productos}>
             <CarroProvider>

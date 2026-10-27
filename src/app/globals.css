@@ -31,6 +31,7 @@
   --radius: 10px;
   --radius-s: 6px;
   --alto-control: 50px;
+  --alto-franja: 44px;
   color-scheme: light;
 }
 
@@ -236,7 +237,7 @@ button {
 /* ---------- Puerta de edad ---------- */
 .puerta {
   position: fixed;
-  inset: 0;
+  inset: var(--alto-franja) 0 0;
   z-index: 100;
   display: grid;
   place-items: center;
@@ -292,18 +293,28 @@ body.con-puerta {
 /* ---------- Encabezado ---------- */
 .encabezado {
   position: sticky;
-  top: 0;
+  top: var(--alto-franja);
   z-index: 20;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 
+/* Advertencia sanitaria en blanco y negro, siempre arriba (sobre la puerta de edad). */
 .franja {
-  background: var(--ink);
-  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: var(--alto-franja);
+  padding: 0 12px;
+  background: var(--aviso);
+  color: var(--aviso-borde);
+  border-bottom: 1px solid var(--aviso-borde);
   font-size: 12.5px;
+  line-height: 1.35;
   text-align: center;
-  padding: 6px 12px;
 }
 
 .barra {
@@ -1846,7 +1857,7 @@ input[aria-invalid="true"] {
 
   .galeria {
     position: sticky;
-    top: 110px;
+    top: calc(var(--alto-franja) + 80px);
   }
 
   .info h1 {

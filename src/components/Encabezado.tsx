@@ -23,7 +23,6 @@ export default function Encabezado() {
 
   return (
     <header className="encabezado">
-      <div className="franja">Venta solo a mayores de 18 años · La nicotina es altamente adictiva</div>
       <div className="barra wrap">
         <button
           type="button"
