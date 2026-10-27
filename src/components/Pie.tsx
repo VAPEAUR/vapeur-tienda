@@ -1,8 +1,15 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function Pie() {
   return (
     <footer className="pie">
+      <div className="wrap pie-marca">
+        <Link href="/" className="enlace-logo" aria-label="Vapeur, ir al inicio">
+          <Logo />
+        </Link>
+        <span>Tu vape, sin vueltas.</span>
+      </div>
       <div className="wrap columnas">
         <div>
           <h2>Tienda</h2>

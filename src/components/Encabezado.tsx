@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
+import Logo from "@/components/Logo";
 
 export default function Encabezado() {
   const { cantidadTotal, listo } = useCarro();
@@ -37,12 +38,8 @@ export default function Encabezado() {
           </svg>
         </button>
 
-        <Link href="/" className="logo" aria-label="Vapeur, ir al inicio">
-          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-            <path d="M4 5l8 14 8-14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M9 5h6" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-          </svg>
-          <span>VAPEUR</span>
+        <Link href="/" className="enlace-logo" aria-label="Vapeur, ir al inicio">
+          <Logo />
         </Link>
 
         <nav id="menu-principal" className={abierto ? "menu abierto" : "menu"} aria-label="Principal">
