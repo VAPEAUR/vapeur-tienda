@@ -291,6 +291,94 @@ body.con-puerta {
   border-bottom: 1px solid var(--line);
 }
 
+/* ---------- Cinta de avisos (se desplaza sobre el menú) ---------- */
+.cinta {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 38px;
+  height: 38px;
+  white-space: nowrap;
+}
+
+.cinta-pista {
+  display: flex;
+  width: max-content;
+  animation: cinta-avanza 40s linear infinite;
+}
+
+.cinta:hover .cinta-pista,
+.cinta:focus-within .cinta-pista,
+.cinta.pausada .cinta-pista {
+  animation-play-state: paused;
+}
+
+.cinta-lista {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cinta-lista li {
+  padding: 0 40px;
+}
+
+.cinta-lista li::before {
+  content: "·";
+  margin-right: 40px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.cinta-lista a {
+  text-decoration: none;
+}
+
+.cinta-lista a:hover,
+.cinta-lista a:focus-visible {
+  text-decoration: underline;
+}
+
+.cinta-pausa {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+@keyframes cinta-avanza {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Quien pide menos movimiento ve los avisos quietos y puede deslizarlos. */
+@media (prefers-reduced-motion: reduce) {
+  .cinta {
+    overflow-x: auto;
+  }
+  .cinta-pista {
+    animation: none;
+  }
+  .cinta-lista[aria-hidden],
+  .cinta-pausa {
+    display: none;
+  }
+}
+
 /* Advertencia sanitaria en blanco y negro, siempre arriba (sobre la puerta de edad). */
 .franja {
   position: sticky;
@@ -1608,7 +1696,48 @@ input[aria-invalid="true"] {
   margin-top: 56px;
   background: var(--noche);
   color: #e3e8ea;
-  padding: 36px 0 24px;
+  padding: 0 0 24px;
+}
+
+/* Franja clara de servicio sobre el pie oscuro. */
+.pie-servicio {
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 28px 0;
+  margin-bottom: 36px;
+}
+
+.pie .pie-servicio-lista {
+  display: grid;
+  gap: 20px;
+}
+
+.pie-servicio li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pie-servicio svg {
+  flex: none;
+}
+
+.pie-servicio div {
+  display: flex;
+  flex-direction: column;
+}
+
+.pie .pie-servicio a {
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pie-servicio span {
+  color: var(--muted);
+  font-size: 14.5px;
 }
 
 .pie-marca {
@@ -1711,6 +1840,74 @@ input[aria-invalid="true"] {
   color: #a7b0b4;
 }
 
+/* ---------- Contacto ---------- */
+.contacto-grilla {
+  display: grid;
+  gap: 32px;
+}
+
+.contacto h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.contacto-intro {
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.contacto-intro strong {
+  color: var(--ink);
+}
+
+.contacto .formulario {
+  margin-top: 16px;
+}
+
+.contacto textarea {
+  min-height: 140px;
+}
+
+.contacto-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contacto-panel {
+  align-self: start;
+  padding: 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.contacto-panel h2 {
+  font-size: 18px;
+  margin: 18px 0 8px;
+}
+
+.contacto-panel h2:first-child {
+  margin-top: 0;
+}
+
+.contacto-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contacto-panel li a {
+  display: block;
+  padding: 7px 0;
+}
+
+@media (min-width: 900px) {
+  .contacto-grilla {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 48px;
+  }
+}
+
 /* ---------- Escritorio ---------- */
 @media (min-width: 720px) {
   .grilla {
@@ -1782,6 +1979,10 @@ input[aria-invalid="true"] {
   }
 
   .pie .columnas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pie .pie-servicio-lista {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
