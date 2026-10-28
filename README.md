@@ -31,14 +31,12 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Puesta en marcha: correr `supabase/catalogo.sql` en el SQL Editor, crear el usuario en Authentication → Users → Add user (marcar *Auto Confirm User*) y correr la línea 4 del mismo archivo con ese correo.
 - Los kits (`KITS`) y las tarifas de despacho (`DESPACHO`) siguen en el código.
 
-## Prueba técnica Cloudflare + Supabase (temporal)
+## Cloudflare
 
-1. En Supabase → SQL Editor, ejecutar `supabase/prueba_conexion.sql`.
-2. En Cloudflare (Workers → vapeur-tienda → Settings → Variables and Secrets) cargar `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
-3. Probar: `GET /api/prueba-supabase` lee y `POST /api/prueba-supabase` escribe una fila.
-4. Al cerrar la decisión de hosting, borrar la ruta y la tabla.
+1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
+2. La prueba técnica (ruta `/api/prueba-supabase` y tabla `prueba_conexion`) se aprobó el 27-oct-2026 y se borró.
 
-Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
+Rama de producción en Cloudflare: `main` (desde el 27-oct-2026). Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
 
 ## Comandos
 

@@ -25,7 +25,10 @@ async function leerProductos(): Promise<Producto[]> {
     if (memoria) return memoria.productos;
     // Tabla aún no creada (falta correr supabase/catalogo.sql): catálogo de ejemplo.
     if (error.code === "PGRST205" || error.code === "42P01") return PRODUCTOS_EJEMPLO;
-    throw new Error(`No se pudo leer el catálogo: ${error.message}`);
+    // Cualquier otro error: el sitio sigue arriba (ayuda, legal, WhatsApp)
+    // con el catálogo vacío, en vez de caerse entero. Queda en el registro.
+    console.error(`No se pudo leer el catálogo: ${error.code ?? ""} ${error.message}`);
+    return [];
   }
   const productos = (data as FilaProducto[]).map(filaAProducto);
   memoria = { hasta: Date.now() + VIGENCIA_MS, productos };
