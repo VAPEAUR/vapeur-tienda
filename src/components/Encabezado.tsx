@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
+import Buscador from "@/components/Buscador";
 import Logo from "@/components/Logo";
 
 export default function Encabezado() {
@@ -88,6 +89,8 @@ export default function Encabezado() {
           ))}
           <Link href="/ayuda/despacho">Ayuda</Link>
         </nav>
+
+        <Buscador />
 
         <Link href="/carro" className="icono carro" aria-label={`Carro, ${listo ? cantidadTotal : 0} productos`}>
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">

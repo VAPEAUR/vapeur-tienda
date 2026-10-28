@@ -9,10 +9,15 @@ import Logo from "@/components/Logo";
 // precios. Si la persona dice que no, el velo pasa a ser opaco.
 const CLAVE = "vapeur-mayor-de-edad";
 
-type Estado = "cargando" | "pendiente" | "aceptado" | "rechazado";
+type Estado = "pendiente" | "aceptado" | "rechazado";
+
+// La pregunta viene ya en el HTML del servidor, para que se vea sin esperar el
+// JavaScript (carga más rápida en celular). A quien ya aceptó en esta sesión,
+// el script de <head> en layout.tsx le oculta la puerta antes de pintar.
+export const SCRIPT_EDAD = `try{if(sessionStorage.getItem("${CLAVE}")==="si")document.documentElement.classList.add("edad-ok")}catch(e){}`;
 
 export default function AgeGate({ children }: { children: React.ReactNode }) {
-  const [estado, setEstado] = useState<Estado>("cargando");
+  const [estado, setEstado] = useState<Estado>("pendiente");
 
   useEffect(() => {
     let aceptado = false;
@@ -50,7 +55,7 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
       </div>
       {bloqueado ? (
         <div className={estado === "rechazado" ? "puerta opaca" : "puerta"}>
-          {estado === "cargando" ? null : estado === "rechazado" ? (
+          {estado === "rechazado" ? (
             <section className="puerta-tarjeta" role="alert">
               <Logo />
               <h1>Este sitio es solo para mayores de 18 años.</h1>
