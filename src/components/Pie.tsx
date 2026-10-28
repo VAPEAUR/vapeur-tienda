@@ -118,7 +118,6 @@ export default function Pie() {
         </div>
       </div>
       <div className="wrap legal">
-        <span>Vapeur SpA · RUT 78.543.954-6</span>
         <a href={`mailto:${CORREO_CONTACTO}`}>{CORREO_CONTACTO}</a>
         <span>Venta exclusiva a mayores de 18 años (Ley 21.642). Pagos con Webpay de Transbank.</span>
       </div>
