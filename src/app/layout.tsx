@@ -8,6 +8,7 @@ import { CatalogoProvider } from "@/components/Catalogo";
 import Encabezado from "@/components/Encabezado";
 import Pie from "@/components/Pie";
 import { obtenerCatalogo } from "@/lib/datos";
+import { SITIO, sePuedeIndexar } from "@/lib/seo";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -23,11 +24,22 @@ const plex = IBM_Plex_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: { default: "Vapeur · Tu vape, sin vueltas", template: "%s · Vapeur" },
-  description: "Tienda online de vapeo en Chile. Venta exclusiva a mayores de 18 años.",
-  robots: { index: false, follow: false }, // no indexar hasta el lanzamiento
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const indexar = await sePuedeIndexar();
+  return {
+    metadataBase: new URL(SITIO),
+    title: { default: "Vapeur · Tienda de vaper en Chile", template: "%s · Vapeur" },
+    description: "Tienda online de vaper en Chile: pods, repuestos, líquidos y accesorios. Venta exclusiva para mayores de 18 años.",
+    // Fuera de Google hasta el lanzamiento y siempre fuera en workers.dev (src/lib/seo.tsx).
+    robots: indexar ? { index: true, follow: true } : { index: false, follow: false },
+    openGraph: {
+      type: "website",
+      locale: "es_CL",
+      siteName: "Vapeur",
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: "Vapeur" }],
+    },
+  };
+}
 
 // El catálogo se lee de Supabase en cada visita (con 30 s de memoria en
 // src/lib/datos.ts), así los cambios del panel se ven sin volver a publicar.

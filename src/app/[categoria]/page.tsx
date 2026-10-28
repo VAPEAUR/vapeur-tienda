@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
 import { CATEGORIAS, categoria } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
+import { SEO_CATEGORIAS } from "@/lib/seo";
 
 type Props = { params: Promise<{ categoria: string }> };
 
@@ -15,7 +16,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = categoria((await params).categoria);
-  return { title: c?.nombre };
+  if (!c) return {};
+  const seo = SEO_CATEGORIAS[c.slug];
+  return { title: seo?.titulo ?? c.nombre, description: seo?.descripcion, alternates: { canonical: `/${c.slug}` } };
 }
 
 export default async function PaginaCategoria({ params }: Props) {

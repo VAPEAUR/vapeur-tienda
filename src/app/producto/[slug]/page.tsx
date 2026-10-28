@@ -11,13 +11,20 @@ import { categoria } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 import { GARANTIA_CORTA, RETRACTO_CORTO } from "@/lib/legal";
+import { DatosEstructurados, datosProducto, descripcionProducto } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { producto } = await obtenerCatalogo();
   const p = producto((await params).slug);
-  return { title: p?.nombre, description: p?.descripcion };
+  if (!p) return {};
+  return {
+    // La marca adelante ("Vaporesso XROS 4 kit pod"), salvo la línea propia.
+    title: p.marca.startsWith("Vapeur") ? p.nombre : `${p.marca} ${p.nombre}`,
+    description: descripcionProducto(p),
+    alternates: { canonical: `/producto/${p.slug}` },
+  };
 }
 
 export default async function FichaProducto({ params }: Props) {
@@ -30,6 +37,7 @@ export default async function FichaProducto({ params }: Props) {
 
   return (
     <div className="wrap pagina">
+      <DatosEstructurados datos={datosProducto(p, cat)} />
       <nav className="migas" aria-label="Migas">
         <Link href="/">Inicio</Link> / {cat ? <Link href={`/${cat.slug}`}>{cat.nombre}</Link> : null} /{" "}
         <span>{p.nombre}</span>

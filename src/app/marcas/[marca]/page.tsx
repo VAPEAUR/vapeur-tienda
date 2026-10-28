@@ -2,12 +2,20 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
 import { obtenerCatalogo } from "@/lib/datos";
+import { describir } from "@/lib/seo";
 
 type Props = { params: Promise<{ marca: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { nombreMarca } = await obtenerCatalogo();
-  return { title: nombreMarca((await params).marca) };
+  const slug = (await params).marca;
+  const nombre = nombreMarca(slug);
+  if (!nombre) return {};
+  return {
+    title: `${nombre} en Chile`,
+    description: describir(`Productos ${nombre} en Vapeur: precio IVA incluido, compatibilidad y despacho a domicilio.`),
+    alternates: { canonical: `/marcas/${slug}` },
+  };
 }
 
 export default async function PaginaMarca({ params }: Props) {

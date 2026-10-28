@@ -3,7 +3,11 @@ import Link from "next/link";
 import FormularioContacto from "@/components/FormularioContacto";
 import { CORREO_CONTACTO, WHATSAPP_VISIBLE, enlaceWhatsApp } from "@/lib/contacto";
 
-export const metadata: Metadata = { title: "Contacto" };
+export const metadata: Metadata = {
+  title: "Contacto",
+  description: "Escríbenos por correo o WhatsApp para consultas sobre productos, pedidos, despacho, cambios y garantía.",
+  alternates: { canonical: "/ayuda/contacto" },
+};
 
 // Página de contacto con la estructura de planetofthevapes.com/pages/contact-us:
 // formulario a la izquierda y panel de ayuda a la derecha. Del panel se
