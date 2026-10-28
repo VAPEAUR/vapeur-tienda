@@ -1315,35 +1315,6 @@ input[aria-invalid="true"] {
   pointer-events: none;
 }
 
-/* ---------- Confianza ---------- */
-.confianza {
-  list-style: none;
-  margin: 0;
-  padding: 20px 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px 16px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.confianza li {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-left: 12px;
-  border-left: 3px solid var(--accent);
-}
-
-.confianza b {
-  font-size: var(--tx-base);
-}
-
-.confianza span {
-  font-size: var(--tx-s);
-  color: var(--muted);
-}
-
 /* ---------- Listados ---------- */
 .filtros {
   display: flex;
@@ -1809,11 +1780,17 @@ input[aria-invalid="true"] {
   font-size: var(--tx-s);
 }
 
+.pie-novedades-derecha {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 320px;
+  min-width: 280px;
+}
+
 .pie-novedades-form {
   display: flex;
   flex-wrap: nowrap;
-  flex: 1 1 320px;
-  min-width: 280px;
+  justify-content: flex-end;
   gap: 10px;
 }
 
@@ -2087,10 +2064,6 @@ input[aria-invalid="true"] {
 
   .duo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .confianza {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .diapositiva-grid {

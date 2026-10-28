@@ -187,23 +187,6 @@ export default async function Inicio() {
           </div>
         </section>
       ) : null}
-
-      <section className="seccion wrap">
-        <ul className="confianza">
-          <li>
-            <b>Compra formal</b>
-            <span>Compramos a distribuidores formales en Chile, con factura y garantía legal de 6 meses.</span>
-          </li>
-          <li>
-            <b>Webpay</b>
-            <span>Crédito, débito o prepago, en el sitio de Transbank.</span>
-          </li>
-          <li>
-            <b>Despacho</b>
-            <span>Costo y plazo a la vista antes de pagar.</span>
-          </li>
-        </ul>
-      </section>
     </>
   );
 }
