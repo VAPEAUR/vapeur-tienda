@@ -31,8 +31,8 @@ export default function InscripcionNovedades() {
     <div className="pie-novedades">
       <div className="wrap pie-novedades-fila">
         <div>
-          <Logo />
-          <span>Regístrate para estar al tanto de las últimas novedades, nuevos lanzamientos y mucho más.</span>
+          <Logo className="logo logo-grande" />
+          <span className="pie-novedades-subtitulo">Regístrate para estar al tanto de las últimas novedades, nuevos lanzamientos y mucho más.</span>
         </div>
         {estado === "ok" ? (
           <p className="pie-novedades-ok" role="status">
