@@ -7,12 +7,15 @@ export default function PaginaListado({
   bajada,
   migas,
   productos,
+  vacio = "Pronto tendremos productos aquí.",
   children,
 }: {
   titulo: string;
   bajada: string;
   migas: string;
   productos: Producto[];
+  /** Texto cuando no hay productos que mostrar. */
+  vacio?: string;
   children?: React.ReactNode;
 }) {
   return (
@@ -27,9 +30,9 @@ export default function PaginaListado({
       {children}
       {productos.length > 0 ? (
         <ListaProductos productos={productos} />
-      ) : (
-        <p className="vacio">Pronto tendremos productos aquí.</p>
-      )}
+      ) : vacio ? (
+        <p className="vacio">{vacio}</p>
+      ) : null}
     </div>
   );
 }

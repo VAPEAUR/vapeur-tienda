@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
+import CalculaDespacho from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
+import PagoSeguro from "@/components/PagoSeguro";
 import { clp } from "@/lib/formato";
 
 export default function PaginaCarro() {
   const { items, subtotal, listo, cambiarCantidad, quitar } = useCarro();
   const { producto } = useCatalogo();
+  const [despacho, setDespacho] = useState<number | null | undefined>(undefined);
 
   if (!listo) return <div className="wrap pagina" />;
 
@@ -59,19 +63,35 @@ export default function PaginaCarro() {
             })}
           </ul>
 
+          <CalculaDespacho onCambio={setDespacho} />
+
           <div className="resumen">
             <div>
               <span>Subtotal</span>
               <b className="tab">{clp(subtotal)}</b>
             </div>
-            <div className="muted">
-              <span>Despacho</span>
-              <span>Se calcula con tu comuna</span>
-            </div>
+            {typeof despacho === "number" ? (
+              <>
+                <div>
+                  <span>Despacho</span>
+                  <span className="tab">{clp(despacho)}</span>
+                </div>
+                <div className="total">
+                  <span>Total</span>
+                  <span className="tab">{clp(subtotal + despacho)}</span>
+                </div>
+              </>
+            ) : (
+              <div className="muted">
+                <span>Despacho</span>
+                <span>Elige tu comuna arriba</span>
+              </div>
+            )}
           </div>
           <Link href="/checkout" className="boton ancho">
             Ir a pagar
           </Link>
+          <PagoSeguro />
           <Link href="/" className="enlace centrado">
             Seguir comprando
           </Link>

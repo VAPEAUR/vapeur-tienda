@@ -274,6 +274,17 @@ body.con-puerta {
   overflow: hidden;
 }
 
+/* Quien ya aceptó en esta sesión no ve la puerta mientras carga la página. */
+.edad-ok .puerta {
+  display: none;
+}
+
+.edad-ok .tras-puerta {
+  filter: none;
+  pointer-events: auto;
+  user-select: auto;
+}
+
 .puerta-tarjeta {
   width: 100%;
   max-width: 440px;
@@ -2357,6 +2368,170 @@ textarea {
   color: var(--muted);
   text-decoration-color: var(--borde-control);
   text-underline-offset: 3px;
+}
+
+/* ---------- Buscador del encabezado ---------- */
+/* En celular el logo queda junto al menú y la lupa junto al carro. */
+.barra .enlace-logo {
+  margin-right: auto;
+}
+
+.buscador {
+  display: none;
+}
+
+.buscador.abierto {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 10px 16px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 18px 30px var(--art-shadow);
+}
+
+.buscador input {
+  width: 100%;
+  min-height: 44px;
+  border: 1.5px solid var(--borde-control);
+  border-radius: 999px;
+  padding: 0 18px;
+  background: var(--bg);
+  font-size: var(--tx-base);
+}
+
+.sugerencias {
+  margin-top: 8px;
+  background: var(--bg);
+  font-size: var(--tx-s);
+}
+
+.sugerencias ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sugerencias li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+  text-decoration: none;
+}
+
+.sugerencias li a:hover,
+.sugerencias li a:focus-visible {
+  background: var(--surface);
+}
+
+.sugerencias .marca {
+  display: inline;
+}
+
+.sugerencias p {
+  margin: 0;
+  padding: 8px 10px;
+}
+
+.sugerencias .ver-todos {
+  display: block;
+  padding: 10px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+@media (min-width: 1000px) {
+  .barra .enlace-logo {
+    margin-right: 0;
+  }
+
+  .comprar-por > summary {
+    white-space: nowrap;
+  }
+
+  .buscador,
+  .buscador.abierto {
+    display: block;
+    position: relative;
+    width: 190px;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .sugerencias {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 380px;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 18px 30px var(--art-shadow);
+  }
+}
+
+@media (min-width: 1200px) {
+  .buscador,
+  .buscador.abierto {
+    width: 260px;
+  }
+}
+
+/* ---------- Calculadora de despacho (ficha y carro) ---------- */
+.calcula-despacho {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  margin-bottom: 16px;
+  font-size: var(--tx-s);
+}
+
+.calcula-despacho p {
+  margin: 0;
+}
+
+.calcula-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.calcula-campos select {
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: var(--tx-s);
+}
+
+/* ---------- Pago seguro junto al botón de compra ---------- */
+.pago-seguro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--tx-s);
+  text-align: left;
+}
+
+.pago-seguro svg {
+  flex: none;
+  color: var(--accent);
+}
+
+.boton.ancho + .pago-seguro {
+  margin-top: 12px;
 }
 
 /* En celular la advertencia oficial ocupa tres líneas. */

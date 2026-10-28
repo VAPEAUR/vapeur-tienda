@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import AgeGate from "@/components/AgeGate";
+import AgeGate, { SCRIPT_EDAD } from "@/components/AgeGate";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
 import CintaAvisos from "@/components/CintaAvisos";
 import { CarroProvider } from "@/components/Carro";
@@ -41,7 +41,10 @@ export default async function RootLayout({
 }>) {
   const { productos } = await obtenerCatalogo();
   return (
-    <html lang="es-CL" className={`${archivo.variable} ${plex.variable}`}>
+    <html lang="es-CL" className={`${archivo.variable} ${plex.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_EDAD }} />
+      </head>
       <body>
         {/* Advertencia sanitaria fija arriba, visible también sobre la puerta de edad. */}
         <div className="franja" role="note">
