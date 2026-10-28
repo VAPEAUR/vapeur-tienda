@@ -39,23 +39,25 @@ export default function InscripcionNovedades() {
           </p>
         ) : (
           <div className="pie-novedades-derecha">
-            <form className="pie-novedades-form" onSubmit={enviar}>
-              <input
-                type="email"
-                required
-                placeholder="Tu correo electrónico"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-                aria-label="Tu correo electrónico"
-              />
-              <button type="submit" className="boton" disabled={estado === "enviando"}>
-                {estado === "enviando" ? "Enviando…" : "Inscribirme"}
-              </button>
-            </form>
-            <p className="pie-novedades-legal">
-              Al inscribirte aceptas nuestra <Link href="/legal/privacidad">Política de privacidad</Link>.
-              {estado === "error" ? " No se pudo inscribir tu correo, inténtalo de nuevo." : ""}
-            </p>
+            <div className="pie-novedades-caja">
+              <form className="pie-novedades-form" onSubmit={enviar}>
+                <input
+                  type="email"
+                  required
+                  placeholder="Tu correo electrónico"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  aria-label="Tu correo electrónico"
+                />
+                <button type="submit" className="boton" disabled={estado === "enviando"}>
+                  {estado === "enviando" ? "Enviando…" : "Inscribirme"}
+                </button>
+              </form>
+              <p className="pie-novedades-legal">
+                Al inscribirte aceptas nuestra <Link href="/legal/privacidad">Política de privacidad</Link>.
+                {estado === "error" ? " No se pudo inscribir tu correo, inténtalo de nuevo." : ""}
+              </p>
+            </div>
           </div>
         )}
       </div>

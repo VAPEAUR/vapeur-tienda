@@ -113,7 +113,6 @@ export default function Pie() {
             <li><Link href="/legal/terminos">Términos y condiciones</Link></li>
             <li><Link href="/legal/privacidad">Política de privacidad</Link></li>
             <li><Link href="/legal/retracto">Derecho a retracto</Link></li>
-            <li><Link href="/legal/mayores-de-18">Venta solo a mayores de 18</Link></li>
           </ul>
         </div>
       </div>
