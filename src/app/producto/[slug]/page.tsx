@@ -8,6 +8,7 @@ import TarjetaProducto, { TextoStock } from "@/components/TarjetaProducto";
 import { categoria } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
+import { GARANTIA_CORTA, RETRACTO_CORTO } from "@/lib/legal";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -48,11 +49,14 @@ export default async function FichaProducto({ params }: Props) {
             <span className="muted">IVA incluido</span>
             <TextoStock stock={p.stock} />
           </div>
+          <p className="aviso-retracto">
+            <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+          </p>
           <p>{p.descripcion}</p>
 
           <AgregarAlCarro p={p} />
 
-          <Advertencia nicotina={p.nicotina} />
+          <Advertencia producto={p} />
 
           {p.elegido ? (
             <div className="elegido">
@@ -64,7 +68,7 @@ export default async function FichaProducto({ params }: Props) {
           <ul className="garantias">
             <li>Despacho a domicilio: costo y plazo según tu comuna, visibles antes de pagar.</li>
             <li>Se entrega solo a una persona mayor de 18 años con carnet.</li>
-            <li>Producto original con garantía legal.</li>
+            <li>{GARANTIA_CORTA}</li>
           </ul>
 
           <div className="acordeon">

@@ -62,7 +62,7 @@ export const PRODUCTOS_EJEMPLO: Producto[] = [
     arte: "pod",
     variante: { nombre: "Color", opciones: ["Negro", "Plata", "Azul acero"] },
     compatible: "Cartuchos XROS 0,6 Ω, 0,8 Ω y 1,2 Ω.",
-    elegido: "Si estás partiendo: carga rápida, cartucho fácil de cambiar y repuestos siempre en stock.",
+    elegido: "Si buscas un pod simple: carga rápida y cartucho fácil de cambiar.",
     nicotina: false,
     descripcion:
       "Equipo pod compacto con batería de 1.000 mAh y carga USB-C. Usa cartuchos recargables de 3 ml que se cambian sin herramientas.",
@@ -255,9 +255,9 @@ export const PRODUCTOS_EJEMPLO: Producto[] = [
   },
 ];
 
-// Precio del kit = suma de sus productos, sin descuento (validar con el abogado).
+// Precio del kit = suma de sus productos, sin descuento (Ley 21.642, art. 5).
 export const KITS: Kit[] = [
-  { nivel: "Inicial", para: "Si estás partiendo", nombre: "Kit XROS 4", productos: ["xros-4-kit-pod", "cartucho-xros-08"], arte: "pod" },
+  { nivel: "Inicial", para: "Equipo simple, con pocos ajustes", nombre: "Kit XROS 4", productos: ["xros-4-kit-pod", "cartucho-xros-08"], arte: "pod" },
   {
     nivel: "Intermedio",
     para: "Si ya usas pod",

@@ -8,8 +8,24 @@ export default function PaginaTexto({ seccion, pagina }: { seccion: string; pagi
         <Link href="/">Inicio</Link> / <span>{seccion}</span>
       </nav>
       <h1>{pagina.titulo}</h1>
+      {pagina.vigencia ? <p className="muted">{pagina.vigencia}</p> : null}
       {pagina.parrafos.map((p) => (
         <p key={p}>{p}</p>
+      ))}
+      {pagina.secciones?.map((s) => (
+        <section key={s.titulo} className="texto-seccion">
+          <h2>{s.titulo}</h2>
+          {s.parrafos?.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+          {s.lista ? (
+            <ul>
+              {s.lista.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
       ))}
       {pagina.accion ? (
         <p className="pagina-accion">
