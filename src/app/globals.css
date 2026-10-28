@@ -1768,8 +1768,8 @@ input[aria-invalid="true"] {
 /* Inscripción para novedades por correo, al estilo del referente. */
 .pie-novedades {
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 4px 0 24px;
-  margin-bottom: 24px;
+  padding: 4px 0 16px;
+  margin-bottom: 16px;
 }
 
 .pie-novedades-fila {
@@ -1803,7 +1803,9 @@ input[aria-invalid="true"] {
 }
 
 .pie-novedades-form input {
-  min-width: 220px;
+  flex: 1 1 220px;
+  width: auto;
+  max-width: 320px;
   height: var(--alto-control);
   padding: 0 14px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1863,14 +1865,19 @@ input[aria-invalid="true"] {
   font-size: 14.5px;
 }
 
+.pie-redes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
 .enlace-social {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin-left: auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   color: #ffffff;
 }
