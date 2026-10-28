@@ -22,7 +22,7 @@ type Diapositiva = {
 const DIAPOSITIVAS: Diapositiva[] = [
   {
     clase: "noche",
-    etiqueta: "Tienda de vapeo en Chile",
+    etiqueta: "Tienda de vaper en Chile",
     titulo: "Tu vape, sin vueltas.",
     bajada: "Equipos, repuestos y líquidos originales. Te decimos qué sirve para tu equipo antes de que compres.",
     botones: [

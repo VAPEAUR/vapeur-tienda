@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import AgeGate from "@/components/AgeGate";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
+import CintaAvisos from "@/components/CintaAvisos";
 import { CarroProvider } from "@/components/Carro";
 import { CatalogoProvider } from "@/components/Catalogo";
 import Encabezado from "@/components/Encabezado";
@@ -50,6 +51,7 @@ export default async function RootLayout({
         <AgeGate>
           <CatalogoProvider productos={productos}>
             <CarroProvider>
+              <CintaAvisos />
               <Encabezado />
               <main className="contenido">{children}</main>
               <Pie />

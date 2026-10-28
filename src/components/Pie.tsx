@@ -5,6 +5,44 @@ import { CORREO_CONTACTO, enlaceWhatsApp } from "@/lib/contacto";
 export default function Pie() {
   return (
     <footer className="pie">
+      {/* Franja de servicio al estilo de planetofthevapes.com, solo con lo que
+          Vapeur puede cumplir y probar: sin envío gratis, regalos ni "100%". */}
+      <div className="pie-servicio">
+        <div className="wrap">
+        <ul className="pie-servicio-lista">
+          <li>
+            <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round">
+              <path d="M3 7l9-4 9 4v10l-9 4-9-4z" />
+              <path d="M3 7l9 4 9-4M12 11v10" />
+            </svg>
+            <div>
+              <Link href="/ayuda/despacho">Despacho a todo Chile</Link>
+              <span>En empaque discreto, sin marcas a la vista</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="10" rx="2" />
+              <path d="M7 11V8a5 5 0 0 1 10 0v3" />
+            </svg>
+            <div>
+              <Link href="/legal/terminos">Pago seguro con Webpay</Link>
+              <span>Crédito, débito o prepago de Transbank</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round">
+              <path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z" />
+              <path d="M8.5 12l2.5 2.5 4.5-5" />
+            </svg>
+            <div>
+              <Link href="/ayuda/cambios-y-garantia">Cambios y garantía legal</Link>
+              <span>Te respondemos por WhatsApp o correo</span>
+            </div>
+          </li>
+        </ul>
+        </div>
+      </div>
       <div className="wrap pie-marca">
         <Link href="/" className="enlace-logo" aria-label="Vapeur, ir al inicio">
           <Logo />
