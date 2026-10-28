@@ -1784,6 +1784,7 @@ input[aria-invalid="true"] {
 .pie-redes {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
 
@@ -2135,7 +2136,7 @@ input[aria-invalid="true"] {
   }
 
   .pie .columnas {
-    grid-template-columns: repeat(3, minmax(0, 220px)) auto;
+    grid-template-columns: repeat(3, minmax(0, 220px)) 1fr;
   }
 }
 
