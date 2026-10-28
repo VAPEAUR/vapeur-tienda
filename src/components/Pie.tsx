@@ -51,38 +51,40 @@ export default function Pie() {
           <Logo />
         </Link>
         <span>Tu vape, sin vueltas.</span>
-        <a
-          href={enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur.")}
-          className="enlace-social"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Escríbenos por WhatsApp"
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-          </svg>
-        </a>
-        <a href={`mailto:${CORREO_CONTACTO}`} className="enlace-social" aria-label="Escríbenos por correo">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="5" width="18" height="14" rx="2" />
-            <path d="M3 7l9 6 9-6" />
-          </svg>
-        </a>
-        {REDES.map((red) => (
-          <a key={red.nombre} href={red.href} className="enlace-social" target="_blank" rel="noopener noreferrer" aria-label={red.nombre}>
-            {red.nombre === "Instagram" ? (
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v6h3v-6h2.2l.8-3H14v-1.5c0-.5.3-.8 1-.8h2z" />
-              </svg>
-            )}
+        <div className="pie-redes">
+          <a
+            href={enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur.")}
+            className="enlace-social"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Escríbenos por WhatsApp"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
           </a>
-        ))}
+          <a href={`mailto:${CORREO_CONTACTO}`} className="enlace-social" aria-label="Escríbenos por correo">
+            <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="currentColor">
+              <path d="M3 4a2 2 0 0 0-2 2v1.161l8.441 4.221a1.25 1.25 0 0 0 1.118 0L19 7.162V6a2 2 0 0 0-2-2H3z" />
+              <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 0 1-2.46 0L1 8.839V14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.839z" />
+            </svg>
+          </a>
+          {REDES.map((red) => (
+            <a key={red.nombre} href={red.href} className="enlace-social" target="_blank" rel="noopener noreferrer" aria-label={red.nombre}>
+              {red.nombre === "Instagram" ? (
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v6h3v-6h2.2l.8-3H14v-1.5c0-.5.3-.8 1-.8h2z" />
+                </svg>
+              )}
+            </a>
+          ))}
+        </div>
       </div>
       <div className="wrap columnas">
         <div>
