@@ -1771,28 +1771,10 @@ input[aria-invalid="true"] {
   text-decoration: underline;
 }
 
-.pie-marca {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 16px;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-}
-
-.pie-marca > span {
-  color: #a7b0b4;
-  font-size: var(--tx-s);
-}
-
 .pie-redes {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 10px;
-  margin-top: 24px;
 }
 
 .enlace-social {
@@ -1837,7 +1819,9 @@ input[aria-invalid="true"] {
 .pie .columnas {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   gap: 24px;
+  margin-top: 32px;
 }
 
 .pie h2 {
@@ -2012,7 +1996,7 @@ input[aria-invalid="true"] {
   }
 
   .pie .columnas {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   }
 
   .pie .pie-servicio-lista {
@@ -2141,7 +2125,7 @@ input[aria-invalid="true"] {
   }
 
   .pie .columnas {
-    grid-template-columns: repeat(3, minmax(0, 220px));
+    grid-template-columns: repeat(3, minmax(0, 220px)) auto;
   }
 }
 
