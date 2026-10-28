@@ -202,10 +202,6 @@ export default async function Inicio() {
             <b>Despacho</b>
             <span>Costo y plazo a la vista antes de pagar.</span>
           </li>
-          <li>
-            <b>WhatsApp</b>
-            <span>Te ayudamos a elegir el repuesto correcto.</span>
-          </li>
         </ul>
       </section>
     </>
