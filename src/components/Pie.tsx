@@ -117,7 +117,6 @@ export default function Pie() {
         </div>
       </div>
       <div className="wrap legal">
-        <span>Venta exclusiva a mayores de 18 años (Ley 21.642). Pagos con Webpay de Transbank.</span>
         {/* Sin ® hasta que INAPI conceda el registro de VAPEUR (Ley 19.039, art. 28 c). */}
         <span>© 2026 Vapeur SpA. Todos los derechos reservados.</span>
       </div>
