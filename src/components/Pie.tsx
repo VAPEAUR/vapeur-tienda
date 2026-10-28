@@ -72,14 +72,15 @@ export default function Pie() {
           {REDES.map((red) => (
             <a key={red.nombre} href={red.href} className="enlace-social" target="_blank" rel="noopener noreferrer" aria-label={red.nombre}>
               {red.nombre === "Instagram" ? (
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5" fill="currentColor" />
+                  <circle cx="12" cy="12" r="4" fill="var(--noche)" />
+                  <circle cx="17.3" cy="6.7" r="1.1" fill="var(--noche)" />
                 </svg>
               ) : (
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v6h3v-6h2.2l.8-3H14v-1.5c0-.5.3-.8 1-.8h2z" />
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" fill="currentColor" />
+                  <path d="M13.5 9H15V6.5h-1.8c-2 0-3 1.1-3 3v1.8H8.7V14h1.5v5.3c.6.1 1.2.2 1.8.2s1.2-.1 1.8-.2V14h1.7l.3-2.7h-2V9.9c0-.5.2-.9.7-.9Z" fill="var(--noche)" />
                 </svg>
               )}
             </a>

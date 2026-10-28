@@ -30,8 +30,8 @@ export default function InscripcionNovedades() {
     <div className="pie-novedades">
       <div className="wrap pie-novedades-fila">
         <div>
-          <strong>Novedades de Vapeur en tu correo.</strong>
-          <span>Te avisamos cuando suben productos nuevos o guías de uso. Sin promociones ni descuentos.</span>
+          <strong>Todo sobre vaporizadores, directamente en tu bandeja de entrada.</strong>
+          <span>Regístrate para estar al tanto de las últimas novedades, nuevos lanzamientos y mucho más.</span>
         </div>
         {estado === "ok" ? (
           <p className="pie-novedades-ok" role="status">
