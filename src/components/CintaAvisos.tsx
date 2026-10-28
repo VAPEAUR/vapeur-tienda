@@ -9,7 +9,7 @@ import { enlaceWhatsApp } from "@/lib/contacto";
 // precios, descuentos, regalos ni "número 1" (Ley 21.642 y Ley 19.496).
 // Textos revisados por la asesoría legal el 28-oct-2026.
 const AVISOS = [
-  { texto: "Despacho en la Región Metropolitana, en empaque discreto", href: "/ayuda/despacho" },
+  { texto: "Despacho a todo Chile, en empaque discreto", href: "/ayuda/despacho" },
   { texto: "Paga con Webpay: crédito, débito o prepago" },
   { texto: "Kits por nivel: inicial, intermedio y avanzado", href: "/kits" },
   { texto: "Repuestos compatibles para tu equipo", href: "/repuestos" },
