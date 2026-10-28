@@ -1,0 +1,64 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+type Estado = "reposo" | "enviando" | "ok" | "error";
+
+export default function InscripcionNovedades() {
+  const [correo, setCorreo] = useState("");
+  const [estado, setEstado] = useState<Estado>("reposo");
+
+  async function enviar(e: React.FormEvent) {
+    e.preventDefault();
+    setEstado("enviando");
+    try {
+      const resp = await fetch("/api/suscriptores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo }),
+      });
+      if (!resp.ok) throw new Error();
+      setEstado("ok");
+      setCorreo("");
+    } catch {
+      setEstado("error");
+    }
+  }
+
+  return (
+    <div className="pie-novedades">
+      <div className="wrap pie-novedades-fila">
+        <div>
+          <strong>Novedades de Vapeur en tu correo.</strong>
+          <span>Te avisamos cuando suben productos nuevos o guías de uso. Sin promociones ni descuentos.</span>
+        </div>
+        {estado === "ok" ? (
+          <p className="pie-novedades-ok" role="status">
+            Listo, te avisaremos a tu correo.
+          </p>
+        ) : (
+          <form className="pie-novedades-form" onSubmit={enviar}>
+            <input
+              type="email"
+              required
+              placeholder="Tu correo electrónico"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              aria-label="Tu correo electrónico"
+            />
+            <button type="submit" className="boton" disabled={estado === "enviando"}>
+              {estado === "enviando" ? "Enviando…" : "Inscribirme"}
+            </button>
+          </form>
+        )}
+      </div>
+      {estado !== "ok" ? (
+        <p className="wrap pie-novedades-legal">
+          Al inscribirte aceptas nuestra <Link href="/legal/privacidad">Política de privacidad</Link>.
+          {estado === "error" ? " No se pudo inscribir tu correo, inténtalo de nuevo." : ""}
+        </p>
+      ) : null}
+    </div>
+  );
+}

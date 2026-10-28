@@ -31,7 +31,7 @@
   --radius: 10px;
   --radius-s: 6px;
   --alto-control: 50px;
-  --alto-franja: 44px;
+  --alto-franja: 36px;
   color-scheme: light;
 }
 
@@ -387,13 +387,14 @@ body.con-puerta {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 1px;
   height: var(--alto-franja);
   padding: 0 12px;
   background: var(--aviso);
   color: var(--aviso-borde);
   border-bottom: 1px solid var(--aviso-borde);
-  font-size: 12.5px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.2;
   text-align: center;
 }
 
@@ -1740,6 +1741,89 @@ input[aria-invalid="true"] {
   font-size: 14.5px;
 }
 
+/* Inscripción para novedades por correo, al estilo del referente. */
+.pie-novedades {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 4px 0 24px;
+  margin-bottom: 24px;
+}
+
+.pie-novedades-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.pie-novedades-fila > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 480px;
+}
+
+.pie-novedades-fila strong {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.pie-novedades-fila > div:first-child span {
+  color: #a7b0b4;
+  font-size: 14.5px;
+}
+
+.pie-novedades-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pie-novedades-form input {
+  min-width: 220px;
+  height: var(--alto-control);
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-s);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.pie-novedades-form input::placeholder {
+  color: #a7b0b4;
+}
+
+.pie-novedades-form .boton {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--ink);
+}
+
+.pie-novedades-form .boton:hover {
+  background: #e8ecec;
+}
+
+.pie-novedades-form .boton:disabled {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: transparent;
+  color: var(--muted);
+}
+
+.pie-novedades-ok {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.pie-novedades-legal {
+  margin-top: 10px;
+  color: #a7b0b4;
+  font-size: 13px;
+}
+
+.pie-novedades-legal a {
+  text-decoration: underline;
+}
+
 .pie-marca {
   display: flex;
   flex-wrap: wrap;
@@ -1959,7 +2043,7 @@ input[aria-invalid="true"] {
   }
 
   .confianza {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .diapositiva-grid {
