@@ -1693,11 +1693,6 @@ input[aria-invalid="true"] {
   max-width: 420px;
 }
 
-.pie-novedades-fila strong {
-  color: #ffffff;
-  font-size: var(--tx-base);
-}
-
 .pie-novedades-fila > div:first-child span {
   color: #a7b0b4;
   font-size: var(--tx-s);
@@ -1795,8 +1790,9 @@ input[aria-invalid="true"] {
 .pie-redes {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
-  margin-left: auto;
+  margin-top: 24px;
 }
 
 .enlace-social {

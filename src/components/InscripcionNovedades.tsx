@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Logo from "@/components/Logo";
 
 type Estado = "reposo" | "enviando" | "ok" | "error";
 
@@ -30,7 +31,7 @@ export default function InscripcionNovedades() {
     <div className="pie-novedades">
       <div className="wrap pie-novedades-fila">
         <div>
-          <strong>Todo sobre vaporizadores, directamente en tu bandeja de entrada.</strong>
+          <Logo />
           <span>Regístrate para estar al tanto de las últimas novedades, nuevos lanzamientos y mucho más.</span>
         </div>
         {estado === "ok" ? (
