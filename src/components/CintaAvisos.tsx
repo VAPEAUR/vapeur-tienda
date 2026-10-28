@@ -7,11 +7,11 @@ import { enlaceWhatsApp } from "@/lib/contacto";
 // Cinta de avisos que se desplaza sobre el menú (inspirada en la franja de
 // planetofthevapes.com). Solo mensajes informativos del servicio: nada de
 // precios, descuentos, regalos ni "número 1" (Ley 21.642 y Ley 19.496).
-// Textos por validar con el abogado antes del lanzamiento.
+// Textos revisados por la asesoría legal el 28-oct-2026.
 const AVISOS = [
-  { texto: "Despacho a todo Chile, en empaque discreto", href: "/ayuda/despacho" },
+  { texto: "Despacho en la Región Metropolitana, en empaque discreto", href: "/ayuda/despacho" },
   { texto: "Paga con Webpay: crédito, débito o prepago" },
-  { texto: "¿Primer vape? Mira los kits por nivel", href: "/kits" },
+  { texto: "Kits por nivel: inicial, intermedio y avanzado", href: "/kits" },
   { texto: "Repuestos compatibles para tu equipo", href: "/repuestos" },
   { texto: "Te ayudamos a elegir por WhatsApp", href: enlaceWhatsApp("Hola, ¿me ayudan a elegir un equipo?") },
 ];

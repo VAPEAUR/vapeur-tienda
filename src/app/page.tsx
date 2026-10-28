@@ -3,7 +3,6 @@ import ArteProducto from "@/components/ArteProducto";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import Carrusel from "@/components/Carrusel";
 import CarruselPortada from "@/components/CarruselPortada";
-import QuizEquipo from "@/components/QuizEquipo";
 import TarjetaProducto from "@/components/TarjetaProducto";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
@@ -20,7 +19,7 @@ export default async function Inicio() {
 
       <section className="marcas" aria-label="Marcas">
         <div className="wrap fila-marcas">
-          <span className="etiqueta">Marcas originales</span>
+          <span className="etiqueta">Marcas que vendemos</span>
           {marcas().map((m) => (
             <Link key={m} href={`/marcas/${slugMarca(m)}`}>
               {m}
@@ -64,21 +63,13 @@ export default async function Inicio() {
         <div className="titulo-seccion">
           <span className="etiqueta">Curaduría</span>
           <h2>Elegidos por Vapeur</h2>
-          <p className="muted">Pocos equipos, probados por nosotros, con repuestos siempre disponibles.</p>
+          <p className="muted">Pocos equipos, elegidos por lo simples de usar y porque sus repuestos se encuentran en Chile.</p>
         </div>
         <div className="grilla">
           {elegidos.map((p) => (
             <TarjetaProducto key={p.slug} p={p} />
           ))}
         </div>
-      </section>
-
-      <section className="seccion wrap">
-        <div className="titulo-seccion">
-          <span className="etiqueta">Te ayudamos a elegir</span>
-          <h2>¿Qué equipo es para ti?</h2>
-        </div>
-        <QuizEquipo />
       </section>
 
       <section className="seccion wrap">
@@ -191,8 +182,8 @@ export default async function Inicio() {
       <section className="seccion wrap">
         <ul className="confianza">
           <li>
-            <b>Originales</b>
-            <span>Compramos a distribuidores autorizados, con garantía legal.</span>
+            <b>Compra formal</b>
+            <span>Compramos a distribuidores formales en Chile, con factura y garantía legal de 6 meses.</span>
           </li>
           <li>
             <b>Webpay</b>

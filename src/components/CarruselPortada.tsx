@@ -24,7 +24,7 @@ const DIAPOSITIVAS: Diapositiva[] = [
     clase: "noche",
     etiqueta: "Tienda de vaper en Chile",
     titulo: "Tu vape, sin vueltas.",
-    bajada: "Equipos, repuestos y líquidos originales. Te decimos qué sirve para tu equipo antes de que compres.",
+    bajada: "Equipos, repuestos y líquidos para adultos. Te decimos qué sirve para tu equipo antes de que compres.",
     botones: [
       { texto: "Ver equipos", href: "/equipos" },
       { texto: "Busco repuestos", href: "#repuestos", secundario: true },

@@ -16,7 +16,7 @@ export default function Pie() {
               <path d="M3 7l9 4 9-4M12 11v10" />
             </svg>
             <div>
-              <Link href="/ayuda/despacho">Despacho a todo Chile</Link>
+              <Link href="/ayuda/despacho">Despacho en la Región Metropolitana</Link>
               <span>En empaque discreto, sin marcas a la vista</span>
             </div>
           </li>
@@ -82,6 +82,7 @@ export default function Pie() {
         <div>
           <h2>Legal</h2>
           <ul>
+            <li><Link href="/legal/quienes-somos">Quiénes somos</Link></li>
             <li><Link href="/legal/terminos">Términos y condiciones</Link></li>
             <li><Link href="/legal/privacidad">Política de privacidad</Link></li>
             <li><Link href="/legal/retracto">Derecho a retracto</Link></li>
@@ -90,7 +91,7 @@ export default function Pie() {
         </div>
       </div>
       <div className="wrap legal">
-        <span>Vapeur SpA</span>
+        <span>Vapeur SpA · RUT 78.543.954-6</span>
         <a href={`mailto:${CORREO_CONTACTO}`}>{CORREO_CONTACTO}</a>
         <span>Venta exclusiva a mayores de 18 años (Ley 21.642). Pagos con Webpay de Transbank.</span>
       </div>
