@@ -18,6 +18,6 @@ export function advertenciaPara(p: { categoria: string; nicotina: boolean }): st
 // Derecho a retracto: el reglamento de exclusiones (D.O. 27-ago-2024) pide
 // informarlo junto al precio, antes de pagar, usando las palabras "derecho a retracto".
 export const RETRACTO_CORTO =
-  "Derecho a retracto: 10 días desde que recibes el producto, si está sellado y sin uso. No aplica a productos de uso personal abiertos o usados (líquidos, cartuchos, coils y equipos con la boquilla usada), por higiene.";
+  "Derecho a retracto: 10 días desde que recibes el producto, si está sellado y sin uso. No aplica a productos de uso personal abiertos o usados (líquidos, cartuchos, coils y equipos con la boquilla usada), por higiene. El envío de vuelta es de tu cargo.";
 
 export const GARANTIA_CORTA = "Garantía legal de 6 meses: reparación, cambio o devolución del dinero si viene con fallas.";

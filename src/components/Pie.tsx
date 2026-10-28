@@ -18,7 +18,7 @@ export default function Pie() {
               <path d="M3 7l9 4 9-4M12 11v10" />
             </svg>
             <div>
-              <Link href="/ayuda/despacho">Despacho en la Región Metropolitana</Link>
+              <Link href="/ayuda/despacho">Despacho a todo Chile</Link>
               <span>En empaque discreto, sin marcas a la vista</span>
             </div>
           </li>

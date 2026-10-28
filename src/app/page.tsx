@@ -3,6 +3,7 @@ import ArteProducto from "@/components/ArteProducto";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import Carrusel from "@/components/Carrusel";
 import CarruselPortada from "@/components/CarruselPortada";
+import QuizEquipo from "@/components/QuizEquipo";
 import TarjetaProducto from "@/components/TarjetaProducto";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
@@ -70,6 +71,14 @@ export default async function Inicio() {
             <TarjetaProducto key={p.slug} p={p} />
           ))}
         </div>
+      </section>
+
+      <section className="seccion wrap">
+        <div className="titulo-seccion">
+          <span className="etiqueta">Te ayudamos a elegir</span>
+          <h2>¿Qué equipo es para ti?</h2>
+        </div>
+        <QuizEquipo />
       </section>
 
       <section className="seccion wrap">

@@ -83,7 +83,7 @@ export default function Checkout() {
   function pagar(ev: React.FormEvent) {
     ev.preventDefault();
     if (!region || !comuna || direccion.trim().length < 4) return setErrorPago("Completa región, comuna y dirección.");
-    if (costoDespacho === null) return setErrorPago("Por ahora despachamos solo en la Región Metropolitana.");
+    if (costoDespacho === null) return setErrorPago("Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.");
     if (!terminos) return setErrorPago("Debes aceptar los Términos y la Política de privacidad.");
     // PRUEBA: Webpay aún no está conectado. Se simula un pago aprobado.
     // Solo se guarda el resumen del pedido; nunca el RUT ni la fecha de nacimiento.
@@ -210,7 +210,7 @@ export default function Checkout() {
             <div className="envio">
               <b>Envío a {comuna}</b>
               {costoDespacho === null ? (
-                <span>Por ahora despachamos solo en la Región Metropolitana.</span>
+                <span>Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.</span>
               ) : (
                 <span>
                   Courier a domicilio · <b className="tab">{clp(costoDespacho ?? 0)}</b>
