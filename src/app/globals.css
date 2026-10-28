@@ -385,16 +385,18 @@ body.con-puerta {
   top: 0;
   z-index: 110;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 1px;
-  height: var(--alto-franja);
-  padding: 0 12px;
+  column-gap: 5px;
+  row-gap: 0;
+  min-height: var(--alto-franja);
+  padding: 7px 12px;
   background: var(--aviso);
   color: var(--aviso-borde);
   border-bottom: 1px solid var(--aviso-borde);
   font-size: 11px;
-  line-height: 1.2;
+  line-height: 1.3;
   text-align: center;
 }
 
@@ -1774,15 +1776,14 @@ input[aria-invalid="true"] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px 24px;
+  gap: 16px 40px;
 }
 
 .pie-novedades-fila > div:first-child {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  max-width: 480px;
+  max-width: 420px;
 }
 
 .pie-novedades-fila strong {

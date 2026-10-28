@@ -45,7 +45,7 @@ export default async function RootLayout({
       <body>
         {/* Advertencia sanitaria fija arriba, visible también sobre la puerta de edad. */}
         <div className="franja" role="note">
-          <span>Los sistemas electrónicos de administración de nicotina son potencialmente adictivos.</span>
+          <span>Los sistemas electrónicos de administración de nicotina son potencialmente adictivos.</span>{" "}
           <span>Venta exclusiva para mayores de 18 años.</span>
         </div>
         <AgeGate>
