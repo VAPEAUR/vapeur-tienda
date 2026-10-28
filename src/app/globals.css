@@ -1798,13 +1798,16 @@ input[aria-invalid="true"] {
 
 .pie-novedades-form {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex: 1 1 320px;
+  min-width: 280px;
   gap: 10px;
 }
 
 .pie-novedades-form input {
-  flex: 1 1 220px;
+  flex: 1 1 auto;
   width: auto;
+  min-width: 0;
   max-width: 320px;
   height: var(--alto-control);
   padding: 0 14px;
@@ -1819,6 +1822,7 @@ input[aria-invalid="true"] {
 }
 
 .pie-novedades-form .boton {
+  flex-shrink: 0;
   background: #ffffff;
   border-color: #ffffff;
   color: var(--ink);
