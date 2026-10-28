@@ -16,7 +16,7 @@ export type PaginaInfo = {
 const VIGENCIA = "Vigente desde el 28 de octubre de 2026.";
 const EMPRESA = "Vapeur SpA, RUT 78.543.954-6, con domicilio en Ahumada 131, oficina 719, Santiago, Región Metropolitana";
 const CONTACTO = `correo ${CORREO_CONTACTO} o WhatsApp ${WHATSAPP_VISIBLE}`;
-const HORARIO = "lunes a viernes, de 9 a 18 horas, salvo festivos";
+const HORARIO = "las 24 horas, todos los días";
 
 export const AYUDA: Record<string, PaginaInfo> = {
   despacho: {
@@ -60,7 +60,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
         titulo: "Cómo pedirlo",
         lista: [
           `Escríbenos por ${CONTACTO}, con tu número de pedido y, si es una falla, una foto o video.`,
-          "Te respondemos en horario de atención y coordinamos el retiro del producto sin costo para ti.",
+          "Si es por garantía, coordinamos el retiro del producto sin costo para ti. Si es por retracto, nos lo envías a nuestra bodega en Santiago y ese envío es de tu cargo.",
           "No envíes baterías de litio por tu cuenta: las retiramos con el embalaje adecuado.",
         ],
       },
@@ -101,7 +101,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
       {
         titulo: "¿Puedo devolver un producto?",
         parrafos: [
-          "Sí, dentro de 10 días desde que lo recibes si está sellado y sin uso (derecho a retracto). Si viene con fallas, tienes 6 meses de garantía legal.",
+          "Sí, dentro de 10 días desde que lo recibes si está sellado y sin uso (derecho a retracto); el envío de vuelta es de tu cargo. Si viene con fallas, tienes 6 meses de garantía legal.",
         ],
       },
       {
@@ -118,7 +118,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
       },
       {
         titulo: "¿Cuál es el horario de atención?",
-        parrafos: [`Respondemos por WhatsApp y correo de ${HORARIO}.`],
+        parrafos: [`Atendemos por WhatsApp y correo ${HORARIO}.`],
       },
     ],
   },
@@ -138,7 +138,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           `Correo: ${CORREO_CONTACTO}`,
           `WhatsApp: ${WHATSAPP_VISIBLE}`,
           `Horario de atención: ${HORARIO}.`,
-          "Domicilio legal: Ahumada 131, oficina 719, Santiago. Es una dirección comercial: no recibe visitas, retiros ni devoluciones. Para devolver un producto, escríbenos y coordinamos el retiro.",
+          "Domicilio legal: Ahumada 131, oficina 719, Santiago. Es una dirección comercial: no recibe visitas, retiros ni devoluciones. Para devolver un producto, escríbenos y te indicamos cómo enviarlo a nuestra bodega en Santiago.",
         ],
       },
     ],
@@ -153,7 +153,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
     secciones: [
       {
         titulo: "1. Contacto",
-        parrafos: [`Para cualquier consulta, cambio o reclamo, escríbenos por ${CONTACTO}, de ${HORARIO}.`],
+        parrafos: [`Para cualquier consulta, cambio o reclamo, escríbenos por ${CONTACTO}. Atendemos ${HORARIO}.`],
       },
       {
         titulo: "2. Venta solo a mayores de 18 años",
@@ -204,7 +204,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
       {
         titulo: "8. Derecho a retracto",
         parrafos: [
-          "Tienes 10 días desde que recibes el producto para arrepentirte, si está sellado y sin uso (artículo 3 bis de la Ley 19.496). No aplica a productos de uso personal abiertos o usados, por higiene, según el reglamento de exclusiones al derecho a retracto. El detalle está en la página Derecho a retracto.",
+          "Tienes 10 días desde que recibes el producto para arrepentirte, si está sellado y sin uso (artículo 3 bis de la Ley 19.496). No aplica a productos de uso personal abiertos o usados, por higiene, según el reglamento de exclusiones al derecho a retracto. El costo de enviarnos el producto de vuelta es de tu cargo; te devolvemos todo lo que pagaste, incluido el despacho original. El detalle está en la página Derecho a retracto.",
         ],
       },
       {
@@ -381,7 +381,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
         titulo: "Cómo arrepentirte",
         lista: [
           `Escríbenos por ${CONTACTO} con tu número de pedido.`,
-          "Coordinamos el retiro del producto, sin costo para ti.",
+          "Nos envías el producto por courier a nuestra bodega en Santiago; el costo de ese envío es de tu cargo. Te damos la dirección y las instrucciones al coordinar la devolución.",
           "Revisamos que esté sin uso y sellado, y te devolvemos el total pagado, incluido el despacho, al mismo medio de pago, dentro de 10 días hábiles desde que lo recibimos.",
         ],
       },
