@@ -61,7 +61,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
         lista: [
           `Escríbenos por ${CONTACTO}, con tu número de pedido y, si es una falla, una foto o video.`,
           "Si es por garantía, coordinamos el retiro del producto sin costo para ti. Si es por retracto, nos lo envías a nuestra bodega en Santiago y ese envío es de tu cargo.",
-          "No envíes baterías de litio por tu cuenta: las retiramos con el embalaje adecuado.",
+          "Si el producto tiene batería de litio, escríbenos antes de enviarlo: te indicamos cómo embalarlo de forma segura.",
         ],
       },
     ],
@@ -382,7 +382,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
         lista: [
           `Escríbenos por ${CONTACTO} con tu número de pedido.`,
           "Nos envías el producto por courier a nuestra bodega en Santiago; el costo de ese envío es de tu cargo. Te damos la dirección y las instrucciones al coordinar la devolución.",
-          "Revisamos que esté sin uso y sellado, y te devolvemos el total pagado, incluido el despacho, al mismo medio de pago, dentro de 10 días hábiles desde que lo recibimos.",
+          "Revisamos que esté sin uso y sellado, y te devolvemos el total pagado, incluido el despacho, al mismo medio de pago, dentro de 10 días hábiles desde que lo recibimos y siempre antes de 45 días desde que nos avisaste (artículo 3 bis de la Ley 19.496).",
         ],
       },
       {
