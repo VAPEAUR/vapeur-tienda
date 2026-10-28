@@ -311,6 +311,27 @@ export function slugMarca(marca: string) {
     .replace(/(^-|-$)/g, "");
 }
 
+// Pasa a minúsculas y quita tildes, para que "liquido" encuentre "Líquido".
+export function normalizar(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+// Busca por nombre, marca, características, tipo y compatibilidad.
+// Cada palabra escrita debe aparecer en alguno de esos campos.
+export function buscarProductos(productos: Producto[], consulta: string) {
+  const palabras = normalizar(consulta).split(/\s+/).filter(Boolean);
+  if (palabras.length === 0) return [];
+  return productos.filter((p) => {
+    const texto = normalizar(
+      [p.nombre, p.marca, p.dato, categoria(p.categoria)?.nombre ?? "", p.compatible ?? ""].join(" "),
+    );
+    return palabras.every((w) => texto.includes(w));
+  });
+}
+
 // Consultas sobre una lista de productos (la que viene de Supabase).
 export function crearCatalogo(productos: Producto[]) {
   const producto = (slug: string) => productos.find((p) => p.slug === slug);
@@ -326,6 +347,7 @@ export function crearCatalogo(productos: Producto[]) {
     productosDeMarca: (slug: string) => productos.filter((p) => slugMarca(p.marca) === slug),
     // Un kit se muestra solo si todos sus productos están publicados.
     kits: () => KITS.filter((k) => k.productos.every((s) => producto(s))),
+    buscar: (consulta: string) => buscarProductos(productos, consulta),
     precioKit: (kit: Kit) => kit.productos.reduce((total, s) => total + (producto(s)?.precio ?? 0), 0),
   };
 }

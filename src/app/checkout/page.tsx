@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { guardarDestino, leerDestino } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
 import { DESPACHO } from "@/lib/catalogo";
@@ -43,6 +44,15 @@ export default function Checkout() {
   const [depto, setDepto] = useState("");
   const [terminos, setTerminos] = useState(false);
   const [errorPago, setErrorPago] = useState("");
+
+  // Si ya eligió su comuna en la ficha o el carro, llega marcada.
+  useEffect(() => {
+    const d = leerDestino();
+    if (d) {
+      setRegion(d.region);
+      setComuna(d.comuna);
+    }
+  }, []);
 
   if (!listo) return <div className="wrap pagina" />;
 
@@ -188,7 +198,15 @@ export default function Checkout() {
           </div>
           <div className="campo">
             <label htmlFor="comuna">Comuna</label>
-            <select id="comuna" value={comuna} onChange={(e) => setComuna(e.target.value)} disabled={!region}>
+            <select
+              id="comuna"
+              value={comuna}
+              onChange={(e) => {
+                setComuna(e.target.value);
+                if (e.target.value) guardarDestino({ region, comuna: e.target.value });
+              }}
+              disabled={!region}
+            >
               <option value="">Selecciona</option>
               {region
                 ? Object.keys(DESPACHO[region]).map((c) => (
