@@ -562,6 +562,51 @@ body.con-puerta {
   --art-shadow: rgba(0, 0, 0, 0.5);
 }
 
+/* Líneas onduladas de fondo (Ondas.tsx): solo en las diapositivas oscuras,
+   detrás del texto y con opacidad baja para no restar contraste. */
+.diapositiva {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sin z-index: así el texto queda sobre las ondas (va después en el HTML)
+   pero no tapa los controles del carrusel. */
+.diapositiva > .wrap {
+  position: relative;
+}
+
+.ondas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ondas path {
+  fill: none;
+  stroke: #7fc4bf;
+  stroke-width: 1.5;
+  animation: ondas-avanzar linear infinite;
+  will-change: transform;
+}
+
+.diapositiva.petroleo .ondas path {
+  stroke: #ffffff;
+}
+
+@keyframes ondas-avanzar {
+  to {
+    transform: translateX(-1200px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ondas path {
+    animation: none;
+  }
+}
+
 .diapositiva.noche {
   background: radial-gradient(ellipse 70% 90% at 72% 55%, #2b3439 0%, var(--noche) 62%, #0d1012 100%);
   color: #f2f4f5;
@@ -2455,5 +2500,25 @@ textarea {
   .franja {
     font-size: 11.5px;
     line-height: 1.3;
+  }
+}
+
+/* Aparición suave de las secciones del inicio al bajar. Solo en navegadores
+   con animaciones ligadas al scroll (sin JavaScript); en el resto, y con
+   "reducir movimiento", las secciones se ven normales desde el principio. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aparece {
+      animation: aparecer linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
   }
 }

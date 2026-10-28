@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
+import Ondas from "@/components/Ondas";
 import type { Arte } from "@/lib/catalogo";
 
 // Portada con 3 diapositivas informativas (sin ofertas ni promociones:
@@ -108,6 +109,7 @@ export default function CarruselPortada() {
               aria-hidden={i !== actual ? true : undefined}
               inert={i !== actual ? true : undefined}
             >
+              {d.clase !== "claro" && <Ondas />}
               <div className="wrap diapositiva-grid">
                 <div className="diapositiva-texto">
                   <span className="etiqueta">{d.etiqueta}</span>

@@ -29,7 +29,7 @@ export default async function Inicio() {
         </div>
       </section>
 
-      <section className="seccion wrap">
+      <section className="seccion aparece wrap">
         <div className="titulo-seccion">
           <span className="etiqueta">Comprar por categoría</span>
           <h2>¿Qué buscas hoy?</h2>
@@ -49,7 +49,7 @@ export default async function Inicio() {
         </div>
       </section>
 
-      <section className="seccion wrap" id="repuestos">
+      <section className="seccion aparece wrap" id="repuestos">
         <div className="panel-repuestos">
           <div>
             <span className="etiqueta">Repuestos para tu equipo</span>
@@ -60,7 +60,7 @@ export default async function Inicio() {
         </div>
       </section>
 
-      <section className="seccion wrap">
+      <section className="seccion aparece wrap">
         <div className="titulo-seccion">
           <span className="etiqueta">Curaduría</span>
           <h2>Elegidos por Vapeur</h2>
@@ -73,7 +73,7 @@ export default async function Inicio() {
         </div>
       </section>
 
-      <section className="seccion wrap">
+      <section className="seccion aparece wrap">
         <div className="titulo-seccion">
           <span className="etiqueta">Te ayudamos a elegir</span>
           <h2>¿Qué equipo es para ti?</h2>
@@ -81,7 +81,7 @@ export default async function Inicio() {
         <QuizEquipo />
       </section>
 
-      <section className="seccion wrap">
+      <section className="seccion aparece wrap">
         <div className="titulo-seccion">
           <span className="etiqueta">Cómo funciona</span>
           <h2>Comprar sin vueltas</h2>
@@ -120,7 +120,7 @@ export default async function Inicio() {
         </ol>
       </section>
 
-      <section className="seccion wrap duo" aria-label="Información">
+      <section className="seccion aparece wrap duo" aria-label="Información">
         <div className="duo-uno">
           <span className="pronto">Próximamente</span>
           <h3>Guía: qué coil sirve para tu equipo</h3>
@@ -141,7 +141,7 @@ export default async function Inicio() {
       </section>
 
       {novedades.length > 0 ? (
-        <section className="seccion wrap">
+        <section className="seccion aparece wrap">
           <div className="titulo-seccion">
             <span className="etiqueta">También en la tienda</span>
             <h2>Repuestos, líquidos y accesorios</h2>
@@ -155,7 +155,7 @@ export default async function Inicio() {
       ) : null}
 
       {kits().length > 0 ? (
-        <section className="seccion wrap">
+        <section className="seccion aparece wrap">
           <div className="titulo-seccion">
             <span className="etiqueta">Para cada etapa</span>
             <h2>Kits por nivel</h2>
