@@ -15,7 +15,7 @@ export default async function PaginaKits() {
       </nav>
       <header className="cabecera-listado">
         <h1>Kits por nivel</h1>
-        <p className="muted">Equipo, repuesto y lo necesario para partir. El precio del kit es la suma de sus productos.</p>
+        <p className="muted">Equipo, repuesto y lo necesario para usarlo. El precio del kit es la suma de sus productos.</p>
       </header>
       <div className="kits">
         {kits().map((k) => (

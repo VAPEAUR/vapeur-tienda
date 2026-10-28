@@ -8,6 +8,7 @@ import { useCatalogo } from "@/components/Catalogo";
 import { DESPACHO } from "@/lib/catalogo";
 import { EDAD_MINIMA, calcularEdad } from "@/lib/edad";
 import { clp } from "@/lib/formato";
+import { RETRACTO_CORTO } from "@/lib/legal";
 import { formatearRut, rutValido } from "@/lib/rut";
 
 type Datos = { correo: string; nombre: string; rut: string; dia: string; mes: string; anio: string; telefono: string };
@@ -220,6 +221,9 @@ export default function Checkout() {
           ) : null}
 
           <Resumen subtotal={subtotal} despacho={typeof costoDespacho === "number" ? costoDespacho : undefined} total={total} />
+          <p className="aviso-retracto">
+            <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+          </p>
 
           <label className="check">
             <input type="checkbox" checked={terminos} onChange={(e) => setTerminos(e.target.checked)} />

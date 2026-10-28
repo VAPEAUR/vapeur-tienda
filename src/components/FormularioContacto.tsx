@@ -21,8 +21,8 @@ type Datos = { nombre: string; correo: string; pedido: string; tema: string; men
 type Errores = Partial<Record<keyof Datos, string>>;
 
 // El formulario no guarda nada en el servidor: arma el mensaje y lo abre en
-// el correo o en WhatsApp de la persona. Así no almacenamos datos personales
-// hasta tener la política de privacidad revisada por el abogado.
+// el correo o en WhatsApp de la persona, sin almacenar datos personales
+// (ver Política de privacidad).
 export default function FormularioContacto() {
   const [d, setD] = useState<Datos>({ nombre: "", correo: "", pedido: "", tema: "", mensaje: "" });
   const [errores, setErrores] = useState<Errores>({});
