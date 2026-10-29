@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
@@ -8,6 +9,9 @@ import TarjetaProducto from "@/components/TarjetaProducto";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
+import { DATOS_SITIO, DatosEstructurados } from "@/lib/seo";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function Inicio() {
   const { productos, producto, marcas, kits, precioKit } = await obtenerCatalogo();
@@ -16,6 +20,7 @@ export default async function Inicio() {
 
   return (
     <>
+      <DatosEstructurados datos={DATOS_SITIO} />
       <CarruselPortada />
 
       <section className="marcas" aria-label="Marcas">

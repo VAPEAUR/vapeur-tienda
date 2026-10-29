@@ -35,6 +35,7 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 
 1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
 2. La prueba técnica (ruta `/api/prueba-supabase` y tabla `prueba_conexion`) se aprobó el 27-oct-2026 y se borró.
+3. Google (SEO): el sitio queda fuera de Google hasta que `INDEXAR` = `si` (se carga el día del lanzamiento, 14-dic-2026). Aun con `INDEXAR`, solo se indexa el dominio `vapeur.cl`; workers.dev y vistas previas siguen con `noindex` y `robots.txt` cerrado. `www.vapeur.cl`, `vaperia.cl` y `www.vaperia.cl` redirigen a `vapeur.cl` si están conectados al Worker. Detalle en `src/lib/seo.tsx`.
 
 Rama de producción en Cloudflare: `main` (desde el 27-oct-2026). Build en Cloudflare (Workers Builds): comando de build `npx opennextjs-cloudflare build`, comando de deploy `npx opennextjs-cloudflare deploy`.
 

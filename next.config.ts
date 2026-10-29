@@ -34,6 +34,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: cabeceras }];
   },
+  // Un solo dominio para Google: www y vaperia.cl llevan a la misma página en vapeur.cl.
+  // (Los dominios deben estar conectados al Worker en Cloudflare para que esto se aplique.)
+  async redirects() {
+    return ["www.vapeur.cl", "vaperia.cl", "www.vaperia.cl"].map((host) => ({
+      source: "/:path*",
+      has: [{ type: "host" as const, value: host }],
+      destination: "https://vapeur.cl/:path*",
+      permanent: true,
+    }));
+  },
 };
 
 export default nextConfig;

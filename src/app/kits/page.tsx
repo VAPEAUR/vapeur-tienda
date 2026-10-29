@@ -3,8 +3,13 @@ import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
+import { describir } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Kits por nivel" };
+export const metadata: Metadata = {
+  title: "Kits por nivel",
+  description: describir("Kits armados con equipo, repuestos y accesorios compatibles entre sí, con el precio total a la vista."),
+  alternates: { canonical: "/kits" },
+};
 
 export default async function PaginaKits() {
   const { producto, kits, precioKit } = await obtenerCatalogo();
