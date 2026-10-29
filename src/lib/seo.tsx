@@ -58,38 +58,21 @@ export function descripcionProducto(p: Producto) {
   return describir(p.descripcion);
 }
 
-// Datos estructurados (schema.org) de una ficha: producto y migas de pan.
+// Datos estructurados (schema.org) de una ficha: solo migas de pan.
+// Sin precio ni stock para Google: la asesoría legal los marcó 🟡 (posible
+// publicidad, Ley 21.642). El precio sigue visible en la ficha (Ley 19.496).
+// Google exige precio o reseñas para el tipo Product, por eso no se usa.
 export function datosProducto(p: Producto, categoria?: { slug: string; nombre: string }) {
-  const url = `${SITIO}/producto/${p.slug}`;
   const migas = [
     { name: "Inicio", item: SITIO },
     ...(categoria ? [{ name: categoria.nombre, item: `${SITIO}/${categoria.slug}` }] : []),
-    { name: p.nombre, item: url },
+    { name: p.nombre, item: `${SITIO}/producto/${p.slug}` },
   ];
-  return [
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: p.nombre,
-      description: p.descripcion,
-      sku: p.slug,
-      brand: { "@type": "Brand", name: p.marca },
-      url,
-      offers: {
-        "@type": "Offer",
-        url,
-        price: p.precio,
-        priceCurrency: "CLP",
-        availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        seller: { "@type": "Organization", name: "Vapeur SpA" },
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: migas.map((m, i) => ({ "@type": "ListItem", position: i + 1, ...m })),
-    },
-  ];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: migas.map((m, i) => ({ "@type": "ListItem", position: i + 1, ...m })),
+  };
 }
 
 export const DATOS_SITIO = [
