@@ -295,6 +295,7 @@ function Resumen({ subtotal, despacho, total }: { subtotal: number; despacho: nu
           <div key={`${it.slug}-${it.variante}`}>
             <span>
               {it.cantidad} × {p.nombre}
+              {it.variante ? ` · ${it.variante}` : ""}
             </span>
             <span className="tab">{clp(p.precio * it.cantidad)}</span>
           </div>
