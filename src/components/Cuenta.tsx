@@ -65,14 +65,17 @@ export function CuentaProvider({ url, clave, children }: { url?: string; clave?:
   const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [sesion, setSesion] = useState<Session | null>(null);
   const [perfil, setPerfil] = useState<Perfil | null>(null);
-  const [listo, setListo] = useState(false);
+  const [listoBase, setListoBase] = useState(false);
+  // Usuario cuyo perfil ya se leyó: mientras no calce con la sesión, la cuenta
+  // no está lista (así no aparece "Crea tu cuenta" un instante al entrar).
+  const [perfilDe, setPerfilDe] = useState<string | null>(null);
   const disponible = Boolean(url && clave);
 
   // La librería de Supabase se carga después de pintar la página, para no
   // hacer más pesada la primera visita.
   useEffect(() => {
     if (!url || !clave) {
-      setListo(true);
+      setListoBase(true);
       return;
     }
     let vivo = true;
@@ -87,7 +90,7 @@ export function CuentaProvider({ url, clave, children }: { url?: string; clave?:
         setSesion(s);
         if (!s) {
           setPerfil(null);
-          setListo(true);
+          setListoBase(true);
         }
       });
       cancelar = () => data.subscription.unsubscribe();
@@ -99,6 +102,7 @@ export function CuentaProvider({ url, clave, children }: { url?: string; clave?:
   }, [url, clave]);
 
   const usuario = sesion?.user.id;
+  const listo = listoBase && (!usuario || perfilDe === usuario);
 
   // Con sesión, se lee el perfil (RLS: cada cliente ve solo el suyo).
   useEffect(() => {
@@ -112,7 +116,8 @@ export function CuentaProvider({ url, clave, children }: { url?: string; clave?:
       .then(({ data }) => {
         if (!vivo) return;
         setPerfil(data ? limpiar(data) : null);
-        setListo(true);
+        setPerfilDe(usuario);
+        setListoBase(true);
       });
     return () => {
       vivo = false;
@@ -131,12 +136,10 @@ export function CuentaProvider({ url, clave, children }: { url?: string; clave?:
   const verificarCodigo = useCallback(
     async (correo: string, codigo: string) => {
       if (!supabase) throw new Error("La cuenta no está disponible en este momento.");
-      setListo(false);
+      // Sin tocar "listo": si el código es incorrecto, el formulario sigue en
+      // pantalla con su mensaje en vez de volver al paso del correo.
       const { error } = await supabase.auth.verifyOtp({ email: correo, token: codigo, type: "email" });
-      if (error) {
-        setListo(true);
-        throw traducir(error);
-      }
+      if (error) throw traducir(error);
     },
     [supabase],
   );

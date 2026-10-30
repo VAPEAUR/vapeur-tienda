@@ -38,10 +38,44 @@ export default function PaginaCuenta() {
       </div>
     );
   }
-  if (!listo) return <div className="wrap pagina angosta cuenta" aria-busy="true" />;
+  if (!listo) return <div className="wrap pagina ingreso" aria-busy="true" />;
   if (!sesion) return <Ingresar volver={volver} />;
   if (!perfil) return <CompletarCuenta />;
   return <MiCuenta />;
+}
+
+// Largo del código que fija Supabase (Email OTP length). Si se cambia allá,
+// cambiarlo aquí: solo define cuántas cajitas se dibujan.
+const LARGO_CODIGO = 8;
+
+// Ingresar y crear cuenta comparten marco: tarjeta piedra con el formulario y,
+// al lado (abajo en celular), un bloque petróleo con lo que da la cuenta.
+function MarcoIngreso({ paso, children }: { paso: string; children: React.ReactNode }) {
+  return (
+    <div className="wrap pagina ingreso">
+      <div className="ingreso-tarjeta">
+        <span className="ingreso-paso">{paso}</span>
+        {children}
+      </div>
+      <aside className="ingreso-lado" aria-label="Lo que tienes con tu cuenta">
+        <span className="etiqueta">Mi cuenta Vapeur</span>
+        <p className="ingreso-lado-titulo">Tus pedidos y tu despacho en un solo lugar.</p>
+        <ul>
+          <li>Sigue cada pedido: pagado, en preparación, en camino.</li>
+          <li>Tu dirección queda guardada para la próxima compra.</li>
+          <li>Sin contraseña: entras con un código a tu correo.</li>
+        </ul>
+      </aside>
+    </div>
+  );
+}
+
+function Aviso({ id, children }: { id?: string; children: React.ReactNode }) {
+  return (
+    <p id={id} className="error-caja" role="alert">
+      {children}
+    </p>
+  );
 }
 
 function Ingresar({ volver }: { volver: string | null }) {
@@ -52,6 +86,7 @@ function Ingresar({ volver }: { volver: string | null }) {
   const [error, setError] = useState("");
   const [ocupado, setOcupado] = useState(false);
   const [espera, setEspera] = useState(0);
+  const [foco, setFoco] = useState(false);
 
   // Supabase permite pedir un código nuevo cada 60 segundos.
   useEffect(() => {
@@ -63,7 +98,7 @@ function Ingresar({ volver }: { volver: string | null }) {
   async function pedir(ev?: React.FormEvent) {
     ev?.preventDefault();
     const c = correo.trim().toLowerCase();
-    if (!CORREO_VALIDO.test(c)) return setError("Escribe un correo válido.");
+    if (!CORREO_VALIDO.test(c)) return setError("Revisa el correo: falta algo, por ejemplo nombre@correo.cl");
     setError("");
     setOcupado(true);
     try {
@@ -94,89 +129,95 @@ function Ingresar({ volver }: { volver: string | null }) {
   }
 
   return (
-    <div className="wrap pagina angosta cuenta">
-      <div className="cuenta-caja">
-        {paso === "correo" ? (
-          <form onSubmit={pedir} noValidate className="formulario">
-            <h1>Ingresar</h1>
-            <p className="muted">
-              {volver === "/checkout"
-                ? "Ingresa para usar tus datos de despacho guardados."
-                : "Escribe tu correo y te enviamos un código para entrar. Si es tu primera vez, se crea tu cuenta."}
-            </p>
-            <div className="campo">
-              <label htmlFor="cuenta-correo">Correo</label>
-              <input
-                id="cuenta-correo"
-                type="email"
-                autoComplete="email"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-                aria-invalid={error ? true : undefined}
-                aria-describedby={error ? "cuenta-error" : undefined}
-              />
-            </div>
-            {error ? (
-              <span id="cuenta-error" className="error" role="alert">
-                {error}
-              </span>
-            ) : null}
-            <button type="submit" className="boton ancho" disabled={ocupado} aria-busy={ocupado || undefined}>
-              {ocupado ? "Enviando…" : "Continuar"}
-            </button>
-            <p className="muted chico">Sin contraseña: cada vez que entres te llega un código nuevo.</p>
-          </form>
-        ) : (
-          <form onSubmit={verificar} noValidate className="formulario">
-            <h1>Revisa tu correo</h1>
-            <p className="muted">
-              Enviamos un código a <b>{correo}</b>. Si no lo ves, revisa Promociones o Spam.
-            </p>
-            <div className="campo">
-              <label htmlFor="cuenta-codigo">Código</label>
+    <MarcoIngreso paso={paso === "correo" ? "Paso 1 de 2 · Tu correo" : "Paso 2 de 2 · Código"}>
+      {paso === "correo" ? (
+        <form onSubmit={pedir} noValidate className="ingreso-form">
+          <h1>Ingresa o crea tu cuenta</h1>
+          <p>
+            {volver === "/checkout"
+              ? "Ingresa para usar tus datos de despacho guardados."
+              : "Te enviamos un código a tu correo. Si es tu primera vez, creamos tu cuenta."}
+          </p>
+          <div className="campo">
+            <label htmlFor="cuenta-correo">Correo</label>
+            <input
+              id="cuenta-correo"
+              type="email"
+              autoComplete="email"
+              placeholder="nombre@correo.cl"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? "cuenta-error" : undefined}
+            />
+          </div>
+          {error ? <Aviso id="cuenta-error">{error}</Aviso> : null}
+          <button type="submit" className="boton ancho" disabled={ocupado} aria-busy={ocupado || undefined}>
+            {ocupado ? "Enviando…" : "Enviarme el código"}
+          </button>
+          <p className="ingreso-pie">
+            ¿Sin cuenta? También puedes <Link href="/carro">comprar como invitado</Link>.
+          </p>
+        </form>
+      ) : (
+        <form onSubmit={verificar} noValidate className="ingreso-form">
+          <h1>Revisa tu correo</h1>
+          <p>
+            Enviamos un código de {LARGO_CODIGO} dígitos a <b className="ingreso-correo">{correo}</b>. Si no llega, mira
+            en Promociones o Spam.
+          </p>
+          <div className="campo">
+            <label htmlFor="cuenta-codigo">Código</label>
+            <div className={`codigo-cajas${foco ? " foco" : ""}${error ? " con-error" : ""}`}>
+              {Array.from({ length: LARGO_CODIGO }, (_, i) => (
+                <span
+                  key={i}
+                  className={i === Math.min(codigo.length, LARGO_CODIGO - 1) && foco ? "actual" : undefined}
+                  aria-hidden="true"
+                >
+                  {codigo[i] ?? ""}
+                </span>
+              ))}
               <input
                 id="cuenta-codigo"
-                className="codigo"
                 inputMode="numeric"
                 autoComplete="one-time-code"
-                maxLength={10}
+                maxLength={LARGO_CODIGO}
                 value={codigo}
-                onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
+                onChange={(e) => {
+                  setCodigo(e.target.value.replace(/\D/g, "").slice(0, LARGO_CODIGO));
+                  setError("");
+                }}
+                onFocus={() => setFoco(true)}
+                onBlur={() => setFoco(false)}
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? "cuenta-error" : undefined}
                 autoFocus
               />
             </div>
-            {error ? (
-              <span id="cuenta-error" className="error" role="alert">
-                {error}
-              </span>
-            ) : null}
-            <button type="submit" className="boton ancho" disabled={ocupado} aria-busy={ocupado || undefined}>
-              {ocupado ? "Verificando…" : "Entrar"}
+          </div>
+          {error ? <Aviso id="cuenta-error">{error}</Aviso> : null}
+          <button type="submit" className="boton ancho" disabled={ocupado} aria-busy={ocupado || undefined}>
+            {ocupado ? "Verificando…" : "Entrar"}
+          </button>
+          <div className="cuenta-acciones">
+            <button type="button" className="enlace" disabled={espera > 0 || ocupado} onClick={() => pedir()}>
+              {espera > 0 ? `Enviar otro código en ${espera} s` : "Enviar otro código"}
             </button>
-            <div className="cuenta-acciones">
-              <button type="button" className="enlace" disabled={espera > 0 || ocupado} onClick={() => pedir()}>
-                {espera > 0 ? `Enviar otro código en ${espera} s` : "Enviar otro código"}
-              </button>
-              <button
-                type="button"
-                className="enlace"
-                onClick={() => {
-                  setPaso("correo");
-                  setError("");
-                }}
-              >
-                Usar otro correo
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-      <p className="muted centrado chico">
-        ¿Prefieres no crear cuenta? Puedes <Link href="/carro">comprar como invitado</Link>.
-      </p>
-    </div>
+            <button
+              type="button"
+              className="enlace"
+              onClick={() => {
+                setPaso("correo");
+                setError("");
+              }}
+            >
+              Cambiar correo
+            </button>
+          </div>
+        </form>
+      )}
+    </MarcoIngreso>
   );
 }
 
@@ -188,7 +229,7 @@ function CompletarCuenta() {
 
   async function crear(ev: React.FormEvent) {
     ev.preventDefault();
-    if (!acepto) return setError("Debes confirmar que tienes 18 años o más y aceptar los Términos y la Política de privacidad.");
+    if (!acepto) return setError("Marca la casilla para crear tu cuenta.");
     setError("");
     setOcupado(true);
     try {
@@ -200,36 +241,41 @@ function CompletarCuenta() {
   }
 
   return (
-    <div className="wrap pagina angosta cuenta">
-      <form onSubmit={crear} noValidate className="formulario cuenta-caja">
+    <MarcoIngreso paso="Último paso">
+      <form onSubmit={crear} noValidate className="ingreso-form">
         <h1>Crea tu cuenta</h1>
-        <p className="muted">
-          Tu cuenta queda con el correo <b>{correo}</b>. Ahí verás tus pedidos y podrás guardar tus datos de despacho.
+        <p>
+          Con el correo <b className="ingreso-correo">{correo}</b>.
         </p>
-        <p className="nota">
-          Vapeur vende solo a mayores de 18 años. En cada compra igual verificamos tu edad con RUT y fecha de nacimiento,
-          que no guardamos.
-        </p>
-        <label className="check">
-          <input type="checkbox" checked={acepto} onChange={(e) => setAcepto(e.target.checked)} />
+        <label className={`casilla${error ? " con-error" : ""}`}>
+          <input
+            type="checkbox"
+            checked={acepto}
+            onChange={(e) => {
+              setAcepto(e.target.checked);
+              setError("");
+            }}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? "crear-error" : undefined}
+          />
           <span>
-            Declaro que tengo 18 años o más y acepto los <Link href="/legal/terminos">Términos</Link> y la{" "}
+            Tengo 18 años o más y acepto los <Link href="/legal/terminos">Términos</Link> y la{" "}
             <Link href="/legal/privacidad">Política de privacidad</Link>.
           </span>
         </label>
-        {error ? (
-          <span className="error" role="alert">
-            {error}
-          </span>
-        ) : null}
+        {error ? <Aviso id="crear-error">{error}</Aviso> : null}
         <button type="submit" className="boton ancho" disabled={ocupado} aria-busy={ocupado || undefined}>
           {ocupado ? "Creando…" : "Crear mi cuenta"}
         </button>
+        <p className="ingreso-pie">
+          Vapeur vende solo a mayores de 18 años. En cada compra verificamos tu edad con RUT y fecha de nacimiento, que
+          no guardamos.
+        </p>
         <button type="button" className="enlace centrado" onClick={() => salir()}>
           Salir sin crear cuenta
         </button>
       </form>
-    </div>
+    </MarcoIngreso>
   );
 }
 

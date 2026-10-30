@@ -2649,58 +2649,58 @@ input[aria-invalid="true"] {
   font-size: var(--tx-s);
 }
 
-/* Inscripción para novedades por correo, al estilo del referente. */
+/* Inscripción a avisos por correo (rediseño 30-oct-2026): texto a la izquierda
+   y, a la derecha, correo + botón y las dos casillas obligatorias en filas que
+   se tocan completas. En celular todo va en una columna. */
 .pie-novedades {
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 4px 0 16px;
-  margin-bottom: 16px;
+  padding: 8px 0 28px;
+  margin-bottom: 20px;
 }
 
 .pie-novedades-fila {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 40px;
+  display: grid;
+  gap: 20px;
 }
 
-.pie-novedades-fila > div:first-child {
+.pie-novedades-texto {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  max-width: 420px;
+  gap: 6px;
+  max-width: 440px;
 }
 
 .pie-novedades .logo {
   color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.pie-novedades-titulo {
+  color: #ffffff;
+  font-size: var(--tx-l);
+  font-weight: 800;
 }
 
 .pie-novedades-fila .pie-novedades-subtitulo {
   color: var(--txt-hondo);
   font-size: var(--tx-s);
-}
-
-.pie-novedades-derecha {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  flex: 1 1 320px;
-  min-width: 280px;
+  line-height: 1.5;
 }
 
 .pie-novedades-caja {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
-  max-width: 100%;
+  min-width: 0;
+}
+
+.pie-novedades-caja :focus-visible {
+  outline-color: var(--resalte);
 }
 
 .pie-novedades-form {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 10px;
-  width: 460px;
-  max-width: 100%;
+  gap: 8px;
 }
 
 .pie-novedades-form input {
@@ -2708,11 +2708,15 @@ input[aria-invalid="true"] {
   width: auto;
   min-width: 0;
   height: var(--alto-control);
-  padding: 0 18px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
+}
+
+.pie-novedades-form input[aria-invalid="true"] {
+  border-color: #ffb4ab;
 }
 
 .pie-novedades-form input::placeholder {
@@ -2721,6 +2725,7 @@ input[aria-invalid="true"] {
 
 .pie-novedades-form .boton {
   flex-shrink: 0;
+  padding: 0 22px;
   background: #ffffff;
   border-color: #ffffff;
   color: var(--accent);
@@ -2738,28 +2743,43 @@ input[aria-invalid="true"] {
 }
 
 .pie-novedades-ok {
+  align-self: center;
+  margin: 0;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: rgba(143, 211, 199, 0.14);
   color: #ffffff;
   font-weight: 600;
 }
 
-.pie-novedades-casillas {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 460px;
-  max-width: 100%;
+/* Casilla sobre petróleo profundo: fila translúcida, cuadro con borde blanco
+   y, marcada, relleno petróleo claro con la marca en negro cálido. */
+.casilla.oscura {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: var(--tx-s);
 }
 
-.pie-novedades-casillas .check {
-  color: var(--txt-hondo);
-  font-size: var(--tx-xs);
-  gap: 8px;
+.casilla.oscura:has(input:checked) {
+  box-shadow: inset 0 0 0 1.5px var(--resalte);
 }
 
-.pie-novedades-casillas .check input {
-  width: 18px;
-  height: 18px;
-  accent-color: #ffffff;
+.casilla.oscura.con-error {
+  box-shadow: inset 0 0 0 2px #ffb4ab;
+}
+
+.casilla.oscura input {
+  width: 22px;
+  height: 22px;
+  border-color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+}
+
+.casilla.oscura input:checked {
+  border-color: var(--resalte);
+  background: var(--resalte);
+  color: var(--hondo);
 }
 
 .pie-novedades-legal {
@@ -2767,7 +2787,6 @@ input[aria-invalid="true"] {
   line-height: 1.5;
   color: var(--txt-hondo);
   font-size: var(--tx-xs);
-  text-align: center;
 }
 
 .pie .pie-novedades-legal a {
@@ -2775,6 +2794,18 @@ input[aria-invalid="true"] {
   display: inline;
   padding: 0;
   font-size: inherit;
+}
+
+@media (min-width: 900px) {
+  .pie-novedades {
+    padding: 16px 0 36px;
+  }
+
+  .pie-novedades-fila {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+    align-items: start;
+    gap: 48px;
+  }
 }
 
 .pie-redes {
@@ -3715,8 +3746,8 @@ textarea {
 }
 
 /* ---------- Cuenta del cliente (30-oct-2026) ---------- */
-/* Ingresar: una tarjeta blanca centrada, como el ejemplo de Shopify. Mi cuenta:
-   pedidos a la izquierda y datos de despacho en piedra a la derecha. */
+/* Mi cuenta: pedidos a la izquierda y datos de despacho en piedra a la derecha.
+   Ingresar y crear cuenta tienen su propia sección más abajo. */
 .encabezado .punto-sesion {
   position: absolute;
   top: 9px;
@@ -3735,13 +3766,6 @@ textarea {
   gap: 16px;
 }
 
-.cuenta-caja {
-  padding: 28px 24px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--bg);
-}
-
 .pagina.cuenta h1 {
   font-size: var(--tx-3xl);
   font-weight: 800;
@@ -3752,10 +3776,11 @@ textarea {
   font-size: var(--tx-s);
 }
 
-.cuenta .codigo {
-  font-size: var(--tx-xl);
-  letter-spacing: 0.3em;
-  font-variant-numeric: tabular-nums;
+.cuenta-caja {
+  padding: 28px 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg);
 }
 
 .cuenta-acciones {
@@ -3920,4 +3945,290 @@ textarea {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     align-items: start;
   }
+}
+
+/* ---------- Ingresar y crear cuenta (rediseño 30-oct-2026) ---------- */
+/* Tarjeta piedra con el formulario (como el cierre del checkout) y, al lado,
+   un bloque petróleo profundo con lo que da la cuenta. En celular el bloque
+   va abajo para que el correo quede a la vista sin bajar. */
+.pagina.ingreso {
+  display: grid;
+  gap: 16px;
+  max-width: 960px;
+  padding-top: 24px;
+}
+
+.ingreso-tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: var(--piedra);
+  color: var(--ink);
+}
+
+.ingreso-paso {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ingreso-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ingreso-form h1 {
+  font-size: var(--tx-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.ingreso-form > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.ingreso-correo {
+  overflow-wrap: anywhere;
+}
+
+.ingreso-form input[type="email"] {
+  border-color: transparent;
+  border-radius: 999px;
+  padding: 0 20px;
+  box-shadow: inset 0 0 0 1.5px var(--borde-control);
+}
+
+.ingreso-form input[type="email"][aria-invalid="true"] {
+  box-shadow: inset 0 0 0 2px var(--err);
+}
+
+.ingreso-form .campo label {
+  margin-bottom: 0;
+}
+
+.ingreso-form .enlace,
+.ingreso-form a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ingreso-pie {
+  font-size: var(--tx-s);
+  text-align: center;
+}
+
+/* Errores: el rojo no alcanza contraste sobre piedra, va en recuadro blanco. */
+.error-caja {
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 4px solid var(--err);
+  border-radius: var(--radius-s);
+  background: var(--bg);
+  color: var(--err);
+  font-size: var(--tx-s);
+  font-weight: 600;
+}
+
+/* Código: un campo real (pega y autocompleta el código del correo) encima de
+   cajitas que solo dibujan cada dígito. */
+.codigo-cajas {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) 2px repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.codigo-cajas > span {
+  display: grid;
+  place-items: center;
+  height: 56px;
+  border-radius: var(--radius-s);
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--borde-control);
+  font-size: var(--tx-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.codigo-cajas > span:nth-child(5) {
+  grid-column-start: 6;
+}
+
+.codigo-cajas.foco > span.actual {
+  box-shadow: inset 0 0 0 3px var(--accent);
+}
+
+.codigo-cajas.con-error > span {
+  box-shadow: inset 0 0 0 2px var(--err);
+}
+
+.codigo-cajas input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  opacity: 0;
+  border: 0;
+  font-size: 16px; /* evita el zoom de iPhone al tocar */
+  caret-color: transparent;
+}
+
+.ingreso-tarjeta .cuenta-acciones .enlace {
+  min-height: 44px;
+  font-size: var(--tx-s);
+}
+
+.ingreso-lado {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: var(--bloque);
+  color: #ffffff;
+}
+
+.ingreso-lado .etiqueta {
+  color: var(--resalte);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ingreso-lado-titulo {
+  margin: 0;
+  font-size: var(--tx-l);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.ingreso-lado ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--txt-hondo);
+  font-size: var(--tx-s);
+}
+
+.ingreso-lado li {
+  position: relative;
+  padding-left: 30px;
+  line-height: 1.45;
+}
+
+.ingreso-lado li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--resalte)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.2l3 3 6-6.4' fill='none' stroke='%23231f20' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 20px no-repeat;
+}
+
+@media (min-width: 860px) {
+  .pagina.ingreso {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 20px;
+    padding-top: 40px;
+  }
+
+  .ingreso-tarjeta {
+    padding: 36px 40px;
+  }
+
+  .ingreso-lado {
+    justify-content: center;
+    padding: 36px 32px;
+  }
+
+  .ingreso-lado-titulo {
+    font-size: var(--tx-xl);
+  }
+
+  .ingreso-form h1 {
+    font-size: var(--tx-3xl);
+  }
+}
+
+/* Casilla grande para aceptar (cuenta e Inscribirme): toda la fila se toca,
+   cuadro de 24 px y marca dibujada, en vez del cuadro chico del navegador. */
+.casilla {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px transparent;
+  font-size: var(--tx-base);
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.casilla:has(input:checked) {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.casilla.con-error {
+  box-shadow: inset 0 0 0 2px var(--err);
+}
+
+.casilla input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  display: grid;
+  place-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 2px solid var(--borde-control);
+  border-radius: 7px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.casilla input::before {
+  content: "";
+  width: 11px;
+  height: 6px;
+  border-left: 2.5px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  transform: translateY(-1px) rotate(-45deg);
+  opacity: 0;
+}
+
+.casilla input:checked {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.casilla input:checked::before {
+  opacity: 1;
+}
+
+.casilla a {
+  color: var(--accent);
+  font-weight: 600;
+  text-underline-offset: 3px;
 }
