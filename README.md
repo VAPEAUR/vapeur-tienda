@@ -10,7 +10,7 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Cloudflare Workers con [OpenNext](https://opennext.js.org/cloudflare) (prueba técnica 28-oct-2026)
 - Supabase (base de datos, fotos y acceso del panel admin) — por conectar
 - Webpay Plus de Transbank — por conectar
-- Blue Express — por conectar
+- Chilexpress — cotizador conectado (claves de prueba); crear envío y seguimiento listos en código
 
 ## Qué hay hoy (prototipo A · Grafito y petróleo)
 
@@ -29,7 +29,15 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Sin `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` (desarrollo local) se usa el catálogo de ejemplo de `src/lib/catalogo.ts`.
 - `/admin`: panel para cargar productos, precios y stock. Entra solo quien tiene usuario en Supabase Auth y fila en `public.administradores`; la base de datos (RLS) rechaza cualquier otro cambio.
 - Puesta en marcha: correr `supabase/catalogo.sql` en el SQL Editor, crear el usuario en Authentication → Users → Add user (marcar *Auto Confirm User*) y correr la línea 4 del mismo archivo con ese correo.
-- Los kits (`KITS`) y las tarifas de despacho (`DESPACHO`) siguen en el código.
+- Los kits (`KITS`) siguen en el código.
+
+## Despacho con Chilexpress
+
+- La calculadora (ficha, carro y checkout) pide el costo a `/api/despacho`, que cotiza con la API de Chilexpress desde Santiago Centro según el peso del carro (`src/lib/cotizar-envio.ts`, `src/lib/chilexpress.ts`).
+- Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA` en `src/lib/despacho.ts`): RM $3.990, regiones $5.990, zonas extremas $8.990.
+- Plazos mostrados: 1 día hábil de preparación + Chilexpress (RM 1–2, regiones 2–6, zonas extremas hasta 12 días hábiles).
+- Claves: suscribirse en developers.wschilexpress.com a Cobertura, Cotizador y Envíos, y cargarlas en Cloudflare (ver `.env.example`). Con Cuenta Empresa: `CHILEXPRESS_AMBIENTE=produccion` y claves de producción.
+- `crearEnvio()` y `seguimiento()` quedan listas para el sprint de pedidos (OT con etiqueta PDF y observación "entregar solo a mayor de 18 años con cédula").
 
 ## Cloudflare
 

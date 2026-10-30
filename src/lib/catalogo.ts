@@ -3,6 +3,9 @@
 // de Supabase (desarrollo local) y como carga inicial (supabase/catalogo.sql).
 // Precios en CLP enteros, IVA incluido.
 
+import { REGIONES } from "@/lib/comunas";
+import { estimarDespacho } from "@/lib/despacho";
+
 export const ARTES = ["pod", "pod2", "mod", "cartucho", "coil", "frasco", "desechable", "cable", "estuche", "bateria"] as const;
 
 export type Arte = (typeof ARTES)[number];
@@ -276,19 +279,11 @@ export const KITS: Kit[] = [
 
 // Tarifas de EJEMPLO por comuna. Se reemplazan con la cotización del courier.
 // null = despacho por confirmar (fuera de la zona de lanzamiento).
-export const DESPACHO: Record<string, Record<string, number | null>> = {
-  "Región Metropolitana": {
-    Santiago: 2990,
-    Providencia: 3490,
-    Ñuñoa: 3490,
-    "Las Condes": 3990,
-    "La Florida": 3990,
-    Maipú: 3990,
-    "Puente Alto": 4490,
-  },
-  Valparaíso: { Valparaíso: null, "Viña del Mar": null },
-  Biobío: { Concepción: null },
-};
+// Tarifa estimada por comuna (todas las comunas de Chile). La tarifa real la
+// entrega Chilexpress en /api/despacho; esta tabla es el respaldo.
+export const DESPACHO: Record<string, Record<string, number | null>> = Object.fromEntries(
+  REGIONES.map((r) => [r.nombre, Object.fromEntries(r.comunas.map((c) => [c, estimarDespacho(r.nombre, c)]))]),
+);
 
 export const COLORES: Record<string, string> = {
   Negro: "#1E2326",

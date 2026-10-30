@@ -82,7 +82,7 @@ export default async function FichaProducto({ params }: Props) {
             <li>{GARANTIA_CORTA}</li>
           </ul>
 
-          <CalculaDespacho />
+          <CalculaDespacho items={[{ slug: p.slug, cantidad: 1 }]} />
 
           <div className="acordeon">
             <details open>
