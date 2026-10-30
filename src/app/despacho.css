@@ -80,6 +80,14 @@
   text-align: center;
 }
 
+/* En el celular, región y comuna una debajo de la otra: lado a lado se cortaban
+   "Región Metropolitana" y comunas como "San Pedro de Atacama". */
+@media (max-width: 459px) {
+  .barra-despacho-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (min-width: 1000px) {
   .barra-despacho .solo-escritorio {
     display: inline-flex;

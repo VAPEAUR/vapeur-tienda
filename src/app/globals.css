@@ -3574,9 +3574,12 @@ textarea {
   margin: 0;
 }
 
+/* Región y comuna lado a lado solo si cada una cabe entera ("Región
+   Metropolitana", "Pedro Aguirre Cerda"); en la ficha del celular van una
+   debajo de la otra. */
 .calcula-campos {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 8px;
 }
 
