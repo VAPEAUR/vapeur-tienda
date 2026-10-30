@@ -4,7 +4,7 @@ import EscalaNicotina from "@/components/EscalaNicotina";
 import type { Producto } from "@/lib/catalogo";
 import { clp, sinCorte } from "@/lib/formato";
 import { advertenciaPara } from "@/lib/legal";
-import { colorArte, NOMBRE_TIPO, tipoDe } from "@/lib/tipo-producto";
+import { colorArte, tipoDe } from "@/lib/tipo-producto";
 
 // Stock bajo en gris y como dato ("3 disponibles"), sin tono de urgencia:
 // "Quedan 3" en ámbar se leía como falsa escasez (revisión de branding, 30-oct).
@@ -14,7 +14,7 @@ export function TextoStock({ stock }: { stock: number }) {
   return <span className="stock">En stock</span>;
 }
 
-// Foto sobre el fondo de su tipo y banda de color por tipo, nunca por sabor.
+// Foto sobre gris claro y banda de color por tipo, nunca por sabor.
 // Los líquidos muestran la escala de nicotina y su advertencia en letras
 // blancas sobre negro, sin nada encima (dictamen legal 30-oct-2026).
 // El nombre es el enlace y cubre toda la tarjeta.
@@ -27,13 +27,12 @@ export default function TarjetaProducto({ p }: { p: Producto }) {
       </div>
       <span className="banda" aria-hidden="true" />
       <div className="info">
-        <span className="rotulo-tipo">{NOMBRE_TIPO[p.categoria] ?? "Producto"}</span>
+        {/* La marca arriba, como en el retail; el cuadrito sigue con el color del tipo. */}
+        <span className="rotulo-tipo">{p.marca}</span>
         <Link href={`/producto/${p.slug}`} className="nombre">
           {sinCorte(p.nombre)}
         </Link>
-        <span className="dato">
-          {p.marca} · {p.dato}
-        </span>
+        <span className="dato">{p.dato}</span>
         <EscalaNicotina p={p} />
         {p.categoria === "liquidos" ? (
           <p className="advertencia-tarjeta" role="note">
