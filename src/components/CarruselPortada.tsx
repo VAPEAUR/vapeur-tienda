@@ -43,9 +43,9 @@ const DIAPOSITIVAS: Diapositiva[] = [
   },
   {
     clase: "claro",
-    etiqueta: "Kits por nivel",
-    titulo: "Inicial, intermedio o avanzado.",
-    bajada: "Equipo y repuestos que funcionan juntos. El precio es la suma de cada producto.",
+    etiqueta: "Kits",
+    titulo: "Equipo y repuestos, juntos.",
+    bajada: "Todo compatible entre sí. El precio del kit es la suma de cada producto.",
     botones: [{ texto: "Ver kits", href: "/kits" }],
     artes: ["bateria", "mod", "coil"],
   },

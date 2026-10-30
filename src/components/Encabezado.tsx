@@ -56,7 +56,7 @@ export default function Encabezado() {
                     </li>
                   ))}
                   <li>
-                    <Link href="/kits">Kits por nivel</Link>
+                    <Link href="/kits">Kits</Link>
                   </li>
                 </ul>
               </div>

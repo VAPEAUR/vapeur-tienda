@@ -52,7 +52,7 @@ export default function Pie() {
             <li><Link href="/equipos">Equipos</Link></li>
             <li><Link href="/repuestos">Repuestos</Link></li>
             <li><Link href="/liquidos">Líquidos</Link></li>
-            <li><Link href="/kits">Kits por nivel</Link></li>
+            <li><Link href="/kits">Kits</Link></li>
           </ul>
         </div>
         <div>

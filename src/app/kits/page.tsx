@@ -6,7 +6,7 @@ import { clp } from "@/lib/formato";
 import { describir } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Kits por nivel",
+  title: "Kits: equipo y repuestos juntos",
   description: describir("Kits armados con equipo, repuestos y accesorios compatibles entre sí, con el precio total a la vista."),
   alternates: { canonical: "/kits" },
 };
@@ -16,10 +16,10 @@ export default async function PaginaKits() {
   return (
     <div className="wrap pagina">
       <nav className="migas" aria-label="Migas">
-        <Link href="/">Inicio</Link> / <span>Kits por nivel</span>
+        <Link href="/">Inicio</Link> / <span>Kits</span>
       </nav>
       <header className="cabecera-listado">
-        <h1>Kits por nivel</h1>
+        <h1>Kits: equipo y repuestos juntos</h1>
         <p className="muted">Equipo, repuesto y lo necesario para usarlo. El precio del kit es la suma de sus productos.</p>
       </header>
       <div className="kits">
@@ -29,7 +29,7 @@ export default async function PaginaKits() {
               <ArteProducto arte={k.arte} />
             </div>
             <span className="etiqueta">
-              {k.nivel} · {k.para}
+              {k.tipo} · {k.para}
             </span>
             <h2>{k.nombre}</h2>
             <ul>

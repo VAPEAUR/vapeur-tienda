@@ -38,7 +38,7 @@ export type Producto = {
 };
 
 export type Kit = {
-  nivel: string;
+  tipo: string;
   para: string;
   nombre: string;
   productos: string[];
@@ -259,18 +259,19 @@ export const PRODUCTOS_EJEMPLO: Producto[] = [
 ];
 
 // Precio del kit = suma de sus productos, sin descuento (Ley 21.642, art. 5).
+// Se describen por tipo de equipo, no por "nivel" ni etapas (dictamen legal 30-oct-2026).
 export const KITS: Kit[] = [
-  { nivel: "Inicial", para: "Equipo simple, con pocos ajustes", nombre: "Kit XROS 4", productos: ["xros-4-kit-pod", "cartucho-xros-08"], arte: "pod" },
+  { tipo: "Pod", para: "Simple, con pocos ajustes", nombre: "Kit XROS 4", productos: ["xros-4-kit-pod", "cartucho-xros-08"], arte: "pod" },
   {
-    nivel: "Intermedio",
-    para: "Si ya usas pod",
+    tipo: "Pod",
+    para: "Con flujo de aire regulable",
     nombre: "Kit Caliburn G3",
     productos: ["caliburn-g3-kit-pod", "sales-tabaco-clasico-30", "cable-usb-c-1m"],
     arte: "pod2",
   },
   {
-    nivel: "Avanzado",
-    para: "Si quieres más autonomía",
+    tipo: "Mod",
+    para: "Con 2 baterías 18650",
     nombre: "Kit Aegis Legend 3",
     productos: ["aegis-legend-3-kit", "coil-geekvape-z-04", "bateria-18650-3000"],
     arte: "mod",
