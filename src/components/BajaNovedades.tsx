@@ -50,7 +50,7 @@ export default function BajaNovedades() {
               <p className="muted">Confirma y borramos tu correo de la lista de avisos.</p>
             ) : (
               <>
-                <p className="muted">Escribe el correo que inscribiste y lo borramos de la lista de avisos.</p>
+                <p className="muted">Escribe el correo que suscribiste y lo borramos de la lista de avisos.</p>
                 <div className="campo">
                   <label htmlFor="baja-correo">Correo</label>
                   <input
