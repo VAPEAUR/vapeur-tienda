@@ -13,8 +13,11 @@ export function zona(region: string, comuna = ""): Zona {
   return "regiones";
 }
 
-/** Días hábiles que nos toma preparar el pedido antes de entregarlo a Chilexpress. */
-export const DIAS_PREPARACION = 1;
+/**
+ * Días hábiles que nos toma preparar el pedido antes de entregarlo a
+ * Chilexpress. Igual que en Ayuda › Despacho, la confirmación y el correo.
+ */
+export const PREPARACION = { min: 1, max: 2 };
 
 /** Días hábiles de Chilexpress desde que recibe el paquete. */
 export const PLAZO_COURIER: Record<Zona, { min: number; max: number }> = {
@@ -25,12 +28,15 @@ export const PLAZO_COURIER: Record<Zona, { min: number; max: number }> = {
 
 /**
  * Tarifa de respaldo cuando la API de Chilexpress no responde o aún no hay
- * claves. Es una estimación: confirmar con la tarifa del contrato.
+ * claves. Calibrada con la API el 30-oct-2026 (tarifa lista, sin descuentos,
+ * caja de 0,5 kg desde Santiago Centro): RM $5.661; Concepción $6.424,
+ * Talca $7.538, Puerto Montt $9.236, Antofagasta $10.326; Coyhaique y
+ * Punta Arenas $13.761. Se redondea hacia arriba para no perder en cada envío.
  */
 export const TARIFA_ESTIMADA: Record<Zona, number> = {
-  rm: 3990,
-  regiones: 5990,
-  extrema: 8990,
+  rm: 5990,
+  regiones: 9990,
+  extrema: 14990,
 };
 
 export function estimarDespacho(region: string, comuna: string): number | null {
@@ -38,12 +44,12 @@ export function estimarDespacho(region: string, comuna: string): number | null {
   return TARIFA_ESTIMADA[zona(region, comuna)];
 }
 
-/** "Llega en 2 a 3 días hábiles" (preparación + courier). */
+/** "Llega en 2 a 4 días hábiles desde el pago" (preparación + courier). */
 export function textoPlazo(region: string, comuna = "") {
   const z = zona(region, comuna);
   const { min, max } = PLAZO_COURIER[z];
-  if (z === "extrema") return `Llega en hasta ${max + DIAS_PREPARACION} días hábiles desde el pago`;
-  return `Llega en ${min + DIAS_PREPARACION} a ${max + DIAS_PREPARACION} días hábiles desde el pago`;
+  if (z === "extrema") return `Llega en hasta ${max + PREPARACION.max} días hábiles desde el pago`;
+  return `Llega en ${min + PREPARACION.min} a ${max + PREPARACION.max} días hábiles desde el pago`;
 }
 
 export type ItemDespacho = { slug: string; cantidad: number };

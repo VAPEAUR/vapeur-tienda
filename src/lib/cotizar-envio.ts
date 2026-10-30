@@ -54,7 +54,12 @@ export async function cotizarEnvio(region: string, comuna: string, items?: ItemD
       return { costo: guardada.valor, fuente: "chilexpress", servicio: guardada.servicio, plazo };
     }
     const codigo = await codigoComuna(region, comuna);
-    if (!codigo) return estimado;
+    if (!codigo) {
+      // Chilexpress no llega a esa comuna: no se cobra una tarifa inventada,
+      // la tienda pide escribir por WhatsApp.
+      console.error(`Chilexpress no tiene cobertura en ${comuna} (${region})`);
+      return { costo: null, fuente: "chilexpress", plazo };
+    }
     // La opción más barata que ofrezca Chilexpress para ese destino.
     const [tarifa] = await cotizar(codigo, paquete, valor);
     if (!tarifa) return estimado;

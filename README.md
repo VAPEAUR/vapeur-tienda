@@ -35,8 +35,10 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 ## Despacho con Chilexpress
 
 - La calculadora (ficha, carro y checkout) pide el costo a `/api/despacho`, que cotiza con la API de Chilexpress desde Santiago Centro según el peso del carro (`src/lib/cotizar-envio.ts`, `src/lib/chilexpress.ts`).
-- Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA` en `src/lib/despacho.ts`): RM $3.990, regiones $5.990, zonas extremas $8.990.
-- Plazos mostrados: 1 día hábil de preparación + Chilexpress (RM 1–2, regiones 2–6, zonas extremas hasta 12 días hábiles).
+- Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA` en `src/lib/despacho.ts`): RM $5.990, regiones $9.990, zonas extremas $14.990 (calibrada con la API el 30-oct-2026).
+- Si Chilexpress no llega a la comuna (hoy: O'Higgins en Aysén y San Fabián en Ñuble), no se cobra tarifa: la tienda pide escribir por WhatsApp.
+- Nombres que Chilexpress escribe distinto (Santiago = "Santiago Centro", Llaillay, Marchigüe, Paihuano, Aysén): `NOMBRE_CHILEXPRESS` en `src/lib/chilexpress.ts`.
+- Plazos mostrados: 1 a 2 días hábiles de preparación (igual que Ayuda › Despacho) + Chilexpress (RM 1–2, regiones 2–6, zonas extremas hasta 12 días hábiles).
 - Claves: suscribirse en developers.wschilexpress.com a Cobertura, Cotizador y Envíos, y cargarlas en Cloudflare (ver `.env.example`). Con Cuenta Empresa: `CHILEXPRESS_AMBIENTE=produccion` y claves de producción.
 - `crearEnvio()` y `seguimiento()` quedan listas para el sprint de pedidos (OT con etiqueta PDF y observación "entregar solo a mayor de 18 años con cédula").
 

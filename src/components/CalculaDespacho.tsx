@@ -133,8 +133,8 @@ export default function CalculaDespacho({
           <span>No pudimos calcular el despacho a {comuna}. Escríbenos por WhatsApp y te ayudamos.</span>
         ) : (
           <span>
-            Despacho Chilexpress a {comuna}: <b className="tab">{clp(cotizacion.costo)}</b>. {cotizacion.plazo} (1 día hábil para
-            preparar tu pedido + Chilexpress).
+            Despacho Chilexpress a {comuna}: <b className="tab">{clp(cotizacion.costo)}</b>. {cotizacion.plazo} (1 a 2 días hábiles
+            para preparar tu pedido + Chilexpress).
           </span>
         )}
       </p>

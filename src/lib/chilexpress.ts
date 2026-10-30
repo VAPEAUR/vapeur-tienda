@@ -71,6 +71,17 @@ async function llamar<T>(api: Api, ruta: string, cuerpo?: unknown): Promise<T & 
 type RegionCx = { regionId: string; regionName: string; ineRegionCode: number };
 type AreaCx = { countyCode: string; countyName: string; coverageName?: string };
 
+// Comunas que Chilexpress escribe distinto (revisado contra la API el 30-oct-2026,
+// las 346 comunas). Sin cobertura de Chilexpress ese día: O'Higgins (Aysén) y
+// San Fabián (Ñuble).
+const NOMBRE_CHILEXPRESS: Record<string, string> = {
+  Santiago: "Santiago Centro",
+  Llaillay: "Llay-Llay",
+  Marchigüe: "Marchihue",
+  Paihuano: "Paiguano",
+  Aysén: "Aisen",
+};
+
 // Los códigos casi no cambian: se guardan en memoria mientras viva el Worker.
 let regionesCx: RegionCx[] | null = null;
 const areasPorRegion = new Map<string, AreaCx[]>();
@@ -93,7 +104,7 @@ export async function codigoComuna(region: string, comuna: string): Promise<stri
   }
   // Chilexpress escribe en mayúsculas y a veces sin tildes ni apóstrofes.
   const clave = (t: string) => normalizar(t).replace(/[^a-z0-9]/g, "");
-  const buscada = clave(comuna);
+  const buscada = clave(NOMBRE_CHILEXPRESS[comuna] ?? comuna);
   const area =
     areas.find((a) => clave(a.countyName) === buscada) ?? areas.find((a) => a.coverageName && clave(a.coverageName) === buscada);
   return area?.countyCode ?? null;
@@ -107,7 +118,12 @@ type OpcionCx = { serviceTypeCode: number; serviceDescription: string; serviceVa
 
 export type Tarifa = { valor: number; servicio: string; codigoServicio: number };
 
-/** Opciones de servicio para un paquete, de la más barata a la más cara. */
+// Servicios de entrega a domicilio: 3 = Express, 4 = Extendido, 5 = Extremos.
+// Se dejan fuera Prioritario (2, más caro) y los de devolución (LDEV), que
+// la API también ofrece.
+const SERVICIOS_DESPACHO = new Set([3, 4, 5]);
+
+/** Opciones de despacho a domicilio para un paquete, de la más barata a la más cara. */
 export async function cotizar(destino: string, paquete: Paquete, valorDeclarado: number): Promise<Tarifa[]> {
   const { data } = await llamar<{ data?: { courierServiceOptions?: OpcionCx[] } }>("cotizador", "/rating/api/v1.0/rates/courier", {
     originCountyCode: origen(),
@@ -125,7 +141,7 @@ export async function cotizar(destino: string, paquete: Paquete, valorDeclarado:
   });
   return (data?.courierServiceOptions ?? [])
     .map((o) => ({ valor: Math.round(Number(o.serviceValue)), servicio: o.serviceDescription, codigoServicio: Number(o.serviceTypeCode) }))
-    .filter((t) => Number.isFinite(t.valor) && t.valor > 0)
+    .filter((t) => SERVICIOS_DESPACHO.has(t.codigoServicio) && Number.isFinite(t.valor) && t.valor > 0)
     .sort((a, b) => a.valor - b.valor);
 }
 
