@@ -13,7 +13,7 @@ export type PaginaInfo = {
   accion?: { texto: string; href: string; externo?: boolean };
 };
 
-const VIGENCIA = "Vigente desde el 28 de octubre de 2026.";
+const VIGENCIA = "Vigente desde el 30 de octubre de 2026.";
 const EMPRESA = "Vapeur SpA, RUT 78.543.954-6, con domicilio en Ahumada 131, oficina 719, Santiago, Región Metropolitana";
 const CONTACTO = `correo ${CORREO_CONTACTO} o WhatsApp ${WHATSAPP_VISIBLE}`;
 const HORARIO = "las 24 horas, todos los días";
@@ -287,6 +287,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Courier que despacha tu pedido. Su nombre aparece en el correo de despacho.",
           "Cloudflare (alojamiento y seguridad del sitio), con servidores en Estados Unidos y otros países.",
           "Supabase (base de datos de la tienda), con servidores en São Paulo, Brasil.",
+          "Resend (envío del correo de confirmación de tu compra), con servidores en Estados Unidos.",
           "Google (correo de atención) y WhatsApp, de Meta, solo si nos escribes por esos canales.",
           "Autoridades, solo cuando la ley lo exige (por ejemplo, el SII, la autoridad sanitaria o un tribunal).",
         ],
@@ -294,7 +295,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
       {
         titulo: "5. Datos fuera de Chile",
         parrafos: [
-          "Como Cloudflare y Supabase guardan datos fuera de Chile, hay una transferencia internacional de datos. La hacemos con proveedores que se obligan por contrato a proteger los datos con medidas de seguridad, como permite la ley.",
+          "Como Cloudflare, Supabase y Resend guardan o procesan datos fuera de Chile, hay una transferencia internacional de datos. La hacemos con proveedores que se obligan por contrato a proteger los datos con medidas de seguridad, como permite la ley.",
         ],
       },
       {
@@ -309,7 +310,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
       {
         titulo: "7. Lo que se guarda en tu navegador",
         parrafos: [
-          "No usamos cookies de publicidad ni de analítica. Tu navegador guarda solo lo necesario para que la tienda funcione: tu carro de compras y, mientras dure la visita, que confirmaste tener 18 años o más y el número de tu último pedido. Puedes borrarlo desde la configuración de tu navegador.",
+          "No usamos cookies de publicidad ni de analítica. Tu navegador guarda solo lo necesario para que la tienda funcione: tu carro de compras y, mientras dure la visita, que confirmaste tener 18 años o más. Puedes borrarlo desde la configuración de tu navegador.",
         ],
       },
       {

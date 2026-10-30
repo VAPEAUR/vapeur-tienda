@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { guardarDestino, leerDestino } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
@@ -32,8 +31,7 @@ function validarDatos(d: Datos, declaracion: boolean): Errores {
 }
 
 export default function Checkout() {
-  const router = useRouter();
-  const { items, subtotal, listo, vaciar } = useCarro();
+  const { items, subtotal, listo } = useCarro();
   const [paso, setPaso] = useState<1 | 2>(1);
   const [d, setD] = useState<Datos>(VACIO);
   const [declaracion, setDeclaracion] = useState(false);
@@ -44,6 +42,7 @@ export default function Checkout() {
   const [depto, setDepto] = useState("");
   const [terminos, setTerminos] = useState(false);
   const [errorPago, setErrorPago] = useState("");
+  const [enviando, setEnviando] = useState(false);
 
   // Si ya eligió su comuna en la ficha o el carro, llega marcada.
   useEffect(() => {
@@ -90,24 +89,40 @@ export default function Checkout() {
     }
   }
 
-  function pagar(ev: React.FormEvent) {
+  async function pagar(ev: React.FormEvent) {
     ev.preventDefault();
+    if (enviando) return;
     if (!region || !comuna || direccion.trim().length < 4) return setErrorPago("Completa región, comuna y dirección.");
+    if (costoDespacho === undefined) return setErrorPago("Estamos calculando el despacho. Espera un momento.");
     if (costoDespacho === null) return setErrorPago("Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.");
     if (!terminos) return setErrorPago("Debes aceptar los Términos y la Política de privacidad.");
-    // PRUEBA: Webpay aún no está conectado. Se simula un pago aprobado.
-    // Solo se guarda el resumen del pedido; nunca el RUT ni la fecha de nacimiento.
-    const numero = String(Math.floor(100000 + Math.random() * 900000));
+    setErrorPago("");
+    setEnviando(true);
+    // El servidor recalcula precios, stock, despacho y edad, guarda el pedido
+    // y crea el pago en Webpay. RUT y fecha de nacimiento no se guardan.
     try {
-      sessionStorage.setItem(
-        "vapeur-ultimo-pedido",
-        JSON.stringify({ numero, correo: d.correo, subtotal, despacho: costoDespacho, total }),
-      );
-    } catch {
-      // la confirmación muestra solo el número
+      const r = await fetch("/api/pedidos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...d, declaracion, region, comuna, direccion, depto, terminos, items }),
+      });
+      const res = (await r.json()) as { ok: boolean; url?: string; token?: string; error?: string };
+      if (!res.ok || !res.url || !res.token) throw new Error(res.error || "No pudimos iniciar el pago.");
+      // Webpay recibe al cliente con un formulario POST que lleva el token.
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = res.url;
+      const campo = document.createElement("input");
+      campo.type = "hidden";
+      campo.name = "token_ws";
+      campo.value = res.token;
+      form.appendChild(campo);
+      document.body.appendChild(form);
+      form.submit();
+    } catch (e) {
+      setErrorPago((e as Error).message || "No pudimos iniciar el pago. Intenta de nuevo.");
+      setEnviando(false);
     }
-    vaciar();
-    router.push(`/pedido?n=${numero}`);
   }
 
   return (
@@ -255,12 +270,10 @@ export default function Checkout() {
               {errorPago}
             </p>
           ) : null}
-          <button type="submit" className="boton acento ancho">
-            Pagar con Webpay
+          <button type="submit" className="boton acento ancho" disabled={enviando} aria-busy={enviando || undefined}>
+            {enviando ? "Conectando con Webpay…" : "Pagar con Webpay"}
           </button>
-          <p className="muted centrado">
-            Te llevamos al sitio seguro de Transbank: crédito, débito o prepago. (Prototipo: el pago se simula.)
-          </p>
+          <p className="muted centrado">Te llevamos al sitio seguro de Transbank: crédito, débito o prepago.</p>
           <button type="button" className="enlace centrado" onClick={() => setPaso(1)}>
             Volver a tus datos
           </button>
