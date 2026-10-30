@@ -1,20 +1,29 @@
-/* Estilo A · Grafito y petróleo (aprobado por Amerhi el 27-oct-2026;
-   paleta y fuentes cerradas como definitivas el mismo día).
-   La tienda es solo modo claro en la versión 1. */
+/* Paleta negro cálido y petróleo (aprobada por Amerhi el 30-oct-2026, propuesta A
+   "Vitrina de estudio"): negro cálido arriba, petróleo profundo en bloques grandes,
+   piedra y gris claro, petróleo en botones. Sobre fondos oscuros el petróleo no se
+   lee (2,1:1): ahí van el petróleo claro en acentos y botones blancos con letra
+   petróleo. Colores por tipo de producto, nunca por sabor (dictamen legal 30-oct).
+   Fuentes Archivo e IBM Plex Sans. La tienda es solo modo claro en la versión 1. */
 :root {
   --bg: #ffffff;
-  --surface: #f3f5f5;
-  --surface-2: #e8ecec;
+  --surface: #f5f5f5; /* gris claro */
+  --surface-2: #ebebeb;
+  --piedra: #d3d1c6;
+  --hondo: #231f20; /* negro cálido: encabezado y portada */
+  --bloque: #0e3b3a; /* petróleo profundo: bloques grandes, pie y confirmación */
+  --resalte: #8fd3c7; /* petróleo claro: solo acentos sobre fondos oscuros (9,6:1 sobre negro cálido) */
+  --txt-hondo: #d3d1c6; /* texto secundario sobre fondos oscuros (7,9:1 sobre petróleo profundo) */
   --ink: #15191b;
   --muted: #4f585d;
   --line: #d9dedf;
   --borde-control: #7e878b; /* bordes de campos y chips: contraste 3,7:1 (WCAG pide 3:1) */
-  --accent: #1d5a58;
+  --accent: #1d5a58; /* petróleo: botones con texto blanco (7,9:1) y enlaces */
+  --accent-hover: #164947;
   --accent-ink: #ffffff;
   --accent-soft: #ddebe9;
-  --btn: #15191b;
+  --btn: var(--accent);
   --btn-ink: #ffffff;
-  --noche: #14181b;
+  --noche: var(--hondo);
   --art-bg: #f1f4f4;
   --art-body: #2b3236;
   --art-body-2: #586269;
@@ -103,6 +112,24 @@ button {
   outline-offset: 2px;
 }
 
+/* Sobre fondos oscuros el foco va en petróleo claro: el petróleo no se ve. */
+.sobre-oscuro :focus-visible {
+  outline-color: var(--resalte);
+}
+
+/* Texto solo para lectores de pantalla. */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .wrap {
   width: 100%;
   max-width: 1200px;
@@ -139,8 +166,8 @@ button {
   align-items: center;
   justify-content: center;
   min-height: var(--alto-control);
-  padding: 0 22px;
-  border-radius: var(--radius-s);
+  padding: 0 24px;
+  border-radius: 999px;
   border: 1.5px solid var(--btn);
   background: var(--btn);
   color: var(--btn-ink);
@@ -150,7 +177,8 @@ button {
 }
 
 .boton:hover {
-  background: #2b3236;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .boton:disabled {
@@ -172,6 +200,29 @@ button {
 .boton.acento {
   background: var(--accent);
   border-color: var(--accent);
+}
+
+/* Sobre petróleo profundo o negro cálido: blanco con letra petróleo (pedido de
+   Amerhi, 30-oct-2026), y el secundario solo con borde blanco. */
+.boton.claro {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--accent);
+}
+
+.boton.claro:hover {
+  background: var(--surface);
+  border-color: var(--surface);
+}
+
+.boton.borde-claro {
+  background: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.boton.borde-claro:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .boton.ancho {
@@ -311,8 +362,26 @@ body.con-puerta {
   position: sticky;
   top: var(--alto-franja);
   z-index: 20;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
+  background: var(--hondo);
+  color: #ffffff;
+}
+
+/* Lo que se despliega bajo la barra (menú del celular, Comprar por, buscador)
+   es claro: ahí vuelven el texto oscuro y el foco petróleo. */
+.encabezado .menu.abierto,
+.encabezado .mega,
+.encabezado .buscador.abierto,
+.encabezado .sugerencias {
+  color: var(--ink);
+}
+
+.encabezado .icono:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.encabezado .contador {
+  background: var(--resalte);
+  color: var(--hondo);
 }
 
 /* Advertencia sanitaria en blanco y negro, siempre arriba (sobre la puerta de edad). */
@@ -403,6 +472,18 @@ body.con-puerta {
   font-weight: 700;
   display: grid;
   place-items: center;
+}
+
+/* Foco: petróleo claro sobre la barra oscura; petróleo en los paneles claros. */
+.encabezado :focus-visible {
+  outline-color: var(--resalte);
+}
+
+.encabezado .menu.abierto :focus-visible,
+.encabezado .buscador.abierto :focus-visible,
+.encabezado .menu .mega :focus-visible,
+.encabezado .sugerencias :focus-visible {
+  outline-color: var(--accent);
 }
 
 .menu {
@@ -573,7 +654,7 @@ body.con-puerta {
 }
 
 .diapositiva.noche {
-  background: radial-gradient(ellipse 70% 90% at 72% 55%, #2b3439 0%, var(--noche) 62%, #0d1012 100%);
+  background: radial-gradient(ellipse 70% 90% at 72% 55%, #3a3436 0%, var(--noche) 62%, #171415 100%);
   color: #f2f4f5;
 }
 
@@ -1577,36 +1658,276 @@ input[aria-invalid="true"] {
   margin-bottom: 0 !important;
 }
 
+/* Confirmación de pago como pedido en vivo (propuesta A, 30-oct-2026): bloque
+   petróleo profundo, línea de avance y el comprobante en tarjetas de piedra. */
+.pedido-ok {
+  background: var(--bloque);
+  color: #ffffff;
+  padding: 32px 0 48px;
+}
+
+.wrap.pedido-ok-caja {
+  max-width: 880px;
+  display: grid;
+  gap: 28px;
+}
+
+.pedido-ok-tope {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
 .check-ok {
+  flex: none;
   width: 56px;
   height: 56px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: var(--ok-soft);
-  color: var(--ok);
+  background: var(--resalte);
+  color: var(--hondo);
 }
 
-.que-pasa {
-  border: 1px solid var(--line);
+.pedido-ok h1 {
+  font-size: var(--tx-3xl);
+  font-weight: 900;
+  font-stretch: 72%;
+}
+
+.pedido-ok-sub {
+  margin-top: 6px;
+  color: var(--txt-hondo);
+}
+
+.pedido-ok-sub b {
+  color: #ffffff;
+}
+
+.pedido-ok .nota-prueba {
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 10px 14px;
+  color: var(--txt-hondo);
+  font-size: var(--tx-s);
 }
 
-.que-pasa h2 {
-  font-size: var(--tx-l);
-  margin-bottom: 8px;
-}
-
-.que-pasa p {
+/* Línea de avance: vertical en celular, en fila desde 720 px. */
+.avance {
+  list-style: none;
   margin: 0;
-}
-
-.que-pasa ol {
-  margin: 0;
-  padding-left: 20px;
+  padding: 0;
   display: grid;
-  gap: 6px;
+}
+
+.avance li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-content: start;
+  column-gap: 12px;
+  row-gap: 2px;
+  padding-bottom: 18px;
+}
+
+.avance li::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  left: 12px;
+  width: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.avance li:last-child::after {
+  display: none;
+}
+
+.avance li.hecho::after {
+  background: var(--resalte);
+}
+
+.avance i {
+  grid-row: 1 / span 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  background: var(--bloque);
+  display: grid;
+  place-items: center;
+}
+
+.avance .hecho i {
+  background: var(--resalte);
+  border-color: var(--resalte);
+}
+
+.avance .hecho i::after {
+  content: "";
+  width: 12px;
+  height: 7px;
+  border-left: 3px solid var(--hondo);
+  border-bottom: 3px solid var(--hondo);
+  transform: translateY(-2px) rotate(-45deg);
+}
+
+.avance b {
+  font-size: var(--tx-base);
+  line-height: 1.3;
+}
+
+.avance span {
+  grid-column: 2;
+  font-size: var(--tx-xs);
+  color: var(--txt-hondo);
+}
+
+.recibo {
+  display: grid;
+  gap: 14px;
+}
+
+.recibo-tarjeta {
+  background: var(--piedra);
+  color: var(--ink);
+  border-radius: 20px;
+  padding: 20px;
+  display: grid;
+  gap: 9px;
+  align-content: start;
+}
+
+.recibo-tarjeta h2 {
+  font-family: var(--f-texto), sans-serif;
+  font-stretch: 100%;
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.recibo-fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.recibo-fila span:first-child {
+  color: var(--muted);
+}
+
+.recibo-fila span:last-child {
+  text-align: right;
+}
+
+.recibo-total {
+  border-top: 1px solid rgba(35, 31, 32, 0.2);
+  padding-top: 10px;
+  align-items: baseline;
+}
+
+.recibo-total span:last-child {
+  font-family: var(--f-display), sans-serif;
+  font-stretch: 85%;
+  font-weight: 800;
+  font-size: var(--tx-2xl);
+  color: var(--ink);
+}
+
+.recibo-direccion {
+  border-top: 1px solid rgba(35, 31, 32, 0.2);
+  padding-top: 10px;
+  font-size: var(--tx-s);
+}
+
+.recibo-direccion span {
+  display: block;
+  color: var(--muted);
+}
+
+.pedido-ok-retracto {
+  font-size: var(--tx-s);
+  color: var(--txt-hondo);
+}
+
+.pedido-ok-retracto b,
+.pedido-ok-retracto a {
+  color: #ffffff;
+}
+
+.pedido-ok-retracto a {
+  text-underline-offset: 3px;
+}
+
+.pedido-ok-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .avance {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .avance li {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+    padding: 0 14px 0 0;
+  }
+
+  .avance li::after {
+    top: 12px;
+    bottom: auto;
+    left: 26px;
+    right: 0;
+    width: auto;
+    height: 4px;
+  }
+
+  .avance i {
+    grid-row: auto;
+  }
+
+  .avance span {
+    grid-column: auto;
+  }
+
+  .recibo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .recibo-tarjeta {
+    padding: 22px;
+  }
+
+  .pedido-ok-acciones {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1000px) {
+  .pedido-ok {
+    padding: 56px 0 72px;
+  }
+
+  .pedido-ok-tope {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .check-ok {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 .texto-largo {
@@ -1694,17 +2015,21 @@ input[aria-invalid="true"] {
 /* ---------- Pie ---------- */
 .pie {
   margin-top: 56px;
-  background: var(--noche);
-  color: #e3e8ea;
+  background: var(--bloque);
+  color: var(--txt-hondo);
   padding: 0 0 24px;
 }
 
-/* Franja clara de servicio sobre el pie oscuro. */
+/* Franja de servicio en piedra sobre el pie petróleo; ahí el foco vuelve a petróleo. */
 .pie-servicio {
-  background: var(--surface-2);
+  background: var(--piedra);
   color: var(--ink);
   padding: 28px 0;
   margin-bottom: 36px;
+}
+
+.pie .pie-servicio :focus-visible {
+  outline-color: var(--accent);
 }
 
 .pie .pie-servicio-lista {
@@ -1761,8 +2086,12 @@ input[aria-invalid="true"] {
   max-width: 420px;
 }
 
+.pie-novedades .logo {
+  color: #ffffff;
+}
+
 .pie-novedades-fila .pie-novedades-subtitulo {
-  color: #a7b0b4;
+  color: var(--txt-hondo);
   font-size: var(--tx-s);
 }
 
@@ -1795,26 +2124,27 @@ input[aria-invalid="true"] {
   width: auto;
   min-width: 0;
   height: var(--alto-control);
-  padding: 0 14px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-s);
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   color: #ffffff;
 }
 
 .pie-novedades-form input::placeholder {
-  color: #a7b0b4;
+  color: var(--txt-hondo);
 }
 
 .pie-novedades-form .boton {
   flex-shrink: 0;
   background: #ffffff;
   border-color: #ffffff;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .pie-novedades-form .boton:hover {
-  background: #e8ecec;
+  background: var(--surface);
+  border-color: var(--surface);
 }
 
 .pie-novedades-form .boton:disabled {
@@ -1830,7 +2160,7 @@ input[aria-invalid="true"] {
 
 .pie-novedades-legal {
   margin: 0;
-  color: #a7b0b4;
+  color: var(--txt-hondo);
   font-size: var(--tx-xs);
   text-align: center;
 }
@@ -1925,9 +2255,9 @@ input[aria-invalid="true"] {
   gap: 4px;
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid #2d3438;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   font-size: var(--tx-xs);
-  color: #a7b0b4;
+  color: var(--txt-hondo);
 }
 
 /* ---------- Contacto ---------- */
@@ -2100,9 +2430,27 @@ input[aria-invalid="true"] {
     position: static;
     padding: 0;
     border: 0;
+    background: none;
     box-shadow: none;
     margin-right: auto;
     margin-left: 32px;
+  }
+
+  /* En escritorio el menú va sobre la barra oscura. */
+  .encabezado .menu.abierto {
+    color: inherit;
+  }
+
+  .encabezado .menu.abierto :focus-visible {
+    outline-color: var(--resalte);
+  }
+
+  .encabezado .menu .mega :focus-visible {
+    outline-color: var(--accent);
+  }
+
+  .encabezado .menu > a[aria-current="page"] {
+    color: var(--resalte);
   }
 
   .comprar-por .mega {
@@ -2423,7 +2771,31 @@ textarea {
     width: 190px;
     padding: 0;
     border: 0;
+    background: none;
     box-shadow: none;
+  }
+
+  /* El campo de búsqueda queda sobre la barra oscura. */
+  .encabezado .buscador.abierto {
+    color: inherit;
+  }
+
+  .encabezado .buscador.abierto :focus-visible {
+    outline-color: var(--resalte);
+  }
+
+  .encabezado .buscador.abierto .sugerencias :focus-visible {
+    outline-color: var(--accent);
+  }
+
+  .buscador input {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+  }
+
+  .buscador input::placeholder {
+    color: var(--txt-hondo);
   }
 
   .sugerencias {

@@ -6,7 +6,7 @@ import { REDES } from "@/lib/redes";
 export default function Pie() {
   return (
     <footer className="pie">
-      {/* Franja de servicio al estilo de planetofthevapes.com, solo con lo que
+      {/* Franja de servicio al estilo de la tienda referente, solo con lo que
           Vapeur puede cumplir y probar: sin envío gratis, regalos ni "100%". */}
       <div className="pie-servicio">
         <div className="wrap">
@@ -97,13 +97,13 @@ export default function Pie() {
               {red.nombre === "Instagram" ? (
                 <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="5" fill="currentColor" />
-                  <circle cx="12" cy="12" r="4" fill="var(--noche)" />
-                  <circle cx="17.3" cy="6.7" r="1.1" fill="var(--noche)" />
+                  <circle cx="12" cy="12" r="4" fill="var(--bloque)" />
+                  <circle cx="17.3" cy="6.7" r="1.1" fill="var(--bloque)" />
                 </svg>
               ) : (
                 <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
                   <circle cx="12" cy="12" r="9" fill="currentColor" />
-                  <path d="M13.5 9H15V6.5h-1.8c-2 0-3 1.1-3 3v1.8H8.7V14h1.5v5.3c.6.1 1.2.2 1.8.2s1.2-.1 1.8-.2V14h1.7l.3-2.7h-2V9.9c0-.5.2-.9.7-.9Z" fill="var(--noche)" />
+                  <path d="M13.5 9H15V6.5h-1.8c-2 0-3 1.1-3 3v1.8H8.7V14h1.5v5.3c.6.1 1.2.2 1.8.2s1.2-.1 1.8-.2V14h1.7l.3-2.7h-2V9.9c0-.5.2-.9.7-.9Z" fill="var(--bloque)" />
                 </svg>
               )}
             </a>
