@@ -5,6 +5,7 @@ import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import Carrusel from "@/components/Carrusel";
 import CarruselPortada from "@/components/CarruselPortada";
 import QuizEquipo from "@/components/QuizEquipo";
+import RutaPedido from "@/components/RutaPedido";
 import TarjetaProducto from "@/components/TarjetaProducto";
 import { type Arte, CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
@@ -53,6 +54,8 @@ export default async function Inicio() {
             : null
         }
       />
+
+      <RutaPedido />
 
       <section className="marcas" aria-label="Marcas">
         <div className="wrap fila-marcas">

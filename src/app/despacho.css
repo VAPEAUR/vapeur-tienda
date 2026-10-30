@@ -6,49 +6,74 @@
   background: var(--bloque);
   color: #ffffff;
   font-size: var(--tx-xs);
-  line-height: 1.35;
+  line-height: 1.3;
+  border-bottom: 3px solid var(--resalte);
 }
 
+/* Celular: camión, fecha grande y botón blanco en una sola fila. */
 .barra-despacho-in {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 6px 22px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-align: center;
+  gap: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.barra-despacho-in > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+.barra-despacho-camion {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--resalte);
+  color: var(--bloque);
+}
+
+.barra-despacho-fecha {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.barra-despacho-fecha small {
+  color: var(--resalte);
+  font-size: var(--tx-2xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.barra-despacho-fecha b {
+  font-size: var(--tx-m);
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .barra-despacho svg {
   flex: none;
-  color: var(--resalte);
 }
 
-.barra-despacho b {
-  font-weight: 700;
-}
-
-.barra-despacho .solo-escritorio {
+.barra-despacho-datos,
+.barra-despacho-largo {
   display: none;
 }
 
 .barra-despacho-cambiar {
-  padding: 4px 2px;
+  flex: none;
+  min-height: 40px;
+  padding: 0 16px;
   border: 0;
-  background: none;
-  color: var(--resalte);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--accent);
   font: inherit;
   font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 2px;
   cursor: pointer;
+}
+
+.barra-despacho-cambiar:hover {
+  background: var(--surface);
 }
 
 .barra-despacho-cambiar:focus-visible {
@@ -63,7 +88,9 @@
   padding-bottom: 12px;
 }
 
-.barra-despacho-panel select {
+.barra-despacho-panel select,
+.fecha-compra-campos select,
+.ruta-campos select {
   min-height: 44px;
   border: 1px solid var(--borde-control);
   border-radius: var(--radius-s);
@@ -81,14 +108,41 @@
 }
 
 @media (min-width: 1000px) {
-  .barra-despacho .solo-escritorio {
+  .barra-despacho-in {
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .barra-despacho-fecha {
+    flex: none;
+  }
+
+  .barra-despacho-fecha b {
+    font-size: var(--tx-l);
+  }
+
+  .barra-despacho-largo {
+    display: inline;
+  }
+
+  .barra-despacho-datos {
+    display: flex;
+    gap: 22px;
+    margin: 0 12px;
+    padding-left: 22px;
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+    color: var(--txt-hondo);
+    font-size: var(--tx-s);
+  }
+
+  .barra-despacho-datos > span {
     display: inline-flex;
     align-items: center;
     gap: 7px;
   }
 
-  .barra-despacho .solo-celular {
-    display: none;
+  .barra-despacho-datos svg {
+    color: var(--resalte);
   }
 
   .barra-despacho-panel {
@@ -99,6 +153,165 @@
 
   .barra-despacho-panel a {
     grid-column: auto;
+  }
+}
+
+/* Fecha estimada junto al botón de compra de la ficha. */
+.fecha-compra {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius-s);
+  background: var(--accent-soft);
+  border-left: 5px solid var(--accent);
+}
+
+.fecha-compra-icono {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bloque);
+  color: var(--resalte);
+}
+
+.fecha-compra-texto {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.fecha-compra-texto small {
+  color: var(--accent);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fecha-compra-texto b {
+  color: var(--bloque);
+  font-size: var(--tx-l);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.fecha-compra-texto span {
+  color: var(--muted);
+  font-size: var(--tx-s);
+}
+
+.fecha-compra-texto .enlace {
+  justify-self: start;
+  padding: 2px 0;
+  font-size: var(--tx-s);
+}
+
+.fecha-compra-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Ruta del pedido en la portada, bajo el carrusel. */
+.ruta-pedido {
+  background: var(--piedra);
+  color: var(--ink);
+  padding: 22px 0 16px;
+}
+
+.ruta-pasos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.ruta-pasos li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  column-gap: 12px;
+  align-items: center;
+}
+
+.ruta-pasos li > :not(.ruta-punto) {
+  grid-column: 2;
+}
+
+.ruta-punto {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--hondo);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.ruta-llega .ruta-punto {
+  background: var(--accent);
+}
+
+.ruta-pasos small {
+  color: var(--muted);
+  font-size: var(--tx-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ruta-pasos b {
+  font-size: var(--tx-m);
+  font-weight: 800;
+}
+
+.ruta-llega b {
+  color: var(--accent);
+  font-size: var(--tx-l);
+}
+
+.ruta-pasos .enlace {
+  justify-self: start;
+  padding: 2px 0;
+  font-size: var(--tx-s);
+}
+
+.ruta-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ruta-nota {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: var(--tx-xs);
+}
+
+@media (min-width: 1000px) {
+  .ruta-pasos {
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 24px;
+  }
+
+  .ruta-pasos li + li {
+    padding-left: 24px;
+    border-left: 1px solid rgba(35, 31, 32, 0.2);
+  }
+
+  .ruta-pasos li {
+    align-items: start;
   }
 }
 
@@ -120,4 +333,12 @@
 .fecha-estimada small {
   color: var(--muted);
   font-size: var(--tx-xs);
+}
+/* Celular angosto: una columna para que "Región Metropolitana" y las comunas
+   largas no se corten (mismo criterio que la barra en el PR #53). */
+@media (max-width: 459px) {
+  .fecha-compra-campos,
+  .ruta-campos {
+    grid-template-columns: 1fr;
+  }
 }
