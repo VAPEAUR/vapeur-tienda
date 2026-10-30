@@ -4,14 +4,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCatalogo } from "@/components/Catalogo";
 
-export default function BuscadorRepuestos() {
+// Sobre petróleo profundo el botón va blanco con letra petróleo (botonClaro).
+export default function BuscadorRepuestos({ botonClaro = false }: { botonClaro?: boolean }) {
   const router = useRouter();
   const { equipos } = useCatalogo();
   const [equipo, setEquipo] = useState("");
 
   return (
     <form
-      className="buscador"
+      className="buscador-repuestos"
       onSubmit={(e) => {
         e.preventDefault();
         if (equipo) router.push(`/repuestos/${equipo}`);
@@ -27,7 +28,7 @@ export default function BuscadorRepuestos() {
             </option>
           ))}
         </select>
-        <button type="submit" className="boton">
+        <button type="submit" className={botonClaro ? "boton claro" : "boton"}>
           Ver repuestos
         </button>
       </div>

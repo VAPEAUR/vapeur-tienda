@@ -5,6 +5,7 @@ import { useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
 import { useCatalogo } from "@/components/Catalogo";
 import { clp } from "@/lib/formato";
+import { colorArte, tipoDe } from "@/lib/tipo-producto";
 
 // Preguntas sobre el tipo de equipo, no sobre la experiencia: nada que apunte
 // a quien recién empieza (Ley 21.642, art. 8). Revisado 28-oct-2026.
@@ -51,8 +52,8 @@ export default function QuizEquipo() {
       <div className="resultado" aria-live="polite">
         {p ? (
           <Link href={`/producto/${p.slug}`} className="res">
-            <div className="foto">
-              <ArteProducto arte={p.arte} color={p.color} />
+            <div className={`foto foto-estudio tipo-${tipoDe(p.categoria)}`}>
+              <ArteProducto arte={p.arte} color={colorArte(p)} />
             </div>
             <div>
               <span className="etiqueta">Calza con lo que buscas</span>

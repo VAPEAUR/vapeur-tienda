@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { CORREO_CONTACTO, enlaceWhatsApp } from "@/lib/contacto";
 
-// Temas del formulario, adaptados de la página de contacto de
-// planetofthevapes.com a lo que atiende Vapeur.
+// Temas del formulario, adaptados de la página de contacto de la tienda
+// referente a lo que atiende Vapeur.
 const TEMAS = [
   "Despacho",
   "Cambiar un pedido",

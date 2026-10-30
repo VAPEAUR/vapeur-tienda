@@ -12,6 +12,7 @@ import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 import { GARANTIA_CORTA, RETRACTO_CORTO } from "@/lib/legal";
 import { DatosEstructurados, datosProducto, descripcionProducto } from "@/lib/seo";
+import { colorArte } from "@/lib/tipo-producto";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -46,7 +47,7 @@ export default async function FichaProducto({ params }: Props) {
       <div className="ficha">
         <div className="galeria">
           <div className="principal">
-            <ArteProducto arte={p.arte} color={p.color} />
+            <ArteProducto arte={p.arte} color={colorArte(p)} />
           </div>
           <p className="muted nota-foto">Imagen referencial. Las fotos reales llegan con el stock.</p>
         </div>
