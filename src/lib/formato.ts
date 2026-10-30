@@ -8,3 +8,8 @@ const CLP = new Intl.NumberFormat("es-CL", {
 export function clp(monto: number) {
   return CLP.format(monto);
 }
+
+/** Une con espacio duro un número y su unidad ("30 ml"), para que no queden en líneas distintas. */
+export function sinCorte(texto: string) {
+  return texto.replace(/(\d)\s(ml|mg|mAh|W|Ω)(?![\p{L}\p{N}])/gu, "$1 $2");
+}

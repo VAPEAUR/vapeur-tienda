@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
+import AyudaCompra from "@/components/AyudaCompra";
 import CalculaDespacho from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
@@ -96,6 +97,7 @@ export default function PaginaCarro() {
           <Link href="/" className="enlace centrado">
             Seguir comprando
           </Link>
+          <AyudaCompra />
         </>
       )}
     </div>

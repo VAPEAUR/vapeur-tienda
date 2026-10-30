@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import AyudaCompra from "@/components/AyudaCompra";
 import { guardarDestino, leerDestino, useCotizacion } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { CLAVE_DATOS_CHECKOUT } from "@/components/VaciarCarro";
@@ -306,6 +307,7 @@ export default function Checkout() {
           </button>
         </form>
       )}
+      <AyudaCompra />
     </div>
   );
 }

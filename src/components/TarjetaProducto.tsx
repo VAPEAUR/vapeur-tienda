@@ -2,7 +2,7 @@ import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
 import EscalaNicotina from "@/components/EscalaNicotina";
 import type { Producto } from "@/lib/catalogo";
-import { clp } from "@/lib/formato";
+import { clp, sinCorte } from "@/lib/formato";
 import { advertenciaPara } from "@/lib/legal";
 import { colorArte, NOMBRE_TIPO, tipoDe } from "@/lib/tipo-producto";
 
@@ -27,7 +27,7 @@ export default function TarjetaProducto({ p }: { p: Producto }) {
       <div className="info">
         <span className="rotulo-tipo">{NOMBRE_TIPO[p.categoria] ?? "Producto"}</span>
         <Link href={`/producto/${p.slug}`} className="nombre">
-          {p.nombre}
+          {sinCorte(p.nombre)}
         </Link>
         <span className="dato">
           {p.marca} · {p.dato}
