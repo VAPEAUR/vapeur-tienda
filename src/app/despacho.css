@@ -208,6 +208,11 @@ body:has(.portada, .cabecera-listado) .barra-despacho-arriba {
   font-size: var(--tx-s);
 }
 
+.fecha-compra-texto .fecha-compra-costo {
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .fecha-compra-texto .enlace {
   justify-self: start;
   padding: 2px 0;
