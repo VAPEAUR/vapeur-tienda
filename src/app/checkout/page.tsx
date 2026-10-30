@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { guardarDestino, leerDestino, useCotizacion } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
+import { CLAVE_DATOS_CHECKOUT } from "@/components/VaciarCarro";
 import { useCatalogo } from "@/components/Catalogo";
 import { DESPACHO } from "@/lib/catalogo";
 import { EDAD_MINIMA, calcularEdad } from "@/lib/edad";
@@ -15,6 +16,11 @@ type Datos = { correo: string; nombre: string; rut: string; dia: string; mes: st
 type Errores = Partial<Record<keyof Datos | "declaracion" | "edad", string>>;
 
 const VACIO: Datos = { correo: "", nombre: "", rut: "", dia: "", mes: "", anio: "", telefono: "" };
+
+// Si Webpay rechaza el pago, el cliente vuelve al checkout con sus datos de
+// contacto y despacho ya escritos. Se guardan solo en esta pestaña
+// (sessionStorage) y nunca el RUT ni la fecha de nacimiento.
+type Recordados = { correo: string; nombre: string; telefono: string; direccion: string; depto: string };
 
 function validarDatos(d: Datos, declaracion: boolean): Errores {
   const e: Errores = {};
@@ -50,6 +56,16 @@ export default function Checkout() {
     if (d) {
       setRegion(d.region);
       setComuna(d.comuna);
+    }
+    try {
+      const r = JSON.parse(sessionStorage.getItem(CLAVE_DATOS_CHECKOUT) ?? "null") as Recordados | null;
+      if (r) {
+        setD((x) => ({ ...x, correo: r.correo ?? "", nombre: r.nombre ?? "", telefono: r.telefono ?? "" }));
+        setDireccion(r.direccion ?? "");
+        setDepto(r.depto ?? "");
+      }
+    } catch {
+      // sin datos recordados
     }
   }, []);
 
@@ -111,6 +127,12 @@ export default function Checkout() {
       });
       const res = (await r.json()) as { ok: boolean; url?: string; token?: string; error?: string };
       if (!res.ok || !res.url || !res.token) throw new Error(res.error || "No pudimos iniciar el pago.");
+      try {
+        const r: Recordados = { correo: d.correo, nombre: d.nombre, telefono: d.telefono, direccion, depto };
+        sessionStorage.setItem(CLAVE_DATOS_CHECKOUT, JSON.stringify(r));
+      } catch {
+        // sin sessionStorage: si falla el pago, se vuelven a escribir
+      }
       // Webpay recibe al cliente con un formulario POST que lleva el token.
       const form = document.createElement("form");
       form.method = "POST";
@@ -300,6 +322,7 @@ function Resumen({ subtotal, despacho, total }: { subtotal: number; despacho: nu
           <div key={`${it.slug}-${it.variante}`}>
             <span>
               {it.cantidad} × {p.nombre}
+              {it.variante ? ` · ${it.variante}` : ""}
             </span>
             <span className="tab">{clp(p.precio * it.cantidad)}</span>
           </div>

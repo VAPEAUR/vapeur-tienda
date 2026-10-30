@@ -96,7 +96,7 @@ async function manejar(solicitud: Request) {
   let { data: primeraVez, error } = await db.rpc("confirmar_pago", { p_pedido: pedido.id, p_respuesta: respuesta });
   if (error) ({ data: primeraVez, error } = await db.rpc("confirmar_pago", { p_pedido: pedido.id, p_respuesta: respuesta }));
   if (error) console.error(`REVISAR A MANO: pedido ${pedido.numero} pagado en Webpay pero no se pudo marcar: ${error.message}`);
-  if (primeraVez === true && (await enviarConfirmacion(pedido, respuesta))) {
+  if (primeraVez === true && (await enviarConfirmacion(pedido, respuesta, new URL(solicitud.url).origin))) {
     await db.from("pedidos").update({ correo_enviado_en: new Date().toISOString() }).eq("id", pedido.id);
   }
   return irA(solicitud, pedido);

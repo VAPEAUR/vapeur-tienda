@@ -30,7 +30,7 @@ async function leerPedido(n?: string, k?: string): Promise<FilaPedido | null> {
 }
 
 function fechaChile(iso: string) {
-  return new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", dateStyle: "short", timeStyle: "short" });
+  return new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", dateStyle: "long", timeStyle: "short" });
 }
 
 export default async function Confirmacion({ searchParams }: Props) {
@@ -108,6 +108,8 @@ export default async function Confirmacion({ searchParams }: Props) {
         )}
       </p>
 
+      {prueba ? <p className="nota">Compra de prueba: Webpay está en modo pruebas y no se hizo ningún cargo real.</p> : null}
+
       <div className="resumen">
         {pedido.items.map((it) => (
           <div key={`${it.slug}-${it.variante}`}>
@@ -126,6 +128,14 @@ export default async function Confirmacion({ searchParams }: Props) {
           <span>Total pagado</span>
           <span className="tab">{clp(pedido.total)}</span>
         </div>
+      </div>
+
+      <div className="que-pasa">
+        <h2>Despacho</h2>
+        <p>
+          {pedido.direccion}
+          {pedido.depto ? `, ${pedido.depto}` : ""}, {pedido.comuna}, {pedido.region}
+        </p>
       </div>
 
       {w ? (
@@ -169,7 +179,6 @@ export default async function Confirmacion({ searchParams }: Props) {
         </ol>
       </div>
 
-      {prueba ? <p className="nota">Compra de prueba: Webpay está en modo pruebas y no se hizo ningún cargo real.</p> : null}
       <Link href="/" className="boton secundario ancho">
         Volver a la tienda
       </Link>
