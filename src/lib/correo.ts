@@ -1,4 +1,5 @@
 import { CORREO_CONTACTO, WHATSAPP_VISIBLE } from "@/lib/contacto";
+import { diaChile, diaLargo, diaPreparado, fechaEstimada, sinCobertura, textoRango, textoRangoCorto } from "@/lib/fecha-entrega";
 import { GARANTIA_CORTA, RETRACTO_CORTO } from "@/lib/legal";
 import { tipoPago, type RespuestaWebpay } from "@/lib/webpay";
 
@@ -45,12 +46,13 @@ const FONDO = "#F5F5F5";
 
 // Línea de avance del pedido, la misma de la página de confirmación. Va en una
 // tabla con borde superior por paso: así se ve igual en Gmail, Outlook y Apple Mail.
-function lineaAvance() {
+function lineaAvance(p: PedidoCorreo, dia: Date) {
+  const llega = sinCobertura(p.region, p.comuna) ? "Te escribimos para coordinar" : `Estimada: ${textoRangoCorto(fechaEstimada(p.region, p.comuna, dia))}`;
   const pasos: [string, string, boolean][] = [
     ["Pago recibido", "Listo", true],
-    ["Preparando", "En 1 día hábil", false],
+    ["Preparando", `En 1 día hábil: ${diaLargo(diaPreparado(dia))}`, false],
     ["En camino", "Te enviamos el número de seguimiento", false],
-    ["Entrega con carnet", "Solo a mayores de 18 años", false],
+    ["Entrega con carnet", `${llega}. Solo a mayores de 18`, false],
   ];
   const celdas = pasos
     .map(
@@ -80,7 +82,9 @@ export function htmlConfirmacion(p: PedidoCorreo, w: RespuestaWebpay, origen: st
       : "";
   const enlacePedido = `${origen}/pedido?n=${p.numero}&k=${p.clave_acceso}`;
   // Texto que muestra Gmail junto al asunto, oculto en el cuerpo.
-  const preencabezado = `Pedido N° ${p.numero} · ${clp(p.total)} · Lo preparamos en 1 día hábil.`;
+  const dia = diaChile(w.transaction_date ? new Date(w.transaction_date) : undefined);
+  const estimada = sinCobertura(p.region, p.comuna) ? "" : ` Llega ${textoRango(fechaEstimada(p.region, p.comuna, dia))} (estimado).`;
+  const preencabezado = `Pedido N° ${p.numero} · ${clp(p.total)} · Lo preparamos en 1 día hábil.${estimada}`;
 
   return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Tu pedido Vapeur N° ${p.numero}</title></head>
 <body style="margin:0;background:${FONDO};font-family:Arial,Helvetica,sans-serif;color:${TINTA};line-height:1.45">
@@ -92,7 +96,7 @@ export function htmlConfirmacion(p: PedidoCorreo, w: RespuestaWebpay, origen: st
 ${prueba}
 <h1 style="font-size:22px;line-height:1.25;margin:0 0 8px;color:${TINTA}">Recibimos tu pago, ${escapar(p.nombre.split(" ")[0])}</h1>
 <p style="margin:0 0 20px;font-size:15px">Pedido N° <b>${p.numero}</b>. Este correo es tu comprobante de compra.</p>
-${lineaAvance()}
+${lineaAvance(p, dia)}
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 8px"><tr><td style="border-radius:6px;background:${PETROLEO}"><a href="${enlacePedido}" style="display:inline-block;padding:12px 22px;font-size:15px;font-weight:bold;color:#FFFFFF;text-decoration:none;border-radius:6px">Ver mi pedido</a></td></tr></table>
 <h2 ${titulo}>Tu compra</h2>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">

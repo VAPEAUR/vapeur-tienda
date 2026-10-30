@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import VaciarCarro from "@/components/VaciarCarro";
+import { diaChile, diaLargo, diaPreparado, fechaEstimada, sinCobertura, textoRangoCorto } from "@/lib/fecha-entrega";
 import { clp } from "@/lib/formato";
 import { COLUMNAS_PEDIDO, type FilaPedido } from "@/lib/pedidos";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -37,12 +38,16 @@ function fechaCorta(iso: string) {
   return new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
 }
 
-// Pasos del pedido; los mismos llegan en el correo de compra.
-const PASOS = [
-  { titulo: "Preparando", detalle: "En 1 día hábil" },
-  { titulo: "En camino", detalle: "Te enviamos el número de seguimiento" },
-  { titulo: "Entrega con carnet", detalle: "Solo a mayores de 18 años" },
-];
+// Pasos del pedido con sus fechas estimadas; los mismos llegan en el correo de compra.
+function pasos(region: string, comuna: string, pagado: string | null) {
+  const dia = diaChile(pagado ? new Date(pagado) : undefined);
+  const llega = sinCobertura(region, comuna) ? "Te escribimos para coordinar" : `Estimada: ${textoRangoCorto(fechaEstimada(region, comuna, dia))}`;
+  return [
+    { titulo: "Preparando", detalle: `En 1 día hábil: ${diaLargo(diaPreparado(dia))}` },
+    { titulo: "En camino", detalle: "Te enviamos el número de seguimiento" },
+    { titulo: "Entrega con carnet", detalle: `${llega}. Solo a mayores de 18` },
+  ];
+}
 
 export default async function Confirmacion({ searchParams }: Props) {
   const { n, k } = await searchParams;
@@ -135,7 +140,7 @@ export default async function Confirmacion({ searchParams }: Props) {
             </b>
             <span>{pagado ? fechaCorta(pagado) : "Listo"}</span>
           </li>
-          {PASOS.map((paso) => (
+          {pasos(pedido.region, pedido.comuna, pagado).map((paso) => (
             <li key={paso.titulo}>
               <i aria-hidden="true" />
               <b>{paso.titulo}</b>
