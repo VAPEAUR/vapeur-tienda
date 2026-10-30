@@ -23,7 +23,7 @@ export default function InscripcionNovedades() {
     if (!CORREO_VALIDO.test(c)) return setError("Revisa el correo: falta algo, por ejemplo nombre@correo.cl");
     if (!aceptaAvisos || !declara18) {
       setFaltan(true);
-      return setError("Para inscribirte, marca las dos casillas.");
+      return setError("Para suscribirte, marca las dos casillas.");
     }
     setError("");
     setEstado("enviando");
@@ -38,7 +38,7 @@ export default function InscripcionNovedades() {
       setCorreo("");
     } catch {
       setEstado("reposo");
-      setError("No pudimos inscribir tu correo. Inténtalo de nuevo en unos minutos.");
+      setError("No pudimos suscribir tu correo. Inténtalo de nuevo en unos minutos.");
     }
   }
 
@@ -52,7 +52,7 @@ export default function InscripcionNovedades() {
         </div>
         {estado === "ok" ? (
           <p className="pie-novedades-ok" role="status">
-            Listo, quedaste inscrito. Puedes darte de baja cuando quieras.
+            Listo, quedaste suscrito. Puedes darte de baja cuando quieras.
           </p>
         ) : (
           <form className="pie-novedades-caja" onSubmit={enviar} noValidate>
@@ -70,7 +70,7 @@ export default function InscripcionNovedades() {
                 aria-invalid={error.startsWith("Revisa") ? true : undefined}
               />
               <button type="submit" className="boton" disabled={estado === "enviando"}>
-                {estado === "enviando" ? "Enviando…" : "Inscribirme"}
+                {estado === "enviando" ? "Enviando…" : "Suscribirme"}
               </button>
             </div>
             <label className={`casilla oscura${faltan && !aceptaAvisos ? " con-error" : ""}`}>

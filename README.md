@@ -75,7 +75,7 @@ Puesta en marcha:
 4. Correo propio: Supabase → Authentication → Emails → SMTP Settings con Resend (`smtp.resend.com`, puerto 465, usuario `resend`, clave = una API key de Resend con permiso de envío). Remitente: `onboarding@resend.dev` mientras vapeur.cl no esté verificado en Resend (solo llega al correo de la cuenta de Resend); después `cuenta@vapeur.cl`. Sin SMTP propio Supabase manda un enlace en vez del código, muy pocos correos por hora y solo a correos del equipo, y no deja editar las plantillas.
 5. Con el SMTP listo: Authentication → Emails → Templates, pegar `supabase/correo-codigo.html` en "Magic link or OTP" y en "Confirm sign up" (asunto en el archivo).
 
-## Avisos por correo (formulario "Inscribirme" del pie, 30-oct-2026)
+## Avisos por correo (formulario "Suscribirme" del pie, 30-oct-2026)
 
 Solo recolección: la tienda todavía **no envía** avisos.
 
