@@ -17,11 +17,10 @@ export default async function PaginaRepuestos() {
       titulo="Repuestos"
       bajada="Cartuchos y coils. Elige tu equipo para ver solo lo compatible."
       migas="Repuestos"
+      foto={{ arte: "cartucho", tipo: "repuestos" }}
       productos={productosDe("repuestos")}
     >
-      <div className="panel-repuestos compacto">
-        <BuscadorRepuestos />
-      </div>
+      <BuscadorRepuestos botonClaro />
     </PaginaListado>
   );
 }

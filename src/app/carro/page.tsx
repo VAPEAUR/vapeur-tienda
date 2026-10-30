@@ -8,9 +8,11 @@ import CalculaDespacho from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
 import PagoSeguro from "@/components/PagoSeguro";
-import { clp } from "@/lib/formato";
-import { colorArte } from "@/lib/tipo-producto";
+import { clp, sinCorte } from "@/lib/formato";
+import { colorArte, NOMBRE_TIPO, tipoDe } from "@/lib/tipo-producto";
 
+// Carro en la vitrina de estudio: cada producto sobre el fondo de su tipo y el
+// cierre de la compra en una tarjeta de piedra (al lado en escritorio).
 export default function PaginaCarro() {
   const { items, subtotal, listo, cambiarCantidad, quitar } = useCarro();
   const { producto } = useCatalogo();
@@ -19,7 +21,7 @@ export default function PaginaCarro() {
   if (!listo) return <div className="wrap pagina" />;
 
   return (
-    <div className="wrap pagina angosta">
+    <div className="wrap pagina compra">
       <h1>Tu carro</h1>
       {items.length === 0 ? (
         <div className="vacio">
@@ -29,19 +31,21 @@ export default function PaginaCarro() {
           </Link>
         </div>
       ) : (
-        <>
+        <div className="compra-grilla">
           <ul className="lineas">
             {items.map((it, i) => {
               const p = producto(it.slug);
               if (!p) return null;
               return (
-                <li key={`${it.slug}-${it.variante}`} className="linea">
-                  <Link href={`/producto/${p.slug}`} className="foto">
+                <li key={`${it.slug}-${it.variante}`} className={`linea tipo-${tipoDe(p.categoria)}`}>
+                  {/* La foto repite el enlace del nombre: fuera del teclado y del lector. */}
+                  <Link href={`/producto/${p.slug}`} className="foto foto-estudio" tabIndex={-1} aria-hidden="true">
                     <ArteProducto arte={p.arte} color={colorArte(p)} />
                   </Link>
                   <div className="detalle">
+                    <span className="rotulo-tipo">{NOMBRE_TIPO[p.categoria] ?? "Producto"}</span>
                     <Link href={`/producto/${p.slug}`} className="nombre">
-                      {p.nombre}
+                      {sinCorte(p.nombre)}
                     </Link>
                     {it.variante ? <span className="muted">{it.variante}</span> : null}
                     <div className="fila-linea">
@@ -65,40 +69,44 @@ export default function PaginaCarro() {
             })}
           </ul>
 
-          <CalculaDespacho items={items} onCambio={setDespacho} />
-
-          <div className="resumen">
-            <div>
-              <span>Subtotal</span>
-              <b className="tab">{clp(subtotal)}</b>
-            </div>
-            {typeof despacho === "number" ? (
-              <>
+          <div className="compra-cierre fijo">
+            <div className="caja-resumen">
+              <h2>Resumen</h2>
+              <CalculaDespacho items={items} onCambio={setDespacho} />
+              <div className="resumen">
                 <div>
-                  <span>Despacho</span>
-                  <span className="tab">{clp(despacho)}</span>
+                  <span>Subtotal</span>
+                  <b className="tab">{clp(subtotal)}</b>
                 </div>
-                <div className="total">
-                  <span>Total</span>
-                  <span className="tab">{clp(subtotal + despacho)}</span>
-                </div>
-              </>
-            ) : (
-              <div className="muted">
-                <span>Despacho</span>
-                <span>Elige tu comuna arriba</span>
+                {typeof despacho === "number" ? (
+                  <>
+                    <div>
+                      <span>Despacho</span>
+                      <span className="tab">{clp(despacho)}</span>
+                    </div>
+                    <div className="total">
+                      <span>Total</span>
+                      <span className="tab">{clp(subtotal + despacho)}</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="muted">
+                    <span>Despacho</span>
+                    <span>Elige tu comuna arriba</span>
+                  </div>
+                )}
               </div>
-            )}
+              <Link href="/checkout" className="boton ancho">
+                Ir a pagar
+              </Link>
+              <PagoSeguro />
+            </div>
+            <Link href="/" className="enlace centrado">
+              Seguir comprando
+            </Link>
+            <AyudaCompra />
           </div>
-          <Link href="/checkout" className="boton ancho">
-            Ir a pagar
-          </Link>
-          <PagoSeguro />
-          <Link href="/" className="enlace centrado">
-            Seguir comprando
-          </Link>
-          <AyudaCompra />
-        </>
+        </div>
       )}
     </div>
   );

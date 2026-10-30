@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
+import { CabeceraListado } from "@/components/PaginaListado";
 import { obtenerCatalogo } from "@/lib/datos";
 import { clp } from "@/lib/formato";
 import { describir } from "@/lib/seo";
@@ -14,41 +15,42 @@ export const metadata: Metadata = {
 export default async function PaginaKits() {
   const { producto, kits, precioKit } = await obtenerCatalogo();
   return (
-    <div className="wrap pagina">
-      <nav className="migas" aria-label="Migas">
-        <Link href="/">Inicio</Link> / <span>Kits</span>
-      </nav>
-      <header className="cabecera-listado">
-        <h1>Kits: equipo y repuestos juntos</h1>
-        <p className="muted">Equipo, repuesto y lo necesario para usarlo. El precio del kit es la suma de sus productos.</p>
-      </header>
-      <div className="kits">
-        {kits().map((k) => (
-          <article key={k.nombre} className="kit tipo-kits">
-            <div className="arte-kit foto-estudio" aria-hidden="true">
-              <ArteProducto arte={k.arte} />
-            </div>
-            <span className="banda" aria-hidden="true" />
-            <div className="kit-info">
-              <span className="rotulo-tipo">
-                {k.tipo} · {k.para}
-              </span>
-              <h2>{k.nombre}</h2>
-              <ul>
-                {k.productos.map((slug) => {
-                  const p = producto(slug);
-                  return p ? (
-                    <li key={slug}>
-                      <Link href={`/producto/${slug}`}>{p.nombre}</Link> · {clp(p.precio)}
-                    </li>
-                  ) : null;
-                })}
-              </ul>
-              <span className="precio">{clp(precioKit(k))}</span>
-            </div>
-          </article>
-        ))}
+    <>
+      <CabeceraListado
+        titulo="Kits: equipo y repuestos juntos"
+        bajada="Equipo, repuesto y lo necesario para usarlo. El precio del kit es la suma de sus productos."
+        migas="Kits"
+        foto={{ arte: "mod", tipo: "kits" }}
+      />
+      <div className="wrap pagina">
+        <div className="kits">
+          {kits().map((k) => (
+            <article key={k.nombre} className="kit tipo-kits">
+              <div className="arte-kit foto-estudio" aria-hidden="true">
+                <ArteProducto arte={k.arte} />
+              </div>
+              <span className="banda" aria-hidden="true" />
+              <div className="kit-info">
+                <span className="rotulo-tipo">
+                  {k.tipo} · {k.para}
+                </span>
+                <h2>{k.nombre}</h2>
+                <ul>
+                  {k.productos.map((slug) => {
+                    const p = producto(slug);
+                    return p ? (
+                      <li key={slug}>
+                        <Link href={`/producto/${slug}`}>{p.nombre}</Link> · {clp(p.precio)}
+                      </li>
+                    ) : null;
+                  })}
+                </ul>
+                <span className="precio">{clp(precioKit(k))}</span>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

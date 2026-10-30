@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PaginaListado from "@/components/PaginaListado";
 import { obtenerCatalogo } from "@/lib/datos";
 import { describir } from "@/lib/seo";
+import { colorArte } from "@/lib/tipo-producto";
 
 type Props = { params: Promise<{ equipo: string }> };
 
@@ -26,6 +27,7 @@ export default async function RepuestosDeEquipo({ params }: Props) {
       titulo={`Repuestos para ${e.nombre}`}
       bajada={e.compatible ?? "Repuestos compatibles con tu equipo."}
       migas={`Repuestos / ${e.nombre}`}
+      foto={{ arte: e.arte, tipo: "equipos", color: colorArte(e) }}
       productos={repuestosPara(e.slug)}
     />
   );

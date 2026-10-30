@@ -4,6 +4,7 @@ import PaginaListado from "@/components/PaginaListado";
 import { CATEGORIAS, categoria } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
 import { SEO_CATEGORIAS } from "@/lib/seo";
+import { tipoDe } from "@/lib/tipo-producto";
 
 type Props = { params: Promise<{ categoria: string }> };
 
@@ -25,5 +26,13 @@ export default async function PaginaCategoria({ params }: Props) {
   const c = categoria((await params).categoria);
   if (!c) notFound();
   const { productosDe } = await obtenerCatalogo();
-  return <PaginaListado titulo={c.nombre} bajada={c.bajada} migas={c.nombre} productos={productosDe(c.slug)} />;
+  return (
+    <PaginaListado
+      titulo={c.nombre}
+      bajada={c.bajada}
+      migas={c.nombre}
+      foto={{ arte: c.arte, tipo: tipoDe(c.slug) }}
+      productos={productosDe(c.slug)}
+    />
+  );
 }
