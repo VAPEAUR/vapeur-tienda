@@ -9,7 +9,8 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Next.js (App Router) + TypeScript
 - Cloudflare Workers con [OpenNext](https://opennext.js.org/cloudflare) (prueba técnica 28-oct-2026)
 - Supabase (base de datos, fotos y acceso del panel admin) — por conectar
-- Webpay Plus de Transbank — por conectar
+- Webpay Plus de Transbank — conectado en ambiente de integración (pruebas)
+- Resend (correo de confirmación de compra)
 - Blue Express — por conectar
 
 ## Qué hay hoy (prototipo A · Grafito y petróleo)
@@ -18,7 +19,7 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Inicio con portada, categorías, "Repuestos para tu equipo", Elegidos por Vapeur, quiz "¿Qué equipo es para ti?", kits por nivel y pasos de compra.
 - Listados por categoría, marca y equipo (`/equipos`, `/marcas/[marca]`, `/repuestos/[equipo]`), kits y ficha de producto.
 - Carro en el navegador y checkout en 2 pasos: valida RUT (módulo 11) y fecha de nacimiento, y bloquea a menores de 18.
-- **Pago simulado**: Webpay se conecta cuando Transbank apruebe la afiliación.
+- Pedidos guardados en Supabase y pago con **Webpay Plus en modo pruebas** (ver abajo).
 - Catálogo, fotos (dibujos SVG) y tarifas de despacho son **de ejemplo** (`src/lib/catalogo.ts`) hasta conectar Supabase y el courier.
 - Textos legales y de advertencia provisorios: los debe validar el abogado (`src/lib/paginas.ts`, `src/components/Advertencia.tsx`).
 - Sitio sin indexar en buscadores hasta el lanzamiento.
@@ -31,9 +32,26 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Puesta en marcha: correr `supabase/catalogo.sql` en el SQL Editor, crear el usuario en Authentication → Users → Add user (marcar *Auto Confirm User*) y correr la línea 4 del mismo archivo con ese correo.
 - Los kits (`KITS`) y las tarifas de despacho (`DESPACHO`) siguen en el código.
 
+## Pedidos y Webpay Plus (30-oct-2026)
+
+Flujo: checkout → `POST /api/pedidos` → Webpay (Transbank) → `/api/webpay/retorno` → `/pedido`.
+
+1. `POST /api/pedidos` vuelve a validar todo en el servidor: edad (RUT y fecha de nacimiento, que **no se guardan**), datos, stock, variantes, precios desde `public.productos` y despacho (`src/lib/despacho-servidor.ts`). Guarda el pedido en `public.pedidos` con estado `pendiente_pago` y crea la transacción en Webpay.
+2. El navegador se va al formulario de pago de Transbank con el token.
+3. `/api/webpay/retorno` recibe al cliente: confirma el pago (commit), revisa que monto y orden coincidan, marca el pedido `pagado`, descuenta stock (función `confirmar_pago`, una sola vez aunque se recargue) y envía el correo. Si el cliente anula, se acaba el tiempo o el banco rechaza, el pedido queda `anulado` o `rechazado` y el carro sigue guardado.
+4. `/pedido?n=…&k=…` muestra el comprobante (orden de compra, fecha, tipo de pago, 4 últimos dígitos, código de autorización). La clave `k` es al azar: sin ella no se puede ver un pedido.
+
+Puesta en marcha:
+
+1. Supabase → SQL Editor: correr `supabase/pedidos.sql` (después de `catalogo.sql`).
+2. Cloudflare → Variables and Secrets: agregar `SUPABASE_SECRET_KEY` como **Secret** (Supabase → Project Settings → API Keys → Secret keys).
+3. Correo: crear cuenta en Resend y cargar `RESEND_API_KEY` como Secret. Mientras no se verifique el dominio vapeur.cl en Resend, solo llegan correos al correo de la cuenta de Resend (sirve para probar). Con el dominio verificado: `CORREO_REMITENTE` = `Vapeur <pedidos@vapeur.cl>`.
+4. Webpay de prueba no necesita variables. Tarjetas de prueba de Transbank: crédito VISA 4051 8856 0044 6623, CVV 123, cualquier fecha futura; RUT 11.111.111-1 y clave 123 en la pantalla del banco.
+5. Paso a producción (cuando Transbank entregue el código de comercio): `WEBPAY_AMBIENTE=produccion`, `WEBPAY_CODIGO_COMERCIO` y `WEBPAY_API_KEY` (Secret). No hay que cambiar código.
+
 ## Cloudflare
 
-1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
+1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`; como Secret: `SUPABASE_SECRET_KEY` y `RESEND_API_KEY`.
 2. La prueba técnica (ruta `/api/prueba-supabase` y tabla `prueba_conexion`) se aprobó el 27-oct-2026 y se borró.
 3. Google (SEO): el sitio queda fuera de Google hasta que `INDEXAR` = `si` (se carga el día del lanzamiento, 14-dic-2026). Aun con `INDEXAR`, solo se indexa el dominio `vapeur.cl`; workers.dev y vistas previas siguen con `noindex` y `robots.txt` cerrado. `www.vapeur.cl`, `vaperia.cl` y `www.vaperia.cl` redirigen a `vapeur.cl` si están conectados al Worker. Detalle en `src/lib/seo.tsx`.
 
