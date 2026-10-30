@@ -34,13 +34,14 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 
 ## Despacho con Chilexpress
 
-- La calculadora (ficha, carro y checkout) pide el costo a `/api/despacho`, que cotiza con la API de Chilexpress desde Santiago Centro según el peso del carro (`src/lib/cotizar-envio.ts`, `src/lib/chilexpress.ts`).
-- Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA` en `src/lib/despacho.ts`): RM $5.990, regiones $9.990, zonas extremas $14.990 (calibrada con la API el 30-oct-2026).
+- La calculadora (ficha, carro y checkout) pide el costo a `/api/despacho` (`src/lib/cotizar-envio.ts`).
+- Región Metropolitana: precio fijo de $3.990 (`TARIFA_FIJA_RM` en `src/lib/despacho.ts`, tope pedido por Amerhi el 30-oct-2026). Se despacha con el servicio Básico de Chilexpress, pagado en la Plataforma Emprendedores ($3.536 pagando online una caja de 0,5 kg; $5.229 hasta 1,5 kg). La orden de envío se crea a mano en esa plataforma.
+- Regiones: se cotiza con la API de Chilexpress desde Santiago Centro según el peso del carro (`src/lib/chilexpress.ts`). Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA`): regiones $9.990, zonas extremas $14.990 (calibrada con la API el 30-oct-2026).
 - Si Chilexpress no llega a la comuna (hoy: O'Higgins en Aysén y San Fabián en Ñuble), no se cobra tarifa: la tienda pide escribir por WhatsApp.
 - Nombres que Chilexpress escribe distinto (Santiago = "Santiago Centro", Llaillay, Marchigüe, Paihuano, Aysén): `NOMBRE_CHILEXPRESS` en `src/lib/chilexpress.ts`.
-- Plazos mostrados: 1 día hábil de preparación (igual en Ayuda › Despacho, Términos, confirmación y correo) + Chilexpress (RM 1–2, regiones 2–6, zonas extremas hasta 12 días hábiles).
+- Plazos mostrados: 1 día hábil de preparación (igual en Ayuda › Despacho, Términos, confirmación y correo) + Chilexpress (RM 3–4 con Básico, regiones 2–6, zonas extremas hasta 12 días hábiles).
 - Claves: suscribirse en developers.wschilexpress.com a Cobertura, Cotizador y Envíos, y cargarlas en Cloudflare (ver `.env.example`). Con Cuenta Empresa: `CHILEXPRESS_AMBIENTE=produccion` y claves de producción.
-- `crearEnvio()` y `seguimiento()` quedan listas para el sprint de pedidos (OT con etiqueta PDF y observación "entregar solo a mayor de 18 años con cédula").
+- `crearEnvio()` y `seguimiento()` quedan listas para cuando haya Cuenta Empresa con TCC, que la API exige para crear órdenes de envío (etiqueta en imagen y observación "entregar solo a mayor de 18 años con cédula").
 
 ## Pedidos y Webpay Plus (30-oct-2026)
 

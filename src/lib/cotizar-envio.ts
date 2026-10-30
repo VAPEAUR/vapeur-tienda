@@ -1,9 +1,10 @@
-// Costo de despacho para una comuna y un carro: tarifa real de Chilexpress
-// y, si la API falla o aún no hay claves, la tarifa estimada por zona.
+// Costo de despacho para una comuna y un carro: precio fijo en la Región
+// Metropolitana y, en regiones, tarifa real de Chilexpress (si la API falla o
+// aún no hay claves, la tarifa estimada por zona).
 // Solo servidor. Lo usan la calculadora (/api/despacho) y la creación del pedido.
 import { cotizar, codigoComuna, hayClaves, type Paquete } from "@/lib/chilexpress";
 import { comunaValida } from "@/lib/comunas";
-import { estimarDespacho, textoPlazo, type Cotizacion, type ItemDespacho } from "@/lib/despacho";
+import { TARIFA_FIJA_RM, estimarDespacho, textoPlazo, zona, type Cotizacion, type ItemDespacho } from "@/lib/despacho";
 import { obtenerCatalogo } from "@/lib/datos";
 
 // Peso aproximado por unidad, con su caja individual. Ajustar cuando
@@ -43,6 +44,8 @@ const memoria = new Map<string, { hasta: number; valor: number; servicio: string
 export async function cotizarEnvio(region: string, comuna: string, items?: ItemDespacho[]): Promise<Cotizacion> {
   const plazo = textoPlazo(region, comuna);
   if (!comunaValida(region, comuna)) return { costo: null, fuente: "estimado", plazo };
+  // Región Metropolitana: precio fijo con el servicio Básico (ver TARIFA_FIJA_RM).
+  if (zona(region, comuna) === "rm") return { costo: TARIFA_FIJA_RM, fuente: "fija", servicio: "Básico", plazo };
   const estimado: Cotizacion = { costo: estimarDespacho(region, comuna), fuente: "estimado", plazo };
   if (!hayClaves("cobertura", "cotizador")) return estimado;
 

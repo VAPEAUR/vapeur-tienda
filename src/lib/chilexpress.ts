@@ -181,7 +181,7 @@ export async function crearEnvio(e: DatosEnvio): Promise<EnvioCreado> {
         certificateNumber: 0,
         customerCardNumber: process.env.CHILEXPRESS_TCC ?? "",
         countyOfOriginCoverageCode: origen(),
-        labelType: 2, // PDF
+        labelType: 2, // imagen en binario (base64) + datos
       },
       details: [
         {

@@ -21,9 +21,18 @@ export function zona(region: string, comuna = ""): Zona {
  */
 export const DIAS_PREPARACION = 1;
 
+/**
+ * Precio fijo del despacho en la Región Metropolitana: tope que pidió Amerhi
+ * el 30-oct-2026. Se despacha con el servicio Básico de Chilexpress, pagado
+ * en su Plataforma Emprendedores. Cotizado ese día desde Santiago Centro
+ * (Ñuñoa y Puente Alto): $3.536 pagando online una caja de 0,5 kg y $5.229
+ * hasta 1,5 kg, que Vapeur cubre.
+ */
+export const TARIFA_FIJA_RM = 3990;
+
 /** Días hábiles de Chilexpress desde que recibe el paquete. */
 export const PLAZO_COURIER: Record<Zona, { min: number; max: number }> = {
-  rm: { min: 1, max: 2 },
+  rm: { min: 3, max: 4 }, // servicio Básico
   regiones: { min: 2, max: 6 },
   extrema: { min: 2, max: 12 },
 };
@@ -31,12 +40,13 @@ export const PLAZO_COURIER: Record<Zona, { min: number; max: number }> = {
 /**
  * Tarifa de respaldo cuando la API de Chilexpress no responde o aún no hay
  * claves. Calibrada con la API el 30-oct-2026 (tarifa lista, sin descuentos,
- * caja de 0,5 kg desde Santiago Centro): RM $5.661; Concepción $6.424,
- * Talca $7.538, Puerto Montt $9.236, Antofagasta $10.326; Coyhaique y
- * Punta Arenas $13.761. Se redondea hacia arriba para no perder en cada envío.
+ * caja de 0,5 kg desde Santiago Centro): Concepción $6.424, Talca $7.538,
+ * Puerto Montt $9.236, Antofagasta $10.326; Coyhaique y Punta Arenas
+ * $13.761. Se redondea hacia arriba para no perder en cada envío. En la RM
+ * rige siempre el precio fijo.
  */
 export const TARIFA_ESTIMADA: Record<Zona, number> = {
-  rm: 5990,
+  rm: TARIFA_FIJA_RM,
   regiones: 9990,
   extrema: 14990,
 };
@@ -46,7 +56,7 @@ export function estimarDespacho(region: string, comuna: string): number | null {
   return TARIFA_ESTIMADA[zona(region, comuna)];
 }
 
-/** "Llega en 2 a 3 días hábiles desde el pago" (preparación + courier). */
+/** "Llega en 4 a 5 días hábiles desde el pago" (preparación + courier). */
 export function textoPlazo(region: string, comuna = "") {
   const z = zona(region, comuna);
   const { min, max } = PLAZO_COURIER[z];
@@ -59,8 +69,8 @@ export type ItemDespacho = { slug: string; cantidad: number };
 /** Respuesta de /api/despacho. */
 export type Cotizacion = {
   costo: number | null;
-  /** "chilexpress": tarifa real de la API; "estimado": tarifa de respaldo. */
-  fuente: "chilexpress" | "estimado";
+  /** "chilexpress": tarifa real de la API; "estimado": tarifa de respaldo; "fija": precio fijo de la RM. */
+  fuente: "chilexpress" | "estimado" | "fija";
   servicio?: string;
   plazo: string;
 };
