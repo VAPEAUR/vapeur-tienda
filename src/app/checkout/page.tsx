@@ -151,163 +151,182 @@ export default function Checkout() {
     }
   }
 
+  // Campos a la izquierda y el cierre de la compra en una tarjeta de piedra a la
+  // derecha (en celular, abajo). Sin petróleo claro: el fondo es blanco.
   return (
-    <div className="wrap pagina angosta checkout">
+    <div className="wrap pagina compra checkout">
       <ol className="pasos-checkout" aria-label="Pasos de la compra">
-        <li aria-current={paso === 1 ? "step" : undefined}>1. Tus datos</li>
-        <li aria-current={paso === 2 ? "step" : undefined}>2. Despacho y pago</li>
+        <li aria-current={paso === 1 ? "step" : undefined} className={paso === 2 ? "hecho" : undefined}>
+          <i aria-hidden="true">1</i> Tus datos
+        </li>
+        <li aria-current={paso === 2 ? "step" : undefined}>
+          <i aria-hidden="true">2</i> Despacho y pago
+        </li>
       </ol>
 
       {paso === 1 ? (
-        <form onSubmit={continuar} noValidate className="formulario">
-          <h1>Tus datos</h1>
-          <p className="nota">
-            La ley exige verificar que eres mayor de 18 años. Usamos tu RUT y fecha de nacimiento solo para eso, y tus
-            datos solo para tu compra y el despacho.
-          </p>
+        <form onSubmit={continuar} noValidate className="compra-grilla">
+          <div className="formulario">
+            <h1>Tus datos</h1>
+            <p className="nota">
+              La ley exige verificar que eres mayor de 18 años. Usamos tu RUT y fecha de nacimiento solo para eso, y tus
+              datos solo para tu compra y el despacho.
+            </p>
 
-          <div className="campo">
-            <label htmlFor="correo">Correo</label>
-            <input id="correo" type="email" autoComplete="email" {...campo("correo")} />
-            {errores.correo ? <span id="error-correo" className="error">{errores.correo}</span> : null}
-          </div>
-          <div className="campo">
-            <label htmlFor="nombre">Nombre y apellido</label>
-            <input id="nombre" type="text" autoComplete="name" {...campo("nombre")} />
-            {errores.nombre ? <span id="error-nombre" className="error">{errores.nombre}</span> : null}
-          </div>
-          <div className="campo">
-            <label htmlFor="rut">RUT</label>
-            <input
-              id="rut"
-              type="text"
-              inputMode="text"
-              placeholder="12.345.678-5"
-              {...campo("rut")}
-              onBlur={() => setD((x) => ({ ...x, rut: formatearRut(x.rut) }))}
-            />
-            {errores.rut ? <span id="error-rut" className="error">{errores.rut}</span> : null}
-          </div>
-          <fieldset className="campo">
-            <legend>Fecha de nacimiento</legend>
-            <div className="fecha">
-              <input aria-label="Día" inputMode="numeric" placeholder="DD" maxLength={2} {...campo("dia")} aria-describedby={errores.edad ? "error-edad" : undefined} />
-              <input aria-label="Mes" inputMode="numeric" placeholder="MM" maxLength={2} {...campo("mes")} aria-describedby={errores.edad ? "error-edad" : undefined} />
-              <input aria-label="Año" inputMode="numeric" placeholder="AAAA" maxLength={4} {...campo("anio")} aria-describedby={errores.edad ? "error-edad" : undefined} />
+            <div className="campo">
+              <label htmlFor="correo">Correo</label>
+              <input id="correo" type="email" autoComplete="email" {...campo("correo")} />
+              {errores.correo ? <span id="error-correo" className="error">{errores.correo}</span> : null}
             </div>
-            {errores.edad ? (
-              <span id="error-edad" className={menor ? "alerta" : "error"} role={menor ? "alert" : undefined}>
-                {errores.edad}
-              </span>
-            ) : null}
-          </fieldset>
-          <div className="campo">
-            <label htmlFor="telefono">Teléfono</label>
-            <input id="telefono" type="tel" autoComplete="tel" placeholder="+56 9 1234 5678" {...campo("telefono")} />
-            {errores.telefono ? <span id="error-telefono" className="error">{errores.telefono}</span> : null}
+            <div className="campo">
+              <label htmlFor="nombre">Nombre y apellido</label>
+              <input id="nombre" type="text" autoComplete="name" {...campo("nombre")} />
+              {errores.nombre ? <span id="error-nombre" className="error">{errores.nombre}</span> : null}
+            </div>
+            <div className="campo">
+              <label htmlFor="rut">RUT</label>
+              <input
+                id="rut"
+                type="text"
+                inputMode="text"
+                placeholder="12.345.678-5"
+                {...campo("rut")}
+                onBlur={() => setD((x) => ({ ...x, rut: formatearRut(x.rut) }))}
+              />
+              {errores.rut ? <span id="error-rut" className="error">{errores.rut}</span> : null}
+            </div>
+            <fieldset className="campo">
+              <legend>Fecha de nacimiento</legend>
+              <div className="fecha">
+                <input aria-label="Día" inputMode="numeric" placeholder="DD" maxLength={2} {...campo("dia")} aria-describedby={errores.edad ? "error-edad" : undefined} />
+                <input aria-label="Mes" inputMode="numeric" placeholder="MM" maxLength={2} {...campo("mes")} aria-describedby={errores.edad ? "error-edad" : undefined} />
+                <input aria-label="Año" inputMode="numeric" placeholder="AAAA" maxLength={4} {...campo("anio")} aria-describedby={errores.edad ? "error-edad" : undefined} />
+              </div>
+              {errores.edad ? (
+                <span id="error-edad" className={menor ? "alerta" : "error"} role={menor ? "alert" : undefined}>
+                  {errores.edad}
+                </span>
+              ) : null}
+            </fieldset>
+            <div className="campo">
+              <label htmlFor="telefono">Teléfono</label>
+              <input id="telefono" type="tel" autoComplete="tel" placeholder="+56 9 1234 5678" {...campo("telefono")} />
+              {errores.telefono ? <span id="error-telefono" className="error">{errores.telefono}</span> : null}
+            </div>
+            <label className="check">
+              <input type="checkbox" checked={declaracion} onChange={(e) => setDeclaracion(e.target.checked)} />
+              <span>Declaro que tengo 18 años o más y que recibiré el pedido mostrando mi carnet.</span>
+            </label>
+            {errores.declaracion ? <span className="error">{errores.declaracion}</span> : null}
           </div>
-          <label className="check">
-            <input type="checkbox" checked={declaracion} onChange={(e) => setDeclaracion(e.target.checked)} />
-            <span>Declaro que tengo 18 años o más y que recibiré el pedido mostrando mi carnet.</span>
-          </label>
-          {errores.declaracion ? <span className="error">{errores.declaracion}</span> : null}
 
-          <Resumen subtotal={subtotal} despacho={undefined} total={subtotal} />
-          <button type="submit" className="boton ancho">
-            Continuar a despacho
-          </button>
-          <p className="muted centrado">Compras sin crear cuenta. Pago con Webpay de Transbank.</p>
+          <div className="compra-cierre">
+            <div className="caja-resumen">
+              <Resumen subtotal={subtotal} despacho={undefined} total={subtotal} />
+              <button type="submit" className="boton ancho">
+                Continuar a despacho
+              </button>
+              <p className="muted centrado">Compras sin crear cuenta. Pago con Webpay de Transbank.</p>
+            </div>
+            <AyudaCompra />
+          </div>
         </form>
       ) : (
-        <form onSubmit={pagar} noValidate className="formulario">
-          <h1>Despacho y pago</h1>
-          <div className="campo">
-            <label htmlFor="region">Región</label>
-            <select
-              id="region"
-              value={region}
-              onChange={(e) => {
-                setRegion(e.target.value);
-                setComuna("");
-              }}
-            >
-              <option value="">Selecciona</option>
-              {Object.keys(DESPACHO).map((r) => (
-                <option key={r}>{r}</option>
-              ))}
-            </select>
-          </div>
-          <div className="campo">
-            <label htmlFor="comuna">Comuna</label>
-            <select
-              id="comuna"
-              value={comuna}
-              onChange={(e) => {
-                setComuna(e.target.value);
-                if (e.target.value) guardarDestino({ region, comuna: e.target.value });
-              }}
-              disabled={!region}
-            >
-              <option value="">Selecciona</option>
-              {region
-                ? Object.keys(DESPACHO[region]).map((c) => (
-                    <option key={c}>{c}</option>
-                  ))
-                : null}
-            </select>
-          </div>
-          <div className="campo">
-            <label htmlFor="direccion">Calle y número</label>
-            <input id="direccion" autoComplete="address-line1" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
-          </div>
-          <div className="campo">
-            <label htmlFor="depto">Depto, casa u oficina (opcional)</label>
-            <input id="depto" autoComplete="address-line2" value={depto} onChange={(e) => setDepto(e.target.value)} />
-          </div>
-
-          {comuna ? (
-            <div className="envio">
-              <b>Envío a {comuna}</b>
-              {costoDespacho === null ? (
-                <span>Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.</span>
-              ) : (
-                <span>
-                  Chilexpress a domicilio ·{" "}
-                  {costoDespacho === undefined ? "calculando…" : <b className="tab">{clp(costoDespacho)}</b>}
-                </span>
-              )}
-              {cotizacion ? <span className="muted">{cotizacion.plazo}.</span> : null}
-              <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>
+        <form onSubmit={pagar} noValidate className="compra-grilla">
+          <div className="formulario">
+            <h1>Despacho y pago</h1>
+            <div className="campo">
+              <label htmlFor="region">Región</label>
+              <select
+                id="region"
+                value={region}
+                onChange={(e) => {
+                  setRegion(e.target.value);
+                  setComuna("");
+                }}
+              >
+                <option value="">Selecciona</option>
+                {Object.keys(DESPACHO).map((r) => (
+                  <option key={r}>{r}</option>
+                ))}
+              </select>
             </div>
-          ) : null}
+            <div className="campo">
+              <label htmlFor="comuna">Comuna</label>
+              <select
+                id="comuna"
+                value={comuna}
+                onChange={(e) => {
+                  setComuna(e.target.value);
+                  if (e.target.value) guardarDestino({ region, comuna: e.target.value });
+                }}
+                disabled={!region}
+              >
+                <option value="">Selecciona</option>
+                {region
+                  ? Object.keys(DESPACHO[region]).map((c) => (
+                      <option key={c}>{c}</option>
+                    ))
+                  : null}
+              </select>
+            </div>
+            <div className="campo">
+              <label htmlFor="direccion">Calle y número</label>
+              <input id="direccion" autoComplete="address-line1" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
+            </div>
+            <div className="campo">
+              <label htmlFor="depto">Depto, casa u oficina (opcional)</label>
+              <input id="depto" autoComplete="address-line2" value={depto} onChange={(e) => setDepto(e.target.value)} />
+            </div>
 
-          <Resumen subtotal={subtotal} despacho={typeof costoDespacho === "number" ? costoDespacho : undefined} total={total} />
-          <p className="aviso-retracto">
-            <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
-          </p>
+            {comuna ? (
+              <div className="envio">
+                <b>Envío a {comuna}</b>
+                {costoDespacho === null ? (
+                  <span>Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.</span>
+                ) : (
+                  <span>
+                    Chilexpress a domicilio ·{" "}
+                    {costoDespacho === undefined ? "calculando…" : <b className="tab">{clp(costoDespacho)}</b>}
+                  </span>
+                )}
+                {cotizacion ? <span className="muted">{cotizacion.plazo}.</span> : null}
+                <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>
+              </div>
+            ) : null}
+          </div>
 
-          <label className="check">
-            <input type="checkbox" checked={terminos} onChange={(e) => setTerminos(e.target.checked)} />
-            <span>
-              Acepto los <Link href="/legal/terminos">Términos</Link> y la{" "}
-              <Link href="/legal/privacidad">Política de privacidad</Link>.
-            </span>
-          </label>
-          {errorPago ? (
-            <p className="error" role="alert">
-              {errorPago}
-            </p>
-          ) : null}
-          <button type="submit" className="boton acento ancho" disabled={enviando} aria-busy={enviando || undefined}>
-            {enviando ? "Conectando con Webpay…" : "Pagar con Webpay"}
-          </button>
-          <p className="muted centrado">Te llevamos al sitio seguro de Transbank: crédito, débito o prepago.</p>
-          <button type="button" className="enlace centrado" onClick={() => setPaso(1)}>
-            Volver a tus datos
-          </button>
+          <div className="compra-cierre">
+            <div className="caja-resumen">
+              <Resumen subtotal={subtotal} despacho={typeof costoDespacho === "number" ? costoDespacho : undefined} total={total} />
+              <p className="aviso-retracto">
+                <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+              </p>
+
+              <label className="check">
+                <input type="checkbox" checked={terminos} onChange={(e) => setTerminos(e.target.checked)} />
+                <span>
+                  Acepto los <Link href="/legal/terminos">Términos</Link> y la{" "}
+                  <Link href="/legal/privacidad">Política de privacidad</Link>.
+                </span>
+              </label>
+              {errorPago ? (
+                <p className="error" role="alert">
+                  {errorPago}
+                </p>
+              ) : null}
+              <button type="submit" className="boton acento ancho" disabled={enviando} aria-busy={enviando || undefined}>
+                {enviando ? "Conectando con Webpay…" : "Pagar con Webpay"}
+              </button>
+              <p className="muted centrado">Te llevamos al sitio seguro de Transbank: crédito, débito o prepago.</p>
+            </div>
+            <button type="button" className="enlace centrado" onClick={() => setPaso(1)}>
+              Volver a tus datos
+            </button>
+            <AyudaCompra />
+          </div>
         </form>
       )}
-      <AyudaCompra />
     </div>
   );
 }
@@ -317,6 +336,7 @@ function Resumen({ subtotal, despacho, total }: { subtotal: number; despacho: nu
   const { producto } = useCatalogo();
   return (
     <div className="resumen">
+      <h2>Tu pedido</h2>
       {items.map((it) => {
         const p = producto(it.slug);
         if (!p) return null;

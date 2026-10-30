@@ -50,8 +50,8 @@
   --err-soft: #fbe9e7;
   --aviso: #ffffff;
   --aviso-borde: #111111;
-  --radius: 10px;
-  --radius-s: 6px;
+  --radius: 14px;
+  --radius-s: 10px;
   --alto-control: 50px;
   --alto-franja: 36px;
   /* Escala tipográfica (revisión 28-oct-2026). Base 16 px en Manrope, la misma
@@ -627,15 +627,103 @@ body.con-puerta {
   text-decoration: underline;
 }
 
+/* Cabecera de listados en negro cálido, como la portada: migas, título, bajada
+   y la foto del tipo sobre su fondo. En celular la foto va junto al título. */
 .cabecera-listado {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 18px;
+  background: var(--hondo);
+  color: #ffffff;
+  padding: 18px 0 28px;
+}
+
+.cabecera-listado-caja {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "migas migas"
+    "titulo foto"
+    "bajada foto"
+    "extra extra";
+  align-items: center;
+  column-gap: 16px;
+}
+
+.cabecera-listado-caja.sin-foto {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "migas"
+    "titulo"
+    "bajada"
+    "extra";
+}
+
+.cabecera-listado-texto {
+  display: contents;
+}
+
+.cabecera-listado .migas {
+  grid-area: migas;
+  margin-bottom: 12px;
+  color: var(--txt-hondo);
+}
+
+.cabecera-listado .migas a {
+  color: #ffffff;
 }
 
 .cabecera-listado h1 {
+  grid-area: titulo;
   font-size: var(--tx-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.cabecera-listado .bajada {
+  grid-area: bajada;
+  max-width: 60ch;
+  margin-top: 8px;
+  color: var(--txt-hondo);
+}
+
+/* En celular el título y la bajada quedan juntos al lado de la foto. */
+@media (max-width: 719px) {
+  .cabecera-listado h1 {
+    align-self: end;
+  }
+
+  .cabecera-listado .bajada {
+    align-self: start;
+  }
+}
+
+.cabecera-listado-extra {
+  grid-area: extra;
+  max-width: 560px;
+  margin-top: 18px;
+}
+
+.cabecera-listado .foto {
+  grid-area: foto;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+}
+
+.cabecera-listado .foto .arte {
+  width: 70px;
+  height: 70px;
+}
+
+.cabecera-listado .buscador-repuestos label {
+  color: #ffffff;
+}
+
+.cabecera-listado select {
+  border-color: #ffffff;
+  border-radius: 999px;
+  padding: 0 18px;
+  color: var(--ink);
 }
 
 .vacio {
@@ -988,10 +1076,6 @@ body.con-puerta {
 .panel-repuestos h2 {
   font-size: var(--tx-xl);
   margin: 6px 0;
-}
-
-.panel-repuestos.compacto {
-  margin-bottom: 22px;
 }
 
 /* En la portada, bloque petróleo profundo con la foto del repuesto al lado. */
@@ -1613,7 +1697,27 @@ input[aria-invalid="true"] {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* En celular las marcas van en una fila que se desliza, para llegar antes a los productos. */
+@media (max-width: 719px) {
+  .filtros .chips {
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filtros .chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filtros .chip {
+    flex: none;
+  }
 }
 
 .ordenar {
@@ -1635,15 +1739,32 @@ input[aria-invalid="true"] {
 }
 
 /* ---------- Ficha ---------- */
+/* Vitrina de estudio: la foto sobre el fondo de su tipo con la banda del tipo
+   abajo, y el rótulo del tipo y la marca sobre el nombre. */
 .ficha {
   display: grid;
   gap: 22px;
 }
 
 .galeria .principal {
+  display: grid;
+  place-items: center;
   aspect-ratio: 1;
-  background: var(--art-bg);
-  border-radius: var(--radius);
+  border-radius: 20px;
+}
+
+.galeria .principal .arte {
+  width: 84%;
+  height: 84%;
+}
+
+.galeria .principal .banda {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 10px;
 }
 
 .nota-foto {
@@ -1660,7 +1781,28 @@ input[aria-invalid="true"] {
 
 .info h1 {
   font-size: var(--tx-3xl);
-  margin-top: -10px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: -6px;
+}
+
+.rotulo-ficha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+
+.rotulo-ficha .marca {
+  padding-left: 14px;
+  border-left: 1px solid var(--borde-control);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rotulo-ficha .marca:hover {
+  color: var(--ink);
+  text-decoration: underline;
 }
 
 .linea-precio {
@@ -1672,6 +1814,8 @@ input[aria-invalid="true"] {
 
 .linea-precio .precio {
   font-size: var(--tx-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .agregar {
@@ -1701,9 +1845,9 @@ input[aria-invalid="true"] {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: var(--accent-soft);
-  border-radius: var(--radius-s);
-  padding: 12px 14px;
+  background: var(--piedra);
+  border-radius: var(--radius);
+  padding: 14px 16px;
 }
 
 .elegido b {
@@ -1747,25 +1891,97 @@ input[aria-invalid="true"] {
   margin-bottom: 16px;
 }
 
+.pagina.compra h1 {
+  font-size: var(--tx-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.pagina.compra > h1 {
+  margin-bottom: 18px;
+}
+
+/* Carro y checkout: lo que se compra a la izquierda y el cierre en una tarjeta
+   de piedra a la derecha (en celular, abajo). */
+.compra-grilla {
+  display: grid;
+  gap: 28px;
+}
+
+.compra-cierre {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.compra-cierre .ayuda-compra {
+  margin-top: 0;
+}
+
+.caja-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--piedra);
+}
+
+.caja-resumen h2 {
+  font-size: var(--tx-l);
+  font-weight: 800;
+}
+
+.caja-resumen .calcula-despacho {
+  margin-bottom: 0;
+  border-color: transparent;
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.caja-resumen .calcula-campos {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.caja-resumen .boton.ancho + .pago-seguro {
+  margin-top: 0;
+}
+
+/* El rojo de error no alcanza contraste sobre piedra: va en un recuadro blanco. */
+.caja-resumen .error {
+  padding: 10px 12px;
+  border-left: 4px solid var(--err);
+  border-radius: var(--radius-s);
+  background: var(--bg);
+}
+
 .lineas {
   list-style: none;
-  margin: 0 0 18px;
+  margin: 0;
   padding: 0;
   border-top: 1px solid var(--line);
 }
 
 .linea {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr);
-  gap: 14px;
-  padding: 14px 0;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .linea .foto {
+  display: grid;
+  place-items: center;
+  align-self: start;
   aspect-ratio: 1;
-  background: var(--art-bg);
-  border-radius: var(--radius-s);
+  border-radius: 14px;
+}
+
+.linea .foto .arte {
+  width: 88%;
+  height: 88%;
 }
 
 .linea .detalle {
@@ -1776,8 +1992,14 @@ input[aria-invalid="true"] {
 }
 
 .linea .nombre {
-  font-weight: 600;
+  font-weight: 800;
+  line-height: 1.25;
   text-decoration: none;
+  text-wrap: balance;
+}
+
+.linea .nombre:hover {
+  text-decoration: underline;
 }
 
 .fila-linea {
@@ -1786,6 +2008,12 @@ input[aria-invalid="true"] {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.fila-linea b {
+  font-size: var(--tx-m);
+  font-weight: 800;
 }
 
 .linea .enlace {
@@ -1797,10 +2025,10 @@ input[aria-invalid="true"] {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px;
-  border-radius: var(--radius);
-  background: var(--surface);
-  margin-bottom: 16px;
+}
+
+.resumen h2 {
+  margin-bottom: 4px;
 }
 
 .resumen > div {
@@ -1810,32 +2038,75 @@ input[aria-invalid="true"] {
 }
 
 .resumen .total {
-  border-top: 1px solid var(--line);
-  padding-top: 8px;
+  align-items: baseline;
+  margin-top: 2px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(35, 31, 32, 0.2);
   font-weight: 700;
-  font-size: var(--tx-m);
 }
 
+.resumen .total span:last-child {
+  font-size: var(--tx-xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Pasos numerados: el actual en petróleo y el ya hecho en petróleo suave. */
 .pasos-checkout {
   list-style: none;
-  margin: 0 0 18px;
+  margin: 0 0 22px;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
 }
 
 .pasos-checkout li {
-  border-top: 4px solid var(--line);
-  padding-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: var(--tx-s);
   font-weight: 600;
   color: var(--muted);
 }
 
-.pasos-checkout li[aria-current="step"] {
-  border-color: var(--accent);
+.pasos-checkout li + li::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  margin-right: 6px;
+  border-radius: 1px;
+  background: var(--line);
+}
+
+.pasos-checkout i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--borde-control);
+  border-radius: 50%;
+  font-style: normal;
+  font-size: var(--tx-xs);
+  font-weight: 800;
+}
+
+.pasos-checkout li[aria-current="step"],
+.pasos-checkout li.hecho {
   color: var(--ink);
+}
+
+.pasos-checkout li[aria-current="step"] i {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.pasos-checkout li.hecho i {
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .formulario {
@@ -1919,8 +2190,9 @@ input[aria-invalid="true"] {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border: 2px solid var(--ink);
+  border-left: 4px solid var(--accent);
   border-radius: var(--radius-s);
+  background: var(--surface);
   padding: 12px 14px;
   font-size: var(--tx-base);
 }
@@ -2733,6 +3005,42 @@ input[aria-invalid="true"] {
     border-radius: 26px;
   }
 
+  .galeria .principal {
+    border-radius: 26px;
+  }
+
+  .cabecera-listado {
+    padding: 28px 0 36px;
+  }
+
+  .cabecera-listado-caja {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-areas: "texto foto";
+    column-gap: 40px;
+  }
+
+  .cabecera-listado-caja.sin-foto {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "texto";
+  }
+
+  .cabecera-listado-texto {
+    grid-area: texto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cabecera-listado .foto {
+    width: auto;
+    height: 200px;
+    border-radius: 20px;
+  }
+
+  .cabecera-listado .foto .arte {
+    width: 180px;
+    height: 180px;
+  }
+
   .panel-repuestos-texto {
     justify-content: center;
     padding: 40px;
@@ -2956,6 +3264,21 @@ input[aria-invalid="true"] {
   .galeria {
     position: sticky;
     top: calc(var(--alto-franja) + 80px);
+  }
+
+  .compra-grilla {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .compra-cierre.fijo {
+    position: sticky;
+    top: calc(var(--alto-franja) + 80px);
+  }
+
+  .caja-resumen {
+    padding: 24px;
   }
 
   .pie .columnas {
