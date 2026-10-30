@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { REGIONES, buscarRegion, comunaValida } from "@/lib/comunas";
 import { textoPlazo, type Cotizacion, type ItemDespacho } from "@/lib/despacho";
+import { diaChile, diaLargo, fechaEstimada, textoRango } from "@/lib/fecha-entrega";
 import { clp } from "@/lib/formato";
 
 // Comuna elegida, guardada solo en este navegador para no pedirla de nuevo
@@ -21,12 +22,29 @@ export function leerDestino(): Destino | null {
   return null;
 }
 
+// Aviso entre la barra de despacho y la calculadora: si se cambia la comuna en
+// una, la otra se pone al día sin recargar.
+export const EVENTO_DESTINO = "vapeur-destino";
+
 export function guardarDestino(d: Destino) {
   try {
     localStorage.setItem(CLAVE, JSON.stringify(d));
   } catch {
     // Sin acceso a localStorage: no pasa nada, solo no se recuerda.
   }
+  window.dispatchEvent(new CustomEvent<Destino>(EVENTO_DESTINO, { detail: d }));
+}
+
+/** Comuna recordada; se actualiza cuando otra parte de la página la cambia. */
+export function useDestino() {
+  const [destino, setDestino] = useState<Destino | null>(null);
+  useEffect(() => {
+    setDestino(leerDestino());
+    const alCambiar = (e: Event) => setDestino((e as CustomEvent<Destino>).detail);
+    window.addEventListener(EVENTO_DESTINO, alCambiar);
+    return () => window.removeEventListener(EVENTO_DESTINO, alCambiar);
+  }, []);
+  return destino;
 }
 
 /**
@@ -76,14 +94,14 @@ export default function CalculaDespacho({
 }) {
   const [region, setRegion] = useState("");
   const [comuna, setComuna] = useState("");
+  const destino = useDestino();
 
   useEffect(() => {
-    const d = leerDestino();
-    if (d) {
-      setRegion(d.region);
-      setComuna(d.comuna);
+    if (destino) {
+      setRegion(destino.region);
+      setComuna(destino.comuna);
     }
-  }, []);
+  }, [destino]);
 
   const { cotizacion, cargando } = useCotizacion(region, comuna, items);
   const costo = cotizacion?.costo;
@@ -132,10 +150,16 @@ export default function CalculaDespacho({
         ) : cotizacion.costo === null ? (
           <span>No pudimos calcular el despacho a {comuna}. Escríbenos por WhatsApp y te ayudamos.</span>
         ) : (
-          <span>
-            Despacho Chilexpress a {comuna}: <b className="tab">{clp(cotizacion.costo)}</b>. {cotizacion.plazo} (1 día hábil para
-            preparar tu pedido + Chilexpress).
-          </span>
+          <>
+            <span className="fecha-estimada">
+              <small>Si pagas hoy, {diaLargo(diaChile())}</small>
+              <b>Llega {textoRango(fechaEstimada(region, comuna))}</b>
+              <small>Fecha estimada · Chilexpress · {clp(cotizacion.costo)}</small>
+            </span>
+            <span className="muted">
+              {cotizacion.plazo}: 1 día hábil para preparar tu pedido + Chilexpress. Se entrega solo a mayores de 18 años.
+            </span>
+          </>
         )}
       </p>
     </div>

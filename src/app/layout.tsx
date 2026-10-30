@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans, Manrope } from "next/font/google";
 import "./globals.css";
+import "./despacho.css";
 import AgeGate, { SCRIPT_EDAD } from "@/components/AgeGate";
+import BarraDespacho from "@/components/BarraDespacho";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
 import { CarroProvider } from "@/components/Carro";
 import { CatalogoProvider } from "@/components/Catalogo";
@@ -75,6 +77,7 @@ export default async function RootLayout({
           <CatalogoProvider productos={productos}>
             <CarroProvider>
               <Encabezado />
+              <BarraDespacho />
               <main className="contenido">{children}</main>
               <Pie />
               <BotonWhatsApp />
