@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/components/Logo";
-import { AVISOS_CONSENTIMIENTO, AVISOS_DESCRIPCION, CORREO_VALIDO } from "@/lib/suscriptores";
+import { AVISOS_CONSENTIMIENTO, CORREO_VALIDO } from "@/lib/suscriptores";
 
 type Estado = "reposo" | "enviando" | "ok";
 
@@ -53,8 +53,6 @@ export default function InscripcionNovedades() {
       <div className="wrap pie-novedades-fila">
         <div className="pie-novedades-texto">
           <Logo className="logo logo-grande" />
-          <span className="pie-novedades-titulo">Avisos por correo</span>
-          <span className="pie-novedades-subtitulo">{AVISOS_DESCRIPCION}</span>
         </div>
         {estado === "ok" ? (
           <p className="pie-novedades-ok" role="status">
