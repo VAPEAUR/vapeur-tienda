@@ -2674,6 +2674,16 @@ input[aria-invalid="true"] {
   color: #ffffff;
 }
 
+.pie-novedades .logo-grande {
+  gap: 12px;
+  font-size: clamp(40px, 6vw, 46px);
+}
+
+.pie-novedades .logo-grande svg {
+  width: clamp(40px, 6vw, 46px);
+  height: clamp(40px, 6vw, 46px);
+}
+
 .pie-novedades-caja {
   display: flex;
   flex-direction: column;
