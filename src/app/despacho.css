@@ -62,7 +62,7 @@ body:has(.portada, .cabecera-listado) .barra-despacho-arriba {
   min-height: 32px;
   padding: 0 14px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   background: #ffffff;
   color: var(--accent);
   font: inherit;
