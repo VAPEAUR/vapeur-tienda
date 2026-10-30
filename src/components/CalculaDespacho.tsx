@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DESPACHO } from "@/lib/catalogo";
+import { REGIONES, buscarRegion, comunaValida } from "@/lib/comunas";
+import { textoPlazo, type Cotizacion, type ItemDespacho } from "@/lib/despacho";
 import { clp } from "@/lib/formato";
 
 // Comuna elegida, guardada solo en este navegador para no pedirla de nuevo
@@ -13,7 +14,7 @@ export type Destino = { region: string; comuna: string };
 export function leerDestino(): Destino | null {
   try {
     const d = JSON.parse(localStorage.getItem(CLAVE) ?? "null");
-    if (d && typeof d.region === "string" && typeof d.comuna === "string" && d.comuna in (DESPACHO[d.region] ?? {})) return d;
+    if (d && typeof d.region === "string" && typeof d.comuna === "string" && comunaValida(d.region, d.comuna)) return d;
   } catch {
     // Sin acceso a localStorage: se elige la comuna de nuevo.
   }
@@ -28,14 +29,51 @@ export function guardarDestino(d: Destino) {
   }
 }
 
-/** Costo de despacho a una comuna: número, null si falta tarifa, undefined si no hay comuna. */
-export function costoDespacho(d: Destino | null) {
-  return d && d.comuna ? DESPACHO[d.region]?.[d.comuna] : undefined;
+/**
+ * Cotiza el despacho en el servidor (Chilexpress, o tarifa estimada si la API
+ * no responde). undefined mientras no hay comuna o mientras se calcula.
+ */
+export function useCotizacion(region: string, comuna: string, items?: ItemDespacho[]) {
+  const [cotizacion, setCotizacion] = useState<Cotizacion | undefined>();
+  const [cargando, setCargando] = useState(false);
+  const llaveItems = JSON.stringify(items?.map((i) => [i.slug, i.cantidad]) ?? []);
+
+  useEffect(() => {
+    setCotizacion(undefined);
+    if (!region || !comuna) return;
+    let vigente = true;
+    setCargando(true);
+    fetch("/api/despacho", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        region,
+        comuna,
+        items: (JSON.parse(llaveItems) as [string, number][]).map(([slug, cantidad]) => ({ slug, cantidad })),
+      }),
+    })
+      .then((r) => (r.ok ? (r.json() as Promise<Cotizacion>) : Promise.reject()))
+      .then((c) => vigente && setCotizacion(c))
+      // Sin conexión: se avisa que falta la tarifa para no cobrar algo distinto.
+      .catch(() => vigente && setCotizacion({ costo: null, fuente: "estimado", plazo: textoPlazo(region, comuna) }))
+      .finally(() => vigente && setCargando(false));
+    return () => {
+      vigente = false;
+    };
+  }, [region, comuna, llaveItems]);
+
+  return { cotizacion, cargando };
 }
 
 // Calculadora de despacho por comuna para la ficha y el carro: muestra el
-// costo antes de ir a pagar, para que no haya sorpresas en el total.
-export default function CalculaDespacho({ onCambio }: { onCambio?: (costo: number | null | undefined) => void }) {
+// costo y el plazo antes de ir a pagar, para que no haya sorpresas en el total.
+export default function CalculaDespacho({
+  items,
+  onCambio,
+}: {
+  items?: ItemDespacho[];
+  onCambio?: (costo: number | null | undefined) => void;
+}) {
   const [region, setRegion] = useState("");
   const [comuna, setComuna] = useState("");
 
@@ -47,7 +85,8 @@ export default function CalculaDespacho({ onCambio }: { onCambio?: (costo: numbe
     }
   }, []);
 
-  const costo = costoDespacho({ region, comuna });
+  const { cotizacion, cargando } = useCotizacion(region, comuna, items);
+  const costo = cotizacion?.costo;
 
   useEffect(() => {
     onCambio?.(costo);
@@ -66,8 +105,8 @@ export default function CalculaDespacho({ onCambio }: { onCambio?: (costo: numbe
           }}
         >
           <option value="">Región</option>
-          {Object.keys(DESPACHO).map((r) => (
-            <option key={r}>{r}</option>
+          {REGIONES.map((r) => (
+            <option key={r.nombre}>{r.nombre}</option>
           ))}
         </select>
         <select
@@ -80,21 +119,22 @@ export default function CalculaDespacho({ onCambio }: { onCambio?: (costo: numbe
           }}
         >
           <option value="">Comuna</option>
-          {region
-            ? Object.keys(DESPACHO[region]).map((c) => (
-                <option key={c}>{c}</option>
-              ))
-            : null}
+          {buscarRegion(region)?.comunas.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
         </select>
       </div>
       <p aria-live="polite">
-        {costo === undefined ? (
+        {!comuna ? (
           <span className="muted">Elige tu comuna para ver el costo antes de pagar.</span>
-        ) : costo === null ? (
-          <span>Todavía no tenemos la tarifa para {comuna}. Escríbenos por WhatsApp y te ayudamos.</span>
+        ) : cargando || !cotizacion ? (
+          <span className="muted">Calculando despacho a {comuna}…</span>
+        ) : cotizacion.costo === null ? (
+          <span>No pudimos calcular el despacho a {comuna}. Escríbenos por WhatsApp y te ayudamos.</span>
         ) : (
           <span>
-            Despacho a {comuna}: <b className="tab">{clp(costo)}</b>. Preparamos tu pedido en 1 a 2 días hábiles desde el pago.
+            Despacho Chilexpress a {comuna}: <b className="tab">{clp(cotizacion.costo)}</b>. {cotizacion.plazo} (1 día hábil para
+            preparar tu pedido + Chilexpress).
           </span>
         )}
       </p>

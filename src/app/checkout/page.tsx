@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { guardarDestino, leerDestino } from "@/components/CalculaDespacho";
+import { guardarDestino, leerDestino, useCotizacion } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { CLAVE_DATOS_CHECKOUT } from "@/components/VaciarCarro";
 import { useCatalogo } from "@/components/Catalogo";
@@ -69,6 +69,9 @@ export default function Checkout() {
     }
   }, []);
 
+  // Tarifa real de Chilexpress (o estimada si la API no responde).
+  const { cotizacion } = useCotizacion(region, comuna, items);
+
   if (!listo) return <div className="wrap pagina" />;
 
   if (items.length === 0) {
@@ -82,7 +85,7 @@ export default function Checkout() {
     );
   }
 
-  const costoDespacho = region && comuna ? DESPACHO[region]?.[comuna] : undefined;
+  const costoDespacho = region && comuna ? cotizacion?.costo : undefined;
   const total = subtotal + (typeof costoDespacho === "number" ? costoDespacho : 0);
   const menor = errores.edad?.startsWith("Lo sentimos");
 
@@ -268,9 +271,11 @@ export default function Checkout() {
                 <span>Todavía no tenemos la tarifa de despacho para esta comuna. Escríbenos por WhatsApp y te ayudamos.</span>
               ) : (
                 <span>
-                  Courier a domicilio · <b className="tab">{clp(costoDespacho ?? 0)}</b>
+                  Chilexpress a domicilio ·{" "}
+                  {costoDespacho === undefined ? "calculando…" : <b className="tab">{clp(costoDespacho)}</b>}
                 </span>
               )}
+              {cotizacion ? <span className="muted">{cotizacion.plazo}.</span> : null}
               <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>
             </div>
           ) : null}

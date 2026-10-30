@@ -63,7 +63,7 @@ export default function PaginaCarro() {
             })}
           </ul>
 
-          <CalculaDespacho onCambio={setDespacho} />
+          <CalculaDespacho items={items} onCambio={setDespacho} />
 
           <div className="resumen">
             <div>

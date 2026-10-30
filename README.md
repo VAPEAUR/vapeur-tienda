@@ -11,7 +11,7 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Supabase (base de datos, fotos y acceso del panel admin) — por conectar
 - Webpay Plus de Transbank — conectado en ambiente de integración (pruebas)
 - Resend (correo de confirmación de compra)
-- Blue Express — por conectar
+- Chilexpress — cotizador conectado (claves de prueba); crear envío y seguimiento listos en código
 
 ## Qué hay hoy (prototipo A · Grafito y petróleo)
 
@@ -30,7 +30,17 @@ Lanzamiento previsto: lunes 14 de diciembre de 2026.
 - Sin `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` (desarrollo local) se usa el catálogo de ejemplo de `src/lib/catalogo.ts`.
 - `/admin`: panel para cargar productos, precios y stock. Entra solo quien tiene usuario en Supabase Auth y fila en `public.administradores`; la base de datos (RLS) rechaza cualquier otro cambio.
 - Puesta en marcha: correr `supabase/catalogo.sql` en el SQL Editor, crear el usuario en Authentication → Users → Add user (marcar *Auto Confirm User*) y correr la línea 4 del mismo archivo con ese correo.
-- Los kits (`KITS`) y las tarifas de despacho (`DESPACHO`) siguen en el código.
+- Los kits (`KITS`) siguen en el código.
+
+## Despacho con Chilexpress
+
+- La calculadora (ficha, carro y checkout) pide el costo a `/api/despacho`, que cotiza con la API de Chilexpress desde Santiago Centro según el peso del carro (`src/lib/cotizar-envio.ts`, `src/lib/chilexpress.ts`).
+- Si la API falla, tarda más de 5 s o faltan claves, se usa la tarifa estimada por zona (`TARIFA_ESTIMADA` en `src/lib/despacho.ts`): RM $5.990, regiones $9.990, zonas extremas $14.990 (calibrada con la API el 30-oct-2026).
+- Si Chilexpress no llega a la comuna (hoy: O'Higgins en Aysén y San Fabián en Ñuble), no se cobra tarifa: la tienda pide escribir por WhatsApp.
+- Nombres que Chilexpress escribe distinto (Santiago = "Santiago Centro", Llaillay, Marchigüe, Paihuano, Aysén): `NOMBRE_CHILEXPRESS` en `src/lib/chilexpress.ts`.
+- Plazos mostrados: 1 día hábil de preparación (igual en Ayuda › Despacho, Términos, confirmación y correo) + Chilexpress (RM 1–2, regiones 2–6, zonas extremas hasta 12 días hábiles).
+- Claves: suscribirse en developers.wschilexpress.com a Cobertura, Cotizador y Envíos, y cargarlas en Cloudflare (ver `.env.example`). Con Cuenta Empresa: `CHILEXPRESS_AMBIENTE=produccion` y claves de producción.
+- `crearEnvio()` y `seguimiento()` quedan listas para el sprint de pedidos (OT con etiqueta PDF y observación "entregar solo a mayor de 18 años con cédula").
 
 ## Pedidos y Webpay Plus (30-oct-2026)
 

@@ -62,7 +62,7 @@ export function htmlConfirmacion(p: PedidoCorreo, w: RespuestaWebpay, origen: st
       : "";
   const enlacePedido = `${origen}/pedido?n=${p.numero}&k=${p.clave_acceso}`;
   // Texto que muestra Gmail junto al asunto, oculto en el cuerpo.
-  const preencabezado = `Pedido N° ${p.numero} · ${clp(p.total)} · Lo preparamos en 1 a 2 días hábiles.`;
+  const preencabezado = `Pedido N° ${p.numero} · ${clp(p.total)} · Lo preparamos en 1 día hábil.`;
 
   return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>Tu pedido Vapeur N° ${p.numero}</title></head>
 <body style="margin:0;background:${FONDO};font-family:Arial,Helvetica,sans-serif;color:${TINTA};line-height:1.45">
@@ -85,7 +85,7 @@ ${filas}
 <p style="margin:0;font-size:14px">${escapar(p.direccion)}${p.depto ? `, ${escapar(p.depto)}` : ""}, ${escapar(p.comuna)}, ${escapar(p.region)}</p>
 <h2 ${titulo}>Qué pasa ahora</h2>
 <ol style="margin:0;padding-left:20px;font-size:14px">
-<li style="margin-bottom:4px">Preparamos tu pedido en 1 a 2 días hábiles.</li>
+<li style="margin-bottom:4px">Preparamos tu pedido en 1 día hábil.</li>
 <li style="margin-bottom:4px">Te avisamos por correo con el número de seguimiento.</li>
 <li><b>Recíbelo con tu carnet:</b> solo se entrega a personas mayores de 18 años.</li>
 </ol>

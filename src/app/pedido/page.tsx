@@ -173,7 +173,7 @@ export default async function Confirmacion({ searchParams }: Props) {
       <div className="que-pasa">
         <h2>Qué pasa ahora</h2>
         <ol>
-          <li>Preparamos tu pedido en 1 a 2 días hábiles.</li>
+          <li>Preparamos tu pedido en 1 día hábil.</li>
           <li>Te avisamos por correo con el número de seguimiento.</li>
           <li>Recíbelo con tu carnet: solo se entrega a mayores de 18 años.</li>
         </ol>

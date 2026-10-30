@@ -1,15 +1,13 @@
-import { DESPACHO } from "@/lib/catalogo";
+import { cotizarEnvio } from "@/lib/cotizar-envio";
 
 export type ItemDespacho = { slug: string; cantidad: number };
 
 /**
  * Costo de despacho que se COBRA en el pedido, calculado en el servidor.
  * Devuelve el monto en CLP, o null si no hay tarifa para esa comuna.
- * Hoy lee la tabla de ejemplo; la cotización real con Chilexpress se conecta
- * aquí (por eso es async y recibe los productos).
+ * Es la misma cotización que ve el cliente en la calculadora: Chilexpress o,
+ * si la API no responde, la tarifa estimada por zona.
  */
-export async function cotizarDespacho(region: string, comuna: string, _items?: ItemDespacho[]): Promise<number | null> {
-  void _items;
-  const costo = DESPACHO[region]?.[comuna];
-  return typeof costo === "number" ? costo : null;
+export async function cotizarDespacho(region: string, comuna: string, items?: ItemDespacho[]): Promise<number | null> {
+  return (await cotizarEnvio(region, comuna, items)).costo;
 }
