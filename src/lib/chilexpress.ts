@@ -1,11 +1,13 @@
 // Cliente de las API de Chilexpress (developers.wschilexpress.com): cobertura,
-// cotizador y envíos. Solo servidor: las claves se leen de variables de
+// cotizador y envíos. Formatos revisados contra la documentación del portal
+// (30-oct-2026). Solo servidor: las claves se leen de variables de
 // entorno (Cloudflare → Variables and Secrets) y nunca llegan al navegador.
 //
 // Cada API tiene su propia clave (Ocp-Apim-Subscription-Key). Con
 // CHILEXPRESS_AMBIENTE distinto de "produccion" se usa el ambiente de pruebas.
 import { buscarRegion } from "@/lib/comunas";
 import { normalizar } from "@/lib/catalogo";
+import { CORREO_CONTACTO, WHATSAPP_NUMERO } from "@/lib/contacto";
 
 const ESPERA_MS = 5000;
 
@@ -35,7 +37,11 @@ export function hayClaves(...apis: Api[]) {
   return apis.every((a) => clave(a));
 }
 
-async function llamar<T>(api: Api, ruta: string, cuerpo?: unknown): Promise<T> {
+// Respuesta común: statusCode 0 = OK. Cobertura entrega los datos en la raíz
+// ({ regions }, { coverageAreas }); Cotizador y Envíos, dentro de `data`.
+type Respuesta = { statusCode?: number; statusDescription?: string; errors?: unknown };
+
+async function llamar<T>(api: Api, ruta: string, cuerpo?: unknown): Promise<T & Respuesta> {
   const control = new AbortController();
   const reloj = setTimeout(() => control.abort(), ESPERA_MS);
   try {
@@ -49,11 +55,12 @@ async function llamar<T>(api: Api, ruta: string, cuerpo?: unknown): Promise<T> {
       body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
       signal: control.signal,
     });
-    const json = (await r.json().catch(() => null)) as { statusCode?: number; statusDescription?: string; data?: unknown } | null;
+    const json = (await r.json().catch(() => null)) as (T & Respuesta) | null;
     if (!r.ok || !json || (json.statusCode !== undefined && json.statusCode !== 0)) {
-      throw new Error(`Chilexpress ${api} ${r.status}: ${json?.statusDescription ?? "sin respuesta"}`);
+      const detalle = json?.errors ? ` ${JSON.stringify(json.errors)}` : "";
+      throw new Error(`Chilexpress ${api} ${r.status}: ${json?.statusDescription ?? "sin respuesta"}${detalle}`);
     }
-    return json.data as T;
+    return json;
   } finally {
     clearTimeout(reloj);
   }
@@ -73,14 +80,15 @@ export async function codigoComuna(region: string, comuna: string): Promise<stri
   const ine = buscarRegion(region)?.ine;
   if (!ine) return null;
   if (!regionesCx) {
-    regionesCx = (await llamar<{ regions: RegionCx[] }>("cobertura", "/georeference/api/v1.0/regions")).regions;
+    regionesCx = (await llamar<{ regions?: RegionCx[] }>("cobertura", "/georeference/api/v1.0/regions")).regions ?? [];
   }
   const r = regionesCx.find((x) => Number(x.ineRegionCode) === ine);
   if (!r) return null;
   let areas = areasPorRegion.get(r.regionId);
   if (!areas) {
-    const ruta = `/georeference/api/v1.0/coverage-areas?RegionCode=${encodeURIComponent(r.regionId)}&type=0`;
-    areas = (await llamar<{ coverageAreas: AreaCx[] }>("cobertura", ruta)).coverageAreas;
+    // type=1: solo comunas (0 trae también los sectores dentro de cada comuna).
+    const ruta = `/georeference/api/v1.0/coverage-areas?RegionCode=${encodeURIComponent(r.regionId)}&type=1`;
+    areas = (await llamar<{ coverageAreas?: AreaCx[] }>("cobertura", ruta)).coverageAreas ?? [];
     areasPorRegion.set(r.regionId, areas);
   }
   // Chilexpress escribe en mayúsculas y a veces sin tildes ni apóstrofes.
@@ -101,7 +109,7 @@ export type Tarifa = { valor: number; servicio: string; codigoServicio: number }
 
 /** Opciones de servicio para un paquete, de la más barata a la más cara. */
 export async function cotizar(destino: string, paquete: Paquete, valorDeclarado: number): Promise<Tarifa[]> {
-  const data = await llamar<{ courierServiceOptions: OpcionCx[] }>("cotizador", "/rating/api/v1.0/rates/courier", {
+  const { data } = await llamar<{ data?: { courierServiceOptions?: OpcionCx[] } }>("cotizador", "/rating/api/v1.0/rates/courier", {
     originCountyCode: origen(),
     destinationCountyCode: destino,
     package: {
@@ -115,7 +123,7 @@ export async function cotizar(destino: string, paquete: Paquete, valorDeclarado:
     declaredWorth: String(Math.round(valorDeclarado)),
     deliveryTime: 0, // todos los plazos
   });
-  return (data.courierServiceOptions ?? [])
+  return (data?.courierServiceOptions ?? [])
     .map((o) => ({ valor: Math.round(Number(o.serviceValue)), servicio: o.serviceDescription, codigoServicio: Number(o.serviceTypeCode) }))
     .filter((t) => Number.isFinite(t.valor) && t.valor > 0)
     .sort((a, b) => a.valor - b.valor);
@@ -132,7 +140,7 @@ export type DatosEnvio = {
   calle: string;
   numero: string;
   complemento?: string;
-  destinatario: { nombre: string; telefono?: string; correo?: string };
+  destinatario: { nombre: string; telefono: string; correo: string };
   paquete: Paquete;
   valorDeclarado: number;
   codigoServicio: number; // de cotizar(): 3 = Express, 4 = Extendido, 5 = Extremos
@@ -140,10 +148,16 @@ export type DatosEnvio = {
 
 export type EnvioCreado = { ot: string; etiqueta?: string };
 
-const REMITENTE = { nombre: "Vapeur SpA", calle: "José Miguel Carrera", numero: "269" };
+const REMITENTE = {
+  nombre: "Vapeur SpA",
+  calle: "José Miguel Carrera",
+  numero: "269",
+  telefono: WHATSAPP_NUMERO,
+  correo: CORREO_CONTACTO,
+};
 
 export async function crearEnvio(e: DatosEnvio): Promise<EnvioCreado> {
-  const data = await llamar<{ detail?: { transportOrderNumber: number | string; label?: { labelData?: string } }[] }>(
+  const { data } = await llamar<{ data?: { detail?: { transportOrderNumber: number | string; label?: { labelData?: string } }[] } }>(
     "envios",
     "/transport-orders/api/v1.0/transport-orders",
     {
@@ -179,11 +193,11 @@ export async function crearEnvio(e: DatosEnvio): Promise<EnvioCreado> {
             },
           ],
           contacts: [
-            { name: REMITENTE.nombre, phoneNumber: "", mail: "", contactType: "R" },
+            { name: REMITENTE.nombre, phoneNumber: REMITENTE.telefono, mail: REMITENTE.correo, contactType: "R" },
             {
               name: e.destinatario.nombre,
-              phoneNumber: e.destinatario.telefono ?? "",
-              mail: e.destinatario.correo ?? "",
+              phoneNumber: e.destinatario.telefono,
+              mail: e.destinatario.correo,
               contactType: "D",
             },
           ],
@@ -196,10 +210,9 @@ export async function crearEnvio(e: DatosEnvio): Promise<EnvioCreado> {
               serviceDeliveryCode: String(e.codigoServicio),
               productCode: "3",
               deliveryReference: e.referencia,
-              groupReference: e.referencia,
+              groupReference: "", // vacío en envíos de un solo bulto
               declaredValue: String(Math.round(e.valorDeclarado)),
               declaredContent: "5", // otros
-              extendedCoverageAreaIndicator: false,
               receivableAmountInDelivery: 0,
             },
           ],
@@ -207,18 +220,24 @@ export async function crearEnvio(e: DatosEnvio): Promise<EnvioCreado> {
       ],
     },
   );
-  const d = data.detail?.[0];
+  const d = data?.detail?.[0];
   if (!d) throw new Error("Chilexpress no devolvió la orden de transporte");
   return { ot: String(d.transportOrderNumber), etiqueta: d.label?.labelData };
 }
 
 export type EventoSeguimiento = { fecha: string; hora?: string; descripcion: string };
 
-/** Estado e historial de una orden de transporte. `rut`: RUT de la empresa sin puntos ni DV. */
-export async function seguimiento(ot: string, rut: string, referencia = "") {
-  const data = await llamar<{
-    transportOrderData?: { status?: string };
-    trackingEvents?: { eventDate: string; eventHour?: string; description: string }[];
+/**
+ * Estado e historial de una orden de transporte.
+ * `rut`: RUT de la empresa que generó la OT, sin puntos ni DV.
+ * `referencia`: la misma que se usó al crear el envío (número de pedido).
+ */
+export async function seguimiento(ot: string, rut: string, referencia: string) {
+  const { data } = await llamar<{
+    data?: {
+      transportOrderData?: { status?: string };
+      trackingEvents?: { eventDate: string; eventHour?: string; description: string }[];
+    } | null;
   }>("envios", "/transport-orders/api/v1.0/tracking", {
     reference: referencia,
     transportOrderNumber: Number(ot),
@@ -226,7 +245,7 @@ export async function seguimiento(ot: string, rut: string, referencia = "") {
     showTrackingEvents: 1,
   });
   return {
-    estado: data.transportOrderData?.status ?? "",
-    eventos: (data.trackingEvents ?? []).map((t): EventoSeguimiento => ({ fecha: t.eventDate, hora: t.eventHour, descripcion: t.description })),
+    estado: data?.transportOrderData?.status ?? "",
+    eventos: (data?.trackingEvents ?? []).map((t): EventoSeguimiento => ({ fecha: t.eventDate, hora: t.eventHour, descripcion: t.description })),
   };
 }
