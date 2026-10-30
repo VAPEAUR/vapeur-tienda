@@ -89,8 +89,7 @@
 }
 
 .barra-despacho-panel select,
-.fecha-compra-campos select,
-.ruta-campos select {
+.fecha-compra-campos select {
   min-height: 44px;
   border: 1px solid var(--borde-control);
   border-radius: var(--radius-s);
@@ -227,102 +226,6 @@
   margin-top: 6px;
 }
 
-/* Ruta del pedido en la portada, bajo el carrusel. */
-.ruta-pedido {
-  background: var(--piedra);
-  color: var(--ink);
-  padding: 22px 0 16px;
-}
-
-.ruta-pasos {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 14px;
-}
-
-.ruta-pasos li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  column-gap: 12px;
-  align-items: center;
-}
-
-.ruta-pasos li > :not(.ruta-punto) {
-  grid-column: 2;
-}
-
-.ruta-punto {
-  grid-row: 1 / span 2;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--hondo);
-  color: #ffffff;
-  font-weight: 800;
-}
-
-.ruta-llega .ruta-punto {
-  background: var(--accent);
-}
-
-.ruta-pasos small {
-  color: var(--muted);
-  font-size: var(--tx-xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.ruta-pasos b {
-  font-size: var(--tx-m);
-  font-weight: 800;
-}
-
-.ruta-llega b {
-  color: var(--accent);
-  font-size: var(--tx-l);
-}
-
-.ruta-pasos .enlace {
-  justify-self: start;
-  padding: 2px 0;
-  font-size: var(--tx-s);
-}
-
-.ruta-campos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.ruta-nota {
-  margin: 14px 0 0;
-  color: var(--muted);
-  font-size: var(--tx-xs);
-}
-
-@media (min-width: 1000px) {
-  .ruta-pasos {
-    grid-template-columns: 1fr 1fr 1.4fr;
-    gap: 24px;
-  }
-
-  .ruta-pasos li + li {
-    padding-left: 24px;
-    border-left: 1px solid rgba(35, 31, 32, 0.2);
-  }
-
-  .ruta-pasos li {
-    align-items: start;
-  }
-}
-
 /* Fecha estimada en la calculadora de la ficha y el carro. */
 .fecha-estimada {
   display: grid;
@@ -342,11 +245,10 @@
   color: var(--muted);
   font-size: var(--tx-xs);
 }
-/* Celular angosto: una columna para que "Región Metropolitana" y las comunas
-   largas no se corten (mismo criterio que la barra en el PR #53). */
+/* Celular angosto: región y comuna una debajo de la otra, igual que en el panel
+   de la barra. Va al final para ganarle a las dos columnas de arriba. */
 @media (max-width: 459px) {
-  .fecha-compra-campos,
-  .ruta-campos {
+  .fecha-compra-campos {
     grid-template-columns: 1fr;
   }
 }
