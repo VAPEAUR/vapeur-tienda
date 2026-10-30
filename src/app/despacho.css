@@ -16,6 +16,12 @@ body:has(.portada, .cabecera-listado) .barra-despacho-arriba {
   display: none;
 }
 
+/* La segunda diapositiva de la portada es petróleo profundo como la barra: una
+   línea fina en petróleo claro (al 30 %) las separa. */
+.portada + .barra-despacho {
+  border-top: 1px solid rgba(143, 211, 199, 0.3);
+}
+
 /* Una sola línea: la fecha resalta por peso y color (blanco, negrita), no por
    tamaño. La versión grande competía con el encabezado (Amerhi, 30-oct-2026). */
 .barra-despacho-in {
