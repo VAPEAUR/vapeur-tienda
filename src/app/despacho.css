@@ -1,0 +1,123 @@
+/* Barra de despacho bajo el encabezado y fecha estimada de entrega (propuesta B,
+   30-oct-2026). Archivo aparte para no chocar con los cambios de identidad
+   visual en globals.css. Petróleo profundo con acentos en petróleo claro: sobre
+   fondos oscuros el petróleo normal no se lee (ver globals.css). */
+.barra-despacho {
+  background: var(--bloque);
+  color: #ffffff;
+  font-size: var(--tx-xs);
+  line-height: 1.35;
+}
+
+.barra-despacho-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 22px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.barra-despacho-in > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.barra-despacho svg {
+  flex: none;
+  color: var(--resalte);
+}
+
+.barra-despacho b {
+  font-weight: 700;
+}
+
+.barra-despacho .solo-escritorio {
+  display: none;
+}
+
+.barra-despacho-cambiar {
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--resalte);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.barra-despacho-cambiar:focus-visible {
+  outline: 2px solid var(--resalte);
+  outline-offset: 2px;
+}
+
+.barra-despacho-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.barra-despacho-panel select {
+  min-height: 44px;
+  border: 1px solid var(--borde-control);
+  border-radius: var(--radius-s);
+  background: #ffffff;
+  color: var(--ink);
+  padding: 0 10px;
+  font-size: var(--tx-s);
+}
+
+.barra-despacho-panel a {
+  grid-column: 1 / -1;
+  color: var(--resalte);
+  font-size: var(--tx-xs);
+  text-align: center;
+}
+
+@media (min-width: 1000px) {
+  .barra-despacho .solo-escritorio {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .barra-despacho .solo-celular {
+    display: none;
+  }
+
+  .barra-despacho-panel {
+    grid-template-columns: 240px 240px auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .barra-despacho-panel a {
+    grid-column: auto;
+  }
+}
+
+/* Fecha estimada en la calculadora de la ficha y el carro. */
+.fecha-estimada {
+  display: grid;
+  gap: 2px;
+  margin: 2px 0 6px;
+  padding: 10px 12px;
+  border-radius: var(--radius-s);
+  background: var(--accent-soft);
+}
+
+.fecha-estimada b {
+  color: var(--bloque);
+  font-size: var(--tx-base);
+}
+
+.fecha-estimada small {
+  color: var(--muted);
+  font-size: var(--tx-xs);
+}
