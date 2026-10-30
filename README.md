@@ -75,6 +75,16 @@ Puesta en marcha:
 4. Correo propio: Supabase → Authentication → Emails → SMTP Settings con Resend (`smtp.resend.com`, puerto 465, usuario `resend`, clave = una API key de Resend con permiso de envío). Remitente: `onboarding@resend.dev` mientras vapeur.cl no esté verificado en Resend (solo llega al correo de la cuenta de Resend); después `cuenta@vapeur.cl`. Sin SMTP propio Supabase manda un enlace en vez del código, muy pocos correos por hora y solo a correos del equipo, y no deja editar las plantillas.
 5. Con el SMTP listo: Authentication → Emails → Templates, pegar `supabase/correo-codigo.html` en "Magic link or OTP" y en "Confirm sign up" (asunto en el archivo).
 
+## Avisos por correo (formulario "Inscribirme" del pie, 30-oct-2026)
+
+Solo recolección: la tienda todavía **no envía** avisos.
+
+- `/api/suscriptores` guarda correo, fecha, consentimiento, declaración de 18 años o más y versión del texto aceptado (`TEXTO_VERSION` en `src/lib/suscriptores.ts`). Nunca RUT, fecha de nacimiento ni nombre. Escribe con la secret key; el navegador no tiene permisos sobre la tabla.
+- Baja: `/novedades/baja` (con el correo) o `/novedades/baja?t=<token_baja>` (enlace para el pie de cada aviso). Borra la fila completa.
+- Ley 21.642: los avisos son informativos (reposición de stock, guías nuevas, cambios en plazos de despacho), nunca promociones ni publicidad de productos. **Antes del primer envío**, el abogado confirma el alcance; se recomienda además un correo de confirmación (doble opt-in) y el enlace de baja en cada aviso.
+
+Puesta en marcha: Supabase → SQL Editor: correr `supabase/suscriptores.sql` (después de `cuentas.sql`).
+
 ## Cloudflare
 
 1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`; como Secret: `SUPABASE_SECRET_KEY` y `RESEND_API_KEY`.

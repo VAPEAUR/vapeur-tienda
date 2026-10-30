@@ -2742,15 +2742,39 @@ input[aria-invalid="true"] {
   font-weight: 600;
 }
 
+.pie-novedades-casillas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 460px;
+  max-width: 100%;
+}
+
+.pie-novedades-casillas .check {
+  color: var(--txt-hondo);
+  font-size: var(--tx-xs);
+  gap: 8px;
+}
+
+.pie-novedades-casillas .check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #ffffff;
+}
+
 .pie-novedades-legal {
   margin: 0;
+  line-height: 1.5;
   color: var(--txt-hondo);
   font-size: var(--tx-xs);
   text-align: center;
 }
 
-.pie-novedades-legal a {
+.pie .pie-novedades-legal a {
   text-decoration: underline;
+  display: inline;
+  padding: 0;
+  font-size: inherit;
 }
 
 .pie-redes {
