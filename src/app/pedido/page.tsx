@@ -33,6 +33,17 @@ function fechaChile(iso: string) {
   return new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", dateStyle: "long", timeStyle: "short" });
 }
 
+function fechaCorta(iso: string) {
+  return new Date(iso).toLocaleString("es-CL", { timeZone: "America/Santiago", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+}
+
+// Pasos del pedido; los mismos llegan en el correo de compra.
+const PASOS = [
+  { titulo: "Preparando", detalle: "En 1 día hábil" },
+  { titulo: "En camino", detalle: "Te enviamos el número de seguimiento" },
+  { titulo: "Entrega con carnet", detalle: "Solo a mayores de 18 años" },
+];
+
 export default async function Confirmacion({ searchParams }: Props) {
   const { n, k } = await searchParams;
   const pedido = await leerPedido(n, k);
@@ -88,100 +99,125 @@ export default async function Confirmacion({ searchParams }: Props) {
   }
 
   const w = pedido.webpay_respuesta;
+  const pagado = w?.transaction_date ?? pedido.pagado_en;
   return (
-    <div className="wrap pagina angosta confirmacion">
+    <section className="pedido-ok sobre-oscuro">
       <VaciarCarro />
-      <div className="check-ok" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12.5l4.5 4.5L19 7.5" />
-        </svg>
-      </div>
-      <h1>¡Listo! Recibimos tu pago</h1>
-      <p>
-        Pedido N° <b>{pedido.numero}</b>.{" "}
-        {pedido.correo_enviado_en ? (
-          <>
-            Te enviamos el comprobante a <b>{pedido.correo}</b>.
-          </>
-        ) : (
-          <>Guarda esta página: es tu comprobante.</>
-        )}
-      </p>
-
-      {prueba ? <p className="nota">Compra de prueba: Webpay está en modo pruebas y no se hizo ningún cargo real.</p> : null}
-
-      <div className="resumen">
-        {pedido.items.map((it) => (
-          <div key={`${it.slug}-${it.variante}`}>
-            <span>
-              {it.cantidad} × {it.nombre}
-              {it.variante ? ` · ${it.variante}` : ""}
-            </span>
-            <span className="tab">{clp(it.precio * it.cantidad)}</span>
-          </div>
-        ))}
-        <div>
-          <span>Despacho a {pedido.comuna}</span>
-          <span className="tab">{clp(pedido.despacho)}</span>
-        </div>
-        <div className="total">
-          <span>Total pagado</span>
-          <span className="tab">{clp(pedido.total)}</span>
-        </div>
-      </div>
-
-      <div className="que-pasa">
-        <h2>Despacho</h2>
-        <p>
-          {pedido.direccion}
-          {pedido.depto ? `, ${pedido.depto}` : ""}, {pedido.comuna}, {pedido.region}
-        </p>
-      </div>
-
-      {w ? (
-        <div className="resumen">
-          <div>
-            <span>Comercio</span>
-            <span>Vapeur SpA</span>
+      <div className="wrap pedido-ok-caja">
+        <div className="pedido-ok-tope">
+          <div className="check-ok" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
           </div>
           <div>
-            <span>Orden de compra</span>
-            <span className="tab">{w.buy_order}</span>
-          </div>
-          <div>
-            <span>Fecha</span>
-            <span className="tab">{fechaChile(w.transaction_date)}</span>
-          </div>
-          <div>
-            <span>Tipo de pago</span>
-            <span>
-              {tipoPago(w.payment_type_code)}
-              {w.installments_number ? ` · ${w.installments_number} cuotas` : ""}
-            </span>
-          </div>
-          <div>
-            <span>Tarjeta</span>
-            <span className="tab">**** {w.card_detail?.card_number}</span>
-          </div>
-          <div>
-            <span>Código de autorización</span>
-            <span className="tab">{w.authorization_code}</span>
+            <h1>¡Listo! Recibimos tu pago</h1>
+            <p className="pedido-ok-sub">
+              Pedido N° <b>{pedido.numero}</b>.{" "}
+              {pedido.correo_enviado_en ? (
+                <>
+                  Te enviamos el comprobante a <b>{pedido.correo}</b>.
+                </>
+              ) : (
+                <>Guarda esta página: es tu comprobante.</>
+              )}
+            </p>
           </div>
         </div>
-      ) : null}
 
-      <div className="que-pasa">
-        <h2>Qué pasa ahora</h2>
-        <ol>
-          <li>Preparamos tu pedido en 1 día hábil.</li>
-          <li>Te avisamos por correo con el número de seguimiento.</li>
-          <li>Recíbelo con tu carnet: solo se entrega a mayores de 18 años.</li>
+        {prueba ? <p className="nota-prueba">Compra de prueba: Webpay está en modo pruebas y no se hizo ningún cargo real.</p> : null}
+
+        <ol className="avance" aria-label="Estado de tu pedido">
+          <li className="hecho">
+            <i aria-hidden="true" />
+            <b>
+              Pago recibido<span className="solo-lector"> (listo)</span>
+            </b>
+            <span>{pagado ? fechaCorta(pagado) : "Listo"}</span>
+          </li>
+          {PASOS.map((paso) => (
+            <li key={paso.titulo}>
+              <i aria-hidden="true" />
+              <b>{paso.titulo}</b>
+              <span>{paso.detalle}</span>
+            </li>
+          ))}
         </ol>
-      </div>
 
-      <Link href="/" className="boton secundario ancho">
-        Volver a la tienda
-      </Link>
-    </div>
+        <div className="recibo">
+          <div className="recibo-tarjeta">
+            <h2>Tu pedido</h2>
+            {pedido.items.map((it) => (
+              <div key={`${it.slug}-${it.variante}`} className="recibo-fila">
+                <span>
+                  {it.cantidad} × {it.nombre}
+                  {it.variante ? ` · ${it.variante}` : ""}
+                </span>
+                <span className="tab">{clp(it.precio * it.cantidad)}</span>
+              </div>
+            ))}
+            <div className="recibo-fila">
+              <span>Despacho a {pedido.comuna}</span>
+              <span className="tab">{clp(pedido.despacho)}</span>
+            </div>
+            <div className="recibo-fila recibo-total">
+              <span>Total pagado</span>
+              <span className="tab">{clp(pedido.total)}</span>
+            </div>
+            <p className="recibo-direccion">
+              <span>Llega a</span>
+              {pedido.direccion}
+              {pedido.depto ? `, ${pedido.depto}` : ""}, {pedido.comuna}, {pedido.region}
+            </p>
+          </div>
+
+          {w ? (
+            <div className="recibo-tarjeta">
+              <h2>Comprobante Webpay</h2>
+              <div className="recibo-fila">
+                <span>Comercio</span>
+                <span>Vapeur SpA</span>
+              </div>
+              <div className="recibo-fila">
+                <span>Orden de compra</span>
+                <span className="tab">{w.buy_order}</span>
+              </div>
+              <div className="recibo-fila">
+                <span>Fecha</span>
+                <span className="tab">{fechaChile(w.transaction_date)}</span>
+              </div>
+              <div className="recibo-fila">
+                <span>Tipo de pago</span>
+                <span>
+                  {tipoPago(w.payment_type_code)}
+                  {w.installments_number ? ` · ${w.installments_number} cuotas` : ""}
+                </span>
+              </div>
+              <div className="recibo-fila">
+                <span>Tarjeta</span>
+                <span className="tab">**** {w.card_detail?.card_number}</span>
+              </div>
+              <div className="recibo-fila">
+                <span>Código de autorización</span>
+                <span className="tab">{w.authorization_code}</span>
+              </div>
+            </div>
+          ) : null}
+        </div>
+
+        <p className="pedido-ok-retracto">
+          <b>Derecho a retracto:</b> tienes 10 días desde que recibes tu pedido. <Link href="/legal/retracto">Ver condiciones</Link>
+        </p>
+
+        <div className="pedido-ok-acciones">
+          <Link href="/" className="boton claro">
+            Volver a la tienda
+          </Link>
+          <Link href="/ayuda/despacho" className="boton borde-claro">
+            Ver despacho y plazos
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

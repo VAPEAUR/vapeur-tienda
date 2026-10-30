@@ -162,8 +162,8 @@ export default async function Inicio() {
       {kits().length > 0 ? (
         <section className="seccion wrap">
           <div className="titulo-seccion">
-            <span className="etiqueta">Para cada etapa</span>
-            <h2>Kits por nivel</h2>
+            <span className="etiqueta">Compatibles entre sí</span>
+            <h2>Kits: equipo y repuestos juntos</h2>
             <p className="muted">El precio del kit es la suma de sus productos.</p>
           </div>
           <div className="kits deslizable">
@@ -173,7 +173,7 @@ export default async function Inicio() {
                   <ArteProducto arte={k.arte} />
                 </div>
                 <span className="etiqueta">
-                  {k.nivel} · {k.para}
+                  {k.tipo} · {k.para}
                 </span>
                 <h3>{k.nombre}</h3>
                 <ul>
