@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AyudaCompra from "@/components/AyudaCompra";
 import { guardarDestino, leerDestino, useCotizacion } from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { CLAVE_DATOS_CHECKOUT } from "@/components/VaciarCarro";
 import { useCatalogo } from "@/components/Catalogo";
+import { useCuenta } from "@/components/Cuenta";
 import { DESPACHO } from "@/lib/catalogo";
 import { EDAD_MINIMA, calcularEdad } from "@/lib/edad";
 import { clp } from "@/lib/formato";
@@ -50,6 +51,9 @@ export default function Checkout() {
   const [terminos, setTerminos] = useState(false);
   const [errorPago, setErrorPago] = useState("");
   const [enviando, setEnviando] = useState(false);
+  const cuenta = useCuenta();
+  const [guardarEnCuenta, setGuardarEnCuenta] = useState(true);
+  const llenadoDesdeCuenta = useRef(false);
 
   // Si ya eligió su comuna en la ficha o el carro, llega marcada.
   useEffect(() => {
@@ -69,6 +73,22 @@ export default function Checkout() {
       // sin datos recordados
     }
   }, []);
+
+  // Con sesión, los campos vacíos se llenan con los datos guardados en la cuenta.
+  useEffect(() => {
+    if (llenadoDesdeCuenta.current || !cuenta.listo || !cuenta.correo || !cuenta.perfil) return;
+    llenadoDesdeCuenta.current = true;
+    const p = cuenta.perfil;
+    const correo = cuenta.correo;
+    setD((x) => ({ ...x, correo: x.correo || correo, nombre: x.nombre || p.nombre, telefono: x.telefono || p.telefono }));
+    setDireccion((x) => x || p.direccion);
+    setDepto((x) => x || p.depto);
+    // La comuna elegida en la ficha o el carro manda sobre la guardada.
+    if (!leerDestino() && p.region && p.comuna && DESPACHO[p.region]?.[p.comuna] !== undefined) {
+      setRegion(p.region);
+      setComuna(p.comuna);
+    }
+  }, [cuenta.listo, cuenta.correo, cuenta.perfil]);
 
   // Tarifa real de Chilexpress (o estimada si la API no responde).
   const { cotizacion } = useCotizacion(region, comuna, items);
@@ -128,6 +148,12 @@ export default function Checkout() {
       });
       const res = (await r.json()) as { ok: boolean; url?: string; token?: string; error?: string };
       if (!res.ok || !res.url || !res.token) throw new Error(res.error || "No pudimos iniciar el pago.");
+      if (cuenta.perfil && guardarEnCuenta) {
+        // Si no se puede guardar, el pago sigue igual.
+        await cuenta
+          .guardarPerfil({ nombre: d.nombre.trim(), telefono: d.telefono.trim(), region, comuna, direccion: direccion.trim(), depto: depto.trim() })
+          .catch(() => undefined);
+      }
       try {
         const r: Recordados = { correo: d.correo, nombre: d.nombre, telefono: d.telefono, direccion, depto };
         sessionStorage.setItem(CLAVE_DATOS_CHECKOUT, JSON.stringify(r));
@@ -168,6 +194,11 @@ export default function Checkout() {
         <form onSubmit={continuar} noValidate className="compra-grilla">
           <div className="formulario">
             <h1>Tus datos</h1>
+            {cuenta.disponible && cuenta.listo && !cuenta.sesion ? (
+              <p className="cuenta-sugerencia">
+                ¿Tienes cuenta? <Link href="/cuenta?volver=/checkout">Ingresa</Link> y usamos tus datos guardados.
+              </p>
+            ) : null}
             <p className="nota">
               La ley exige verificar que eres mayor de 18 años. Usamos tu RUT y fecha de nacimiento solo para eso, y tus
               datos solo para tu compra y el despacho.
@@ -226,7 +257,7 @@ export default function Checkout() {
               <button type="submit" className="boton ancho">
                 Continuar a despacho
               </button>
-              <p className="muted centrado">Compras sin crear cuenta. Pago con Webpay de Transbank.</p>
+              <p className="muted centrado">Puedes comprar sin crear cuenta. Pago con Webpay de Transbank.</p>
             </div>
             <AyudaCompra />
           </div>
@@ -294,13 +325,20 @@ export default function Checkout() {
                 <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>
               </div>
             ) : null}
+
+            {cuenta.perfil ? (
+              <label className="check">
+                <input type="checkbox" checked={guardarEnCuenta} onChange={(e) => setGuardarEnCuenta(e.target.checked)} />
+                <span>Guardar estos datos de despacho en mi cuenta</span>
+              </label>
+            ) : null}
           </div>
 
           <div className="compra-cierre">
             <div className="caja-resumen">
               <Resumen subtotal={subtotal} despacho={typeof costoDespacho === "number" ? costoDespacho : undefined} total={total} />
               <p className="aviso-retracto">
-                <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+                {RETRACTO_CORTO} <Link href="/legal/retracto">Ver detalle</Link>
               </p>
 
               <label className="check">

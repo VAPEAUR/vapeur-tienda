@@ -267,6 +267,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Despacho: región, comuna, dirección y teléfono. Se comparten con el courier solo para entregar tu pedido. Base legal: cumplir el contrato.",
           "Verificación de edad: RUT y fecha de nacimiento. Se usan en el momento para comprobar que tienes 18 años o más y no se guardan. Base legal: cumplir la obligación de la Ley 21.642 de no vender a menores.",
           "Detalle de la compra (productos, montos, fecha y número de pedido). Para la contabilidad y los impuestos de Vapeur. Base legal: obligación legal tributaria.",
+          "Cuenta (opcional): tu correo, la fecha en que declaraste tener 18 años o más y aceptaste estos términos, y los datos de despacho que decidas guardar (nombre, teléfono, región, comuna y dirección). Para que entres con un código que te enviamos al correo, veas tus pedidos y no tengas que escribir tus datos en cada compra. Puedes comprar sin cuenta. Base legal: tu solicitud y el contrato de uso de la cuenta.",
           "Consultas por correo o WhatsApp: tu nombre, contacto y mensaje. Solo para responderte. Base legal: tu solicitud.",
           "Datos técnicos (dirección IP y tipo de navegador), que registran nuestros proveedores de alojamiento por seguridad. Base legal: interés legítimo en proteger el sitio y evitar fraudes.",
         ],
@@ -287,7 +288,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Courier que despacha tu pedido. Su nombre aparece en el correo de despacho.",
           "Cloudflare (alojamiento y seguridad del sitio), con servidores en Estados Unidos y otros países.",
           "Supabase (base de datos de la tienda), con servidores en São Paulo, Brasil.",
-          "Resend (envío del correo de confirmación de tu compra), con servidores en Estados Unidos.",
+          "Resend (envío del correo de confirmación de tu compra y del código para entrar a tu cuenta), con servidores en Estados Unidos.",
           "Google (correo de atención) y WhatsApp, de Meta, solo si nos escribes por esos canales.",
           "Autoridades, solo cuando la ley lo exige (por ejemplo, el SII, la autoridad sanitaria o un tribunal).",
         ],
@@ -303,6 +304,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
         lista: [
           "RUT y fecha de nacimiento: no se guardan.",
           "Datos de compra y despacho: el tiempo que exige la ley tributaria (hasta 6 años) y, mientras tanto, para atender garantías y reclamos.",
+          "Cuenta y datos de despacho guardados: mientras tengas la cuenta. Puedes eliminarla tú mismo en Mi cuenta y se borra de inmediato; los pedidos ya hechos se conservan por la obligación tributaria indicada arriba.",
           "Consultas por correo o WhatsApp: hasta 12 meses después de la última respuesta.",
           "Luego los eliminamos o anonimizamos.",
         ],
@@ -310,7 +312,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
       {
         titulo: "7. Lo que se guarda en tu navegador",
         parrafos: [
-          "No usamos cookies de publicidad ni de analítica. Tu navegador guarda solo lo necesario para que la tienda funcione: tu carro de compras y, mientras dure la visita, que confirmaste tener 18 años o más. Puedes borrarlo desde la configuración de tu navegador.",
+          "No usamos cookies de publicidad ni de analítica. Tu navegador guarda solo lo necesario para que la tienda funcione: tu carro de compras, mientras dure la visita que confirmaste tener 18 años o más y, si entras a tu cuenta, la sesión para que no tengas que pedir un código en cada página (se borra al cerrar sesión). Puedes borrarlo desde la configuración de tu navegador.",
         ],
       },
       {

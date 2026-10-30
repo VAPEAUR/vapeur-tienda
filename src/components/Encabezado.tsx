@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
+import { useCuenta } from "@/components/Cuenta";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import Buscador from "@/components/Buscador";
 import Logo from "@/components/Logo";
@@ -12,6 +13,8 @@ import Logo from "@/components/Logo";
 export default function Encabezado() {
   const { cantidadTotal, listo } = useCarro();
   const { equipos, marcas } = useCatalogo();
+  const cuenta = useCuenta();
+  const conSesion = cuenta.listo && Boolean(cuenta.sesion);
   const [abierto, setAbierto] = useState(false);
   const ruta = usePathname();
 
@@ -91,6 +94,21 @@ export default function Encabezado() {
         </nav>
 
         <Buscador />
+
+        {cuenta.disponible ? (
+          <Link
+            href="/cuenta"
+            className="icono cuenta-icono"
+            aria-label={conSesion ? "Mi cuenta" : "Ingresar o crear cuenta"}
+            aria-current={ruta === "/cuenta" ? "page" : undefined}
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <circle cx="12" cy="8.5" r="3.5" />
+              <path d="M5 19.5c1.2-3.2 3.9-5 7-5s5.8 1.8 7 5" />
+            </svg>
+            {conSesion ? <span className="punto-sesion" aria-hidden="true" /> : null}
+          </Link>
+        ) : null}
 
         <Link href="/carro" className="icono carro" aria-label={`Carro, ${listo ? cantidadTotal : 0} productos`}>
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
