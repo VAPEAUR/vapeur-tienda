@@ -4,56 +4,67 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ArteProducto from "@/components/ArteProducto";
 import type { Arte } from "@/lib/catalogo";
+import type { Tipo } from "@/lib/tipo-producto";
 
 // Portada con 3 diapositivas informativas (sin ofertas ni promociones:
 // Ley 21.642). Avanza sola cada 7 s, se detiene al interactuar y tiene botón
 // de pausa; si la persona pidió menos movimiento, no avanza sola.
+// Cada una muestra el producto sobre el fondo de su tipo, como en un estudio.
 
 type Diapositiva = {
-  clase: string;
+  clase: "noche" | "bloque" | "piedra";
   etiqueta: string;
   titulo: string;
+  /** Final del título, en el color de acento. */
+  resalte: string;
   bajada: string;
-  botones: { texto: string; href: string; secundario?: boolean }[];
-  artes: [Arte, Arte, Arte];
-  color?: string;
+  botones: { texto: string; href: string; clase?: string }[];
+  arte: Arte;
+  fondo: Tipo;
 };
+
+/** Producto que se muestra con su precio en la primera diapositiva. */
+export type Destacado = { nombre: string; detalle: string; precio: string; href: string; arte: Arte; color?: string };
 
 const DIAPOSITIVAS: Diapositiva[] = [
   {
     clase: "noche",
-    etiqueta: "Tienda de vaper en Chile",
-    titulo: "Tu vape, sin vueltas.",
+    etiqueta: "Tienda de vaper en Chile · Solo adultos",
+    titulo: "Tu vape,",
+    resalte: "sin vueltas.",
     bajada: "Equipos, repuestos y líquidos para adultos. Te decimos qué sirve para tu equipo antes de que compres.",
     botones: [
       { texto: "Ver equipos", href: "/equipos" },
-      { texto: "Busco repuestos", href: "#repuestos", secundario: true },
+      { texto: "Busco repuestos", href: "#repuestos", clase: "borde-claro" },
     ],
-    artes: ["frasco", "pod", "cartucho"],
-    color: "#A9B1B5",
+    arte: "pod",
+    fondo: "equipos",
   },
   {
-    clase: "petroleo",
+    clase: "bloque",
     etiqueta: "Repuestos para tu equipo",
-    titulo: "El cartucho correcto, a la primera.",
+    titulo: "El cartucho correcto,",
+    resalte: "a la primera.",
     bajada: "Elige tu equipo y ves solo los cartuchos y coils compatibles. Sin adivinar.",
-    botones: [{ texto: "Ver repuestos", href: "/repuestos" }],
-    artes: ["coil", "pod2", "cartucho"],
-    color: "#3A4247",
+    botones: [{ texto: "Ver repuestos", href: "/repuestos", clase: "claro" }],
+    arte: "cartucho",
+    fondo: "repuestos",
   },
   {
-    clase: "claro",
+    clase: "piedra",
     etiqueta: "Kits",
-    titulo: "Equipo y repuestos, juntos.",
+    titulo: "Equipo y repuestos,",
+    resalte: "juntos.",
     bajada: "Todo compatible entre sí. El precio del kit es la suma de cada producto.",
     botones: [{ texto: "Ver kits", href: "/kits" }],
-    artes: ["bateria", "mod", "coil"],
+    arte: "mod",
+    fondo: "equipos",
   },
 ];
 
 const INTERVALO_MS = 7000;
 
-export default function CarruselPortada() {
+export default function CarruselPortada({ destacado }: { destacado?: Destacado | null }) {
   const pista = useRef<HTMLDivElement>(null);
   const [actual, setActual] = useState(0);
   const [enPausa, setEnPausa] = useState(false);
@@ -111,26 +122,31 @@ export default function CarruselPortada() {
               <div className="wrap diapositiva-grid">
                 <div className="diapositiva-texto">
                   <span className="etiqueta">{d.etiqueta}</span>
-                  <Titulo>{d.titulo}</Titulo>
+                  <Titulo>
+                    {d.titulo} <em>{d.resalte}</em>
+                  </Titulo>
                   <p>{d.bajada}</p>
                   <div className="botones">
                     {d.botones.map((b) => (
-                      <Link key={b.texto} href={b.href} className={b.secundario ? "boton secundario" : "boton"}>
+                      <Link key={b.texto} href={b.href} className={b.clase ? `boton ${b.clase}` : "boton"}>
                         {b.texto}
                       </Link>
                     ))}
                   </div>
                 </div>
-                <div className="composicion" aria-hidden="true">
-                  <div className="atras izq">
-                    <ArteProducto arte={d.artes[0]} />
-                  </div>
-                  <div className="frente">
-                    <ArteProducto arte={d.artes[1]} color={d.color} />
-                  </div>
-                  <div className="atras der">
-                    <ArteProducto arte={d.artes[2]} />
-                  </div>
+                <div className={`set foto-estudio tipo-${d.fondo}${i === 0 && destacado ? " con-etiqueta" : ""}`}>
+                  {i === 0 && destacado ? (
+                    <>
+                      <ArteProducto arte={destacado.arte} color={destacado.color} />
+                      <Link href={destacado.href} className="set-etiqueta">
+                        <b>{destacado.nombre}</b>
+                        <span>{destacado.detalle}</span>
+                        <span className="precio">{destacado.precio}</span>
+                      </Link>
+                    </>
+                  ) : (
+                    <ArteProducto arte={d.arte} />
+                  )}
                 </div>
               </div>
             </div>

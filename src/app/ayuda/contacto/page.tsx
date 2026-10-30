@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/ayuda/contacto" },
 };
 
-// Página de contacto con la estructura de planetofthevapes.com/pages/contact-us:
+// Página de contacto con la estructura de la de la tienda referente:
 // formulario a la izquierda y panel de ayuda a la derecha. Del panel se
 // quitaron envío gratis, "100% de satisfacción" y tarjetas de regalo.
 const AYUDA = [

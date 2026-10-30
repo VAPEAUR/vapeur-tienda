@@ -24,25 +24,28 @@ export default async function PaginaKits() {
       </header>
       <div className="kits">
         {kits().map((k) => (
-          <article key={k.nombre} className="kit">
-            <div className="arte-kit">
+          <article key={k.nombre} className="kit tipo-kits">
+            <div className="arte-kit foto-estudio" aria-hidden="true">
               <ArteProducto arte={k.arte} />
             </div>
-            <span className="etiqueta">
-              {k.tipo} · {k.para}
-            </span>
-            <h2>{k.nombre}</h2>
-            <ul>
-              {k.productos.map((slug) => {
-                const p = producto(slug);
-                return p ? (
-                  <li key={slug}>
-                    <Link href={`/producto/${slug}`}>{p.nombre}</Link> · {clp(p.precio)}
-                  </li>
-                ) : null;
-              })}
-            </ul>
-            <span className="precio">{clp(precioKit(k))}</span>
+            <span className="banda" aria-hidden="true" />
+            <div className="kit-info">
+              <span className="rotulo-tipo">
+                {k.tipo} · {k.para}
+              </span>
+              <h2>{k.nombre}</h2>
+              <ul>
+                {k.productos.map((slug) => {
+                  const p = producto(slug);
+                  return p ? (
+                    <li key={slug}>
+                      <Link href={`/producto/${slug}`}>{p.nombre}</Link> · {clp(p.precio)}
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+              <span className="precio">{clp(precioKit(k))}</span>
+            </div>
           </article>
         ))}
       </div>

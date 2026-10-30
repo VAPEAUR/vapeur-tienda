@@ -8,6 +8,7 @@ import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
 import PagoSeguro from "@/components/PagoSeguro";
 import { clp } from "@/lib/formato";
+import { colorArte } from "@/lib/tipo-producto";
 
 export default function PaginaCarro() {
   const { items, subtotal, listo, cambiarCantidad, quitar } = useCarro();
@@ -35,7 +36,7 @@ export default function PaginaCarro() {
               return (
                 <li key={`${it.slug}-${it.variante}`} className="linea">
                   <Link href={`/producto/${p.slug}`} className="foto">
-                    <ArteProducto arte={p.arte} color={p.color} />
+                    <ArteProducto arte={p.arte} color={colorArte(p)} />
                   </Link>
                   <div className="detalle">
                     <Link href={`/producto/${p.slug}`} className="nombre">

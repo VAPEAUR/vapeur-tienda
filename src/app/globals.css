@@ -24,12 +24,23 @@
   --btn: var(--accent);
   --btn-ink: #ffffff;
   --noche: var(--hondo);
+  /* Color por tipo de producto, nunca por sabor (dictamen legal 30-oct-2026):
+     banda y rótulo de la tarjeta (--t-*) y fondo de la foto (--f-*). Repuestos
+     y accesorios comparten color, igual que líquidos y desechables. */
+  --t-equipos: #1d5a58;
+  --t-repuestos: #5e7c80;
+  --t-liquidos: #231f20;
+  --t-kits: #8c877b;
+  --f-equipos: #1d5a58;
+  --f-repuestos: #f5f5f5;
+  --f-liquidos: #d3d1c6;
+  --f-kits: #d3d1c6;
   --art-bg: #f1f4f4;
   --art-body: #2b3236;
   --art-body-2: #586269;
   --art-metal: #b9c1c4;
   --art-glass: #9fb8b6;
-  --art-liquid: #c9a86a;
+  --art-liquid: #b5b1a6; /* gris: el líquido no lleva color de sabor */
   --art-shadow: rgba(21, 25, 27, 0.1);
   --ok: #1e6b3a;
   --ok-soft: #e3f2e7;
@@ -584,6 +595,8 @@ body.con-puerta {
 
 .titulo-seccion h2 {
   font-size: var(--tx-2xl);
+  font-weight: 800;
+  font-stretch: 78%;
 }
 
 .pagina {
@@ -653,25 +666,27 @@ body.con-puerta {
   --art-shadow: rgba(0, 0, 0, 0.5);
 }
 
+/* Vitrina de estudio: frase grande a la izquierda y el producto sobre el
+   fondo de su tipo a la derecha. Sobre negro cálido el acento es petróleo
+   claro; sobre petróleo profundo el botón va blanco; sobre piedra, petróleo. */
 .diapositiva.noche {
-  background: radial-gradient(ellipse 70% 90% at 72% 55%, #3a3436 0%, var(--noche) 62%, #171415 100%);
-  color: #f2f4f5;
-}
-
-.diapositiva.petroleo {
-  background: radial-gradient(ellipse 70% 90% at 72% 55%, #2a6e6b 0%, var(--accent) 60%, #123d3b 100%);
+  background: var(--hondo);
   color: #ffffff;
 }
 
-.diapositiva.claro {
-  background: var(--surface);
+.diapositiva.bloque {
+  background: var(--bloque);
+  color: #ffffff;
+}
+
+.diapositiva.piedra {
+  background: var(--piedra);
   color: var(--ink);
-  --art-shadow: rgba(21, 25, 27, 0.14);
 }
 
 .diapositiva-grid {
   display: grid;
-  gap: 4px;
+  gap: 24px;
   padding-top: 32px;
   padding-bottom: 76px;
   min-height: 100%;
@@ -684,37 +699,41 @@ body.con-puerta {
 }
 
 .diapositiva .etiqueta {
-  color: #9fb8b6;
+  color: var(--resalte);
 }
 
-.diapositiva.petroleo .etiqueta {
-  color: #cfe4e1;
-}
-
-.diapositiva.claro .etiqueta {
+.diapositiva.piedra .etiqueta {
   color: var(--accent);
 }
 
 .diapositiva h1,
 .diapositiva h2 {
   font-size: var(--tx-portada);
-  font-stretch: 75%;
-  font-weight: 800;
-  max-width: 14ch;
+  font-stretch: 70%;
+  font-weight: 900;
+  line-height: 0.95;
+  max-width: 12ch;
+}
+
+.diapositiva h1 em,
+.diapositiva h2 em {
+  font-style: normal;
+  color: var(--resalte);
+  white-space: nowrap;
+}
+
+.diapositiva.piedra h2 em {
+  color: var(--accent);
 }
 
 .diapositiva p {
   margin: 0;
   max-width: 36ch;
   font-size: var(--tx-m);
-  color: #c9d0d3;
+  color: var(--txt-hondo);
 }
 
-.diapositiva.petroleo p {
-  color: #e2efed;
-}
-
-.diapositiva.claro p {
+.diapositiva.piedra p {
   color: var(--muted);
 }
 
@@ -725,61 +744,62 @@ body.con-puerta {
   margin-top: 4px;
 }
 
-.diapositiva.noche .boton,
-.diapositiva.petroleo .boton {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: var(--ink);
-}
-
-.diapositiva.noche .boton:hover,
-.diapositiva.petroleo .boton:hover {
-  background: #e8ecec;
-}
-
-.diapositiva.noche .boton.secundario,
-.diapositiva.petroleo .boton.secundario {
-  background: transparent;
-  color: #ffffff;
-}
-
-.diapositiva.noche .boton.secundario:hover,
-.diapositiva.petroleo .boton.secundario:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Tres artes superpuestos: el del centro adelante. */
-.composicion {
+/* El producto sobre cartulina de color, con su ficha corta. */
+.set {
+  --art-shadow: rgba(21, 25, 27, 0.16);
   position: relative;
-  justify-self: center;
-  width: min(78%, 300px);
-  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  height: 260px;
+  border-radius: 20px;
 }
 
-.composicion > div {
+.set .arte {
+  width: 230px;
+  height: 230px;
+}
+
+/* Con ficha, el producto sube para que la ficha no lo tape. */
+.set.con-etiqueta {
+  align-content: start;
+  height: 300px;
+  padding-top: 6px;
+}
+
+.set.con-etiqueta .arte {
+  width: 190px;
+  height: 190px;
+}
+
+.set-etiqueta {
   position: absolute;
-  bottom: 0;
-}
-
-.composicion .frente {
-  left: 27%;
-  width: 46%;
-  height: 100%;
+  left: 12px;
+  bottom: 12px;
   z-index: 2;
+  display: grid;
+  max-width: calc(100% - 24px);
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--hondo);
+  color: var(--txt-hondo);
+  font-size: var(--tx-xs);
+  text-decoration: none;
 }
 
-.composicion .atras {
-  width: 36%;
-  height: 74%;
-  opacity: 0.9;
+.set-etiqueta b {
+  color: #ffffff;
+  font-size: var(--tx-base);
 }
 
-.composicion .izq {
-  left: 0;
+.set-etiqueta .precio {
+  color: var(--resalte);
+  font-size: var(--tx-l);
+  font-weight: 800;
+  font-stretch: 85%;
 }
 
-.composicion .der {
-  right: 0;
+.set-etiqueta:hover b {
+  text-decoration: underline;
 }
 
 .controles-portada {
@@ -895,71 +915,56 @@ body.con-puerta {
   color: var(--ink);
 }
 
-.bento {
+/* Comprar por categoría: cada tipo con su fondo de foto y su banda. */
+.tipos {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
-.baldosa {
-  position: relative;
+.tipo-baldosa {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 150px;
-  padding: 14px;
-  border-radius: var(--radius);
-  background: var(--art-bg);
-  text-decoration: none;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
   overflow: hidden;
+  background: var(--bg);
+  text-decoration: none;
 }
 
-.baldosa .texto {
+.tipo-baldosa .foto {
+  display: grid;
+  place-items: center;
+  height: 112px;
+}
+
+.tipo-baldosa .arte {
+  width: 104px;
+  height: 104px;
+}
+
+.tipo-baldosa .texto {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  position: relative;
-  z-index: 1;
-  max-width: 70%;
+  padding: 10px 12px 14px;
 }
 
-.baldosa b {
+.tipo-baldosa b {
   font-family: var(--f-display), sans-serif;
   font-stretch: 85%;
+  font-weight: 800;
   font-size: var(--tx-l);
+  line-height: 1.1;
 }
 
-.baldosa span {
+.tipo-baldosa .texto span {
   font-size: var(--tx-s);
   color: var(--muted);
 }
 
-.baldosa .mini {
-  position: absolute;
-  right: -10px;
-  bottom: -10px;
-  width: 110px;
-  height: 110px;
-}
-
-.baldosa.grande {
-  grid-column: 1 / -1;
-  background: var(--noche);
-  color: #f2f4f5;
-  min-height: 190px;
-  --art-shadow: rgba(0, 0, 0, 0.5);
-}
-
-.baldosa.grande span {
-  color: #c9d0d3;
-}
-
-.baldosa.grande .mini {
-  width: 170px;
-  height: 170px;
-}
-
-.baldosa:hover b {
+.tipo-baldosa:hover b {
   text-decoration: underline;
 }
 
@@ -980,20 +985,73 @@ body.con-puerta {
   margin-bottom: 22px;
 }
 
-.buscador {
+/* En la portada, bloque petróleo profundo con la foto del repuesto al lado. */
+.panel-repuestos.oscuro {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bloque);
+  color: #ffffff;
+}
+
+.panel-repuestos-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 18px;
+}
+
+.panel-repuestos.oscuro h2 {
+  margin: 0;
+  max-width: 18ch;
+}
+
+.panel-repuestos.oscuro .etiqueta {
+  color: var(--resalte);
+}
+
+.panel-repuestos.oscuro p {
+  color: var(--txt-hondo);
+}
+
+.panel-repuestos.oscuro .foto {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+}
+
+.panel-repuestos.oscuro .foto .arte {
+  width: 170px;
+  height: 170px;
+}
+
+.buscador-repuestos {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.buscador label {
+.buscador-repuestos label {
   font-weight: 600;
 }
 
-.buscador .fila {
+.buscador-repuestos .fila {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.panel-repuestos.oscuro .buscador-repuestos {
+  margin-top: 8px;
+}
+
+.panel-repuestos.oscuro select {
+  border-color: #ffffff;
+  border-radius: 999px;
+  padding: 0 18px;
+  color: var(--ink);
 }
 
 select,
@@ -1014,38 +1072,181 @@ input[aria-invalid="true"] {
   border-color: var(--err);
 }
 
+/* ---------- Color por tipo y foto de estudio ---------- */
+/* Cada tipo fija su banda (--tipo) y el fondo de su foto (--fondo-foto). */
+.tipo-equipos {
+  --tipo: var(--t-equipos);
+  --fondo-foto: var(--f-equipos);
+}
+
+.tipo-repuestos {
+  --tipo: var(--t-repuestos);
+  --fondo-foto: var(--f-repuestos);
+}
+
+.tipo-liquidos {
+  --tipo: var(--t-liquidos);
+  --fondo-foto: var(--f-liquidos);
+}
+
+.tipo-kits {
+  --tipo: var(--t-kits);
+  --fondo-foto: var(--f-kits);
+}
+
+/* El producto sobre cartulina de color con luz de ventana: claro arriba y
+   una sombra suave abajo. */
+.foto-estudio {
+  position: relative;
+  overflow: hidden;
+  background: var(--fondo-foto, var(--piedra));
+}
+
+.foto-estudio::before,
+.foto-estudio::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.foto-estudio::before {
+  inset: 0;
+  background: radial-gradient(75% 60% at 50% 30%, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0) 70%);
+}
+
+.foto-estudio::after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.08));
+}
+
+.foto-estudio .arte {
+  position: relative;
+  z-index: 1;
+}
+
+.tipo-equipos .foto-estudio,
+.foto-estudio.tipo-equipos {
+  --art-shadow: rgba(0, 0, 0, 0.35);
+}
+
+.banda {
+  display: block;
+  height: 6px;
+  background: var(--tipo);
+}
+
+.rotulo-tipo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--tx-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.rotulo-tipo::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--tipo);
+}
+
 /* ---------- Tarjetas de producto ---------- */
 .grilla {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 12px;
+  gap: 12px;
 }
 
 .tarjeta {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  text-decoration: none;
   min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg);
 }
 
 .tarjeta .foto {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: var(--radius);
-  background: var(--art-bg);
-  overflow: hidden;
-  margin-bottom: 6px;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 4;
+}
+
+.tarjeta .foto .arte {
+  width: 88%;
+  height: 88%;
+}
+
+.tarjeta .info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+  padding: 12px 12px 14px;
+}
+
+/* El nombre es el enlace; su capa cubre toda la tarjeta. */
+.tarjeta .nombre {
+  font-family: var(--f-display), sans-serif;
+  font-stretch: 85%;
+  font-weight: 800;
+  font-size: var(--tx-base);
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.tarjeta .nombre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 18px;
 }
 
 .tarjeta:hover .nombre {
   text-decoration: underline;
 }
 
+.tarjeta .nombre:focus-visible {
+  outline: none;
+}
+
+.tarjeta .nombre:focus-visible::after {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.tarjeta .pie-tarjeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.tarjeta .precio {
+  font-weight: 800;
+  font-stretch: 85%;
+  font-size: var(--tx-l);
+}
+
 .sello {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
   background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -1057,12 +1258,6 @@ input[aria-invalid="true"] {
 .marca {
   font-size: var(--tx-xs);
   color: var(--muted);
-}
-
-.tarjeta .nombre {
-  font-weight: 600;
-  font-size: var(--tx-base);
-  line-height: 1.3;
 }
 
 .dato {
@@ -1091,12 +1286,56 @@ input[aria-invalid="true"] {
   color: var(--muted);
 }
 
+/* Escala de nicotina neutra: mismo tamaño y mismo grafito para todos los
+   valores; solo se rellenan los que se venden (dictamen legal 30-oct-2026). */
+.escala-nicotina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: var(--tx-2xs);
+  color: var(--muted);
+}
+
+.escala {
+  display: flex;
+  gap: 2px;
+}
+
+.escala i {
+  min-width: 26px;
+  padding: 0 4px;
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.escala i.si {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+/* Advertencia de la tarjeta en el formato del envase: letras blancas sobre
+   fondo negro, sin sellos ni imágenes encima (Ley 19.419, art. 6). */
+.advertencia-tarjeta {
+  padding: 6px 8px;
+  background: #111111;
+  color: #ffffff;
+  font-size: var(--tx-2xs);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
 /* ---------- Quiz ---------- */
 .quiz {
   display: grid;
   gap: 18px;
   padding: 20px 18px;
-  border-radius: var(--radius);
+  border-radius: 20px;
   background: var(--surface);
 }
 
@@ -1124,7 +1363,7 @@ input[aria-invalid="true"] {
   gap: 14px;
   align-items: center;
   background: var(--bg);
-  border-radius: var(--radius);
+  border-radius: 18px;
   padding: 12px;
   text-decoration: none;
 }
@@ -1137,8 +1376,7 @@ input[aria-invalid="true"] {
 
 .res .foto {
   aspect-ratio: 1;
-  background: var(--art-bg);
-  border-radius: var(--radius-s);
+  border-radius: 12px;
 }
 
 /* ---------- Kits ---------- */
@@ -1150,15 +1388,25 @@ input[aria-invalid="true"] {
 .kit {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  min-width: 0;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.kit-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+  padding: 14px 16px 18px;
 }
 
 .kit h2,
 .kit h3 {
   font-size: var(--tx-l);
+  font-weight: 800;
 }
 
 .kit ul {
@@ -1168,10 +1416,22 @@ input[aria-invalid="true"] {
   font-size: var(--tx-s);
 }
 
+.kit .precio {
+  margin-top: auto;
+  font-weight: 800;
+  font-stretch: 85%;
+  font-size: var(--tx-l);
+}
+
 .arte-kit {
+  display: grid;
+  place-items: center;
   aspect-ratio: 16 / 9;
-  background: var(--art-bg);
-  border-radius: var(--radius-s);
+}
+
+.arte-kit .arte {
+  width: 70%;
+  height: 90%;
 }
 
 /* ---------- Kits deslizables (inicio, celular) ---------- */
@@ -1231,13 +1491,15 @@ input[aria-invalid="true"] {
   grid-template-columns: 96px minmax(0, 1fr);
   gap: 16px;
   align-items: center;
-  padding: 14px;
-  border-radius: var(--radius);
-  background: var(--surface);
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg);
 }
 
 .zigzag h3 {
   font-size: var(--tx-l);
+  font-weight: 800;
   margin: 2px 0 4px;
 }
 
@@ -1247,9 +1509,10 @@ input[aria-invalid="true"] {
 }
 
 .zz-arte {
+  display: grid;
+  place-items: center;
   aspect-ratio: 1;
-  border-radius: var(--radius-s);
-  background: var(--bg);
+  border-radius: 12px;
 }
 
 .num {
@@ -1260,73 +1523,79 @@ input[aria-invalid="true"] {
   color: var(--accent);
 }
 
-/* ---------- Banners dobles ---------- */
-.duo {
+/* ---------- Guías y despacho (antes de comprar) ---------- */
+.guias-portada {
   display: grid;
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 12px;
 }
 
-.duo-uno,
-.duo-dos {
-  position: relative;
+.guia-tarjeta {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  min-height: 210px;
-  padding: 22px;
-  padding-right: 38%;
-  border-radius: var(--radius);
-  overflow: hidden;
+  gap: 6px;
+  min-width: 0;
+  text-decoration: none;
 }
 
-.duo-uno {
-  background: var(--noche);
-  color: #f2f4f5;
-  --art-shadow: rgba(0, 0, 0, 0.5);
+.guia-tarjeta .foto {
+  display: grid;
+  place-items: center;
+  height: 130px;
+  margin-bottom: 4px;
+  border-radius: 18px;
 }
 
-.duo-uno p {
-  color: #c9d0d3;
+.guia-tarjeta .arte {
+  width: 120px;
+  height: 120px;
 }
 
-.duo-dos {
-  background: var(--accent-soft);
+.guia-tarjeta h3 {
+  font-size: var(--tx-l);
+  font-weight: 800;
 }
 
-.duo h3 {
-  font-size: var(--tx-xl);
-  font-stretch: 85%;
+.guia-tarjeta p {
+  font-size: var(--tx-s);
 }
 
-.duo p {
-  margin: 0;
-  font-size: var(--tx-base);
+.guia-tarjeta:hover h3 {
+  text-decoration: underline;
 }
 
-.duo-dos a {
-  margin-top: auto;
+/* ---------- Bloque de color a todo el ancho ---------- */
+.seccion-color {
+  margin-top: 48px;
+  padding: 40px 0 44px;
+}
+
+.seccion-color.piedra {
+  background: var(--piedra);
+}
+
+/* Título de sección con enlace "ver todo" a la derecha en escritorio. */
+.titulo-seccion.con-enlace {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 24px;
+}
+
+.titulo-seccion.con-enlace > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 62ch;
+}
+
+.ver-todo {
   font-weight: 600;
   color: var(--accent);
-}
-
-.pronto {
-  display: inline-block;
-  padding: 3px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 999px;
-  font-size: var(--tx-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.deco {
-  position: absolute;
-  right: -4%;
-  bottom: -6%;
-  width: 40%;
-  aspect-ratio: 1;
-  pointer-events: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
 }
 
 /* ---------- Listados ---------- */
@@ -2332,11 +2601,70 @@ input[aria-invalid="true"] {
 @media (min-width: 720px) {
   .grilla {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px 18px;
+    gap: 18px;
   }
 
-  .buscador .fila {
+  .tarjeta .info {
+    padding: 14px 16px 18px;
+  }
+
+  .tarjeta .nombre {
+    font-size: var(--tx-m);
+  }
+
+  .buscador-repuestos .fila {
     flex-direction: row;
+  }
+
+  .tipos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .tipo-baldosa .foto {
+    height: 150px;
+  }
+
+  .tipo-baldosa .arte {
+    width: 140px;
+    height: 140px;
+  }
+
+  .tipo-baldosa .texto {
+    padding: 12px 16px 16px;
+  }
+
+  .panel-repuestos.oscuro {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    border-radius: 26px;
+  }
+
+  .panel-repuestos-texto {
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .panel-repuestos.oscuro .foto {
+    min-height: 300px;
+  }
+
+  .panel-repuestos.oscuro .foto .arte {
+    width: 250px;
+    height: 250px;
+  }
+
+  .guias-portada {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .guia-tarjeta .foto {
+    height: 190px;
+  }
+
+  .guia-tarjeta .arte {
+    width: 170px;
+    height: 170px;
   }
 
   .kits {
@@ -2374,18 +2702,27 @@ input[aria-invalid="true"] {
     order: 2;
   }
 
-  .duo {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .diapositiva-grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 44px;
     align-items: center;
   }
 
-  .composicion {
-    width: 100%;
-    max-width: 420px;
+  .set,
+  .set.con-etiqueta {
+    height: 360px;
+    border-radius: 26px;
+  }
+
+  .set .arte,
+  .set.con-etiqueta .arte {
+    width: 300px;
+    height: 300px;
+  }
+
+  .set-etiqueta {
+    left: 20px;
+    bottom: 18px;
   }
 
   .quiz {
@@ -2473,8 +2810,24 @@ input[aria-invalid="true"] {
   }
 
   .diapositiva-grid {
-    padding-top: 64px;
+    padding-top: 56px;
     padding-bottom: 96px;
+  }
+
+  .set,
+  .set.con-etiqueta {
+    height: 430px;
+  }
+
+  .set .arte,
+  .set.con-etiqueta .arte {
+    width: 360px;
+    height: 360px;
+  }
+
+  /* Con tres elegidos, la fila queda llena. */
+  .grilla.tres {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .carrusel {
@@ -2485,43 +2838,13 @@ input[aria-invalid="true"] {
     top: -76px;
   }
 
-  .duo-uno,
-  .duo-dos {
-    min-height: 240px;
-    padding: 30px;
-    padding-right: 40%;
-  }
-
   .seccion {
     padding-top: 72px;
   }
 
-  .bento {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 200px);
-  }
-
-  .baldosa.grande {
-    grid-column: 1 / 3;
-    grid-row: 1 / 3;
-    min-height: 0;
-    padding: 24px;
-  }
-
-  .baldosa.grande b {
-    font-size: var(--tx-xl);
-  }
-
-  .baldosa.grande .mini {
-    width: 300px;
-    height: 300px;
-    right: -20px;
-    bottom: -30px;
-  }
-
-  .baldosa .mini {
-    width: 130px;
-    height: 130px;
+  .seccion-color {
+    margin-top: 72px;
+    padding: 64px 0;
   }
 
   .panel-repuestos {
