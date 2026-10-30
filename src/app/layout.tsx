@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Sans } from "next/font/google";
+import { Archivo, IBM_Plex_Sans, Manrope } from "next/font/google";
 import "./globals.css";
 import AgeGate, { SCRIPT_EDAD } from "@/components/AgeGate";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
@@ -10,17 +10,26 @@ import Pie from "@/components/Pie";
 import { obtenerCatalogo } from "@/lib/datos";
 import { SITIO, sePuedeIndexar } from "@/lib/seo";
 
-const archivo = Archivo({
+// Letra de la tienda en títulos y textos (cambio pedido por Amerhi el 30-oct-2026).
+const manrope = Manrope({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--f-display",
+  variable: "--f-texto",
   display: "swap",
 });
 
+// El logo conserva su letra: Archivo comprimida.
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--f-logo",
+  display: "swap",
+});
+
+// La franja y las advertencias sanitarias conservan su letra (no se cambian sin el abogado).
 const plex = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--f-texto",
+  weight: ["400", "700"],
+  variable: "--f-aviso",
   display: "swap",
 });
 
@@ -52,7 +61,7 @@ export default async function RootLayout({
 }>) {
   const { productos } = await obtenerCatalogo();
   return (
-    <html lang="es-CL" className={`${archivo.variable} ${plex.variable}`} suppressHydrationWarning>
+    <html lang="es-CL" className={`${manrope.variable} ${archivo.variable} ${plex.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_EDAD }} />
       </head>

@@ -1,4 +1,4 @@
-// Advertencia sanitaria en blanco y negro, como en el envase (Ley 21.642).
+// Advertencia sanitaria en letras blancas sobre negro, como en el envase (Ley 21.642).
 import { advertenciaPara } from "@/lib/legal";
 
 export default function Advertencia({ producto }: { producto: { categoria: string; nicotina: boolean } }) {

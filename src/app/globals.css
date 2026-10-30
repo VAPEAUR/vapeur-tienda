@@ -3,7 +3,8 @@
    piedra y gris claro, petróleo en botones. Sobre fondos oscuros el petróleo no se
    lee (2,1:1): ahí van el petróleo claro en acentos y botones blancos con letra
    petróleo. Colores por tipo de producto, nunca por sabor (dictamen legal 30-oct).
-   Fuentes Archivo e IBM Plex Sans. La tienda es solo modo claro en la versión 1. */
+   Letra Manrope en títulos y textos (30-oct); el logo sigue en Archivo y la franja
+   y las advertencias en IBM Plex Sans. La tienda es solo modo claro en la versión 1. */
 :root {
   --bg: #ffffff;
   --surface: #f5f5f5; /* gris claro */
@@ -24,6 +25,7 @@
   --btn: var(--accent);
   --btn-ink: #ffffff;
   --noche: var(--hondo);
+  --f-display: var(--f-texto); /* títulos y textos en la misma letra */
   /* Color por tipo de producto, nunca por sabor (dictamen legal 30-oct-2026):
      banda y rótulo de la tarjeta (--t-*) y fondo de la foto (--f-*). Repuestos
      y accesorios comparten color, igual que líquidos y desechables. */
@@ -52,8 +54,8 @@
   --radius-s: 6px;
   --alto-control: 50px;
   --alto-franja: 36px;
-  /* Escala tipográfica (revisión 28-oct-2026). Base 16 px en IBM Plex Sans;
-     títulos en Archivo. Los títulos crecen en escritorio (ver @media 1000px):
+  /* Escala tipográfica (revisión 28-oct-2026). Base 16 px en Manrope, la misma
+     letra de los títulos. Los títulos crecen en escritorio (ver @media 1000px):
      así cada pantalla usa los mismos 10 tamaños y no valores sueltos. */
   --tx-2xs: 12px; /* sellos y contador del carro */
   --tx-xs: 13px; /* marca, datos y stock de tarjetas, rótulos en mayúscula */
@@ -92,8 +94,8 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--f-display), "Arial Narrow", Arial, sans-serif;
-  font-stretch: 85%;
+  font-family: var(--f-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
   text-wrap: balance;
@@ -299,11 +301,14 @@ button {
 }
 
 /* ---------- Advertencia sanitaria (blanco y negro, como el envase) ---------- */
+/* Letras blancas sobre negro, como la advertencia de las tarjetas (dictamen
+   legal 30-oct-2026, condición 6). Conserva su letra: IBM Plex Sans. */
 .advertencia {
-  background: var(--aviso);
-  color: #111111;
-  border: 2px solid var(--aviso-borde);
+  background: #111111;
+  color: #ffffff;
+  border: 2px solid #111111;
   padding: 12px 14px;
+  font-family: var(--f-aviso), sans-serif;
   font-weight: 700;
   font-size: 14px;
   line-height: 1.35;
@@ -411,6 +416,7 @@ body.con-puerta {
   background: var(--aviso);
   color: var(--aviso-borde);
   border-bottom: 1px solid var(--aviso-borde);
+  font-family: var(--f-aviso), sans-serif;
   font-size: 11px;
   line-height: 1.3;
   text-align: center;
@@ -436,7 +442,7 @@ body.con-puerta {
   align-items: center;
   gap: 8px;
   line-height: 1;
-  font-family: var(--f-display), sans-serif;
+  font-family: var(--f-logo), sans-serif;
   font-stretch: 75%;
   font-weight: 800;
   font-size: 22px;
@@ -596,7 +602,6 @@ body.con-puerta {
 .titulo-seccion h2 {
   font-size: var(--tx-2xl);
   font-weight: 800;
-  font-stretch: 78%;
 }
 
 .pagina {
@@ -709,9 +714,9 @@ body.con-puerta {
 .diapositiva h1,
 .diapositiva h2 {
   font-size: var(--tx-portada);
-  font-stretch: 70%;
-  font-weight: 900;
-  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
   max-width: 12ch;
 }
 
@@ -795,7 +800,6 @@ body.con-puerta {
   color: var(--resalte);
   font-size: var(--tx-l);
   font-weight: 800;
-  font-stretch: 85%;
 }
 
 .set-etiqueta:hover b {
@@ -816,6 +820,14 @@ body.con-puerta {
 
 .controles-portada > * {
   pointer-events: auto;
+}
+
+/* En celular van a la izquierda: a la derecha los tapaba el botón de WhatsApp. */
+@media (max-width: 719px) {
+  .controles-portada {
+    justify-content: flex-start;
+    padding-left: 16px;
+  }
 }
 
 .flecha {
@@ -892,7 +904,6 @@ body.con-puerta {
   padding-top: 16px;
   padding-bottom: 16px;
   font-family: var(--f-display), sans-serif;
-  font-stretch: 85%;
   font-weight: 700;
   font-size: var(--tx-m);
   color: var(--muted);
@@ -902,7 +913,6 @@ body.con-puerta {
 
 .fila-marcas .etiqueta {
   font-family: var(--f-texto), sans-serif;
-  font-stretch: 100%;
   color: var(--muted);
 }
 
@@ -953,7 +963,6 @@ body.con-puerta {
 
 .tipo-baldosa b {
   font-family: var(--f-display), sans-serif;
-  font-stretch: 85%;
   font-weight: 800;
   font-size: var(--tx-l);
   line-height: 1.1;
@@ -1198,11 +1207,11 @@ input[aria-invalid="true"] {
 /* El nombre es el enlace; su capa cubre toda la tarjeta. */
 .tarjeta .nombre {
   font-family: var(--f-display), sans-serif;
-  font-stretch: 85%;
   font-weight: 800;
   font-size: var(--tx-base);
   line-height: 1.2;
   text-decoration: none;
+  text-wrap: balance;
 }
 
 .tarjeta .nombre::after {
@@ -1238,7 +1247,6 @@ input[aria-invalid="true"] {
 
 .tarjeta .precio {
   font-weight: 800;
-  font-stretch: 85%;
   font-size: var(--tx-l);
 }
 
@@ -1325,6 +1333,7 @@ input[aria-invalid="true"] {
   padding: 6px 8px;
   background: #111111;
   color: #ffffff;
+  font-family: var(--f-aviso), sans-serif;
   font-size: var(--tx-2xs);
   font-weight: 700;
   line-height: 1.3;
@@ -1419,7 +1428,6 @@ input[aria-invalid="true"] {
 .kit .precio {
   margin-top: auto;
   font-weight: 800;
-  font-stretch: 85%;
   font-size: var(--tx-l);
 }
 
@@ -1961,8 +1969,8 @@ input[aria-invalid="true"] {
 
 .pedido-ok h1 {
   font-size: var(--tx-3xl);
-  font-weight: 900;
-  font-stretch: 72%;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .pedido-ok-sub {
@@ -2072,7 +2080,6 @@ input[aria-invalid="true"] {
 
 .recibo-tarjeta h2 {
   font-family: var(--f-texto), sans-serif;
-  font-stretch: 100%;
   font-size: var(--tx-xs);
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -2103,7 +2110,6 @@ input[aria-invalid="true"] {
 
 .recibo-total span:last-child {
   font-family: var(--f-display), sans-serif;
-  font-stretch: 85%;
   font-weight: 800;
   font-size: var(--tx-2xl);
   color: var(--ink);
@@ -2460,24 +2466,112 @@ input[aria-invalid="true"] {
 }
 
 /* ---------- Botón flotante de WhatsApp ---------- */
-.boton-whatsapp {
+/* Verde de WhatsApp con un anillo quieto (sin ondas animadas) y un globo de
+   ayuda a la izquierda que se puede cerrar (pedido de Amerhi, 30-oct-2026). */
+.whatsapp-flotante {
   position: fixed;
-  right: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom));
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
   z-index: 40;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.whatsapp-flotante > * {
+  pointer-events: auto;
+}
+
+.boton-whatsapp {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: var(--accent);
+  background: #25d366;
   color: #ffffff;
-  box-shadow: 0 6px 18px rgba(21, 25, 27, 0.3);
+  box-shadow: 0 6px 18px rgba(21, 25, 27, 0.28);
+}
+
+.boton-whatsapp::before {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border: 4px solid rgba(37, 211, 102, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .boton-whatsapp:hover {
-  background: #164947;
+  background: #1ebe5b;
+}
+
+.globo-ayuda {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(100vw - 112px);
+  padding: 4px 4px 4px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 0 8px 24px rgba(21, 25, 27, 0.18);
+}
+
+.globo-ayuda a {
+  padding: 10px 0;
+  font-size: var(--tx-s);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.globo-ayuda a:hover {
+  text-decoration: underline;
+}
+
+.globo-ayuda button {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.globo-ayuda button:hover {
+  background: var(--surface);
+}
+
+/* En el carro y el checkout la ayuda va como enlace (sin botón flotante). */
+.ayuda-compra {
+  margin-top: 18px;
+  text-align: center;
+  font-size: var(--tx-s);
+  color: var(--muted);
+}
+
+.ayuda-compra a {
+  color: var(--accent);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+@media (min-width: 720px) {
+  .whatsapp-flotante {
+    right: 24px;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .globo-ayuda a {
+    font-size: var(--tx-base);
+  }
 }
 
 .pagina-accion {
