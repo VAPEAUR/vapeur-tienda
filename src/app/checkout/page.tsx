@@ -338,7 +338,7 @@ export default function Checkout() {
             <div className="caja-resumen">
               <Resumen subtotal={subtotal} despacho={typeof costoDespacho === "number" ? costoDespacho : undefined} total={total} />
               <p className="aviso-retracto">
-                <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+                {RETRACTO_CORTO} <Link href="/legal/retracto">Ver detalle</Link>
               </p>
 
               <label className="check">

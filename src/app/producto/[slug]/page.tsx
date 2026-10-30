@@ -72,7 +72,7 @@ export default async function FichaProducto({ params }: Props) {
             </div>
             <EscalaNicotina p={p} />
             <p className="aviso-retracto">
-              <Link href="/legal/retracto">{RETRACTO_CORTO}</Link>
+              {RETRACTO_CORTO} <Link href="/legal/retracto">Ver detalle</Link>
             </p>
             <p>{p.descripcion}</p>
 
