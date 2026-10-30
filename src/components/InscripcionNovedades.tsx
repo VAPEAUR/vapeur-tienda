@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/components/Logo";
 import { AVISOS_CONSENTIMIENTO, CORREO_VALIDO } from "@/lib/suscriptores";
@@ -9,7 +10,10 @@ type Estado = "reposo" | "enviando" | "ok";
 
 // Las dos casillas son obligatorias y separadas: el consentimiento para recibir
 // avisos (datos personales) y la declaración de mayoría de edad (Ley 21.642).
+// No va en el checkout: sus casillas se confundían con las de la compra
+// (diagnóstico 30-oct).
 export default function InscripcionNovedades() {
+  const ruta = usePathname();
   const [correo, setCorreo] = useState("");
   const [aceptaAvisos, setAceptaAvisos] = useState(false);
   const [declara18, setDeclara18] = useState(false);
@@ -41,6 +45,8 @@ export default function InscripcionNovedades() {
       setError("No pudimos suscribir tu correo. Inténtalo de nuevo en unos minutos.");
     }
   }
+
+  if (ruta === "/checkout" || ruta.startsWith("/checkout/")) return null;
 
   return (
     <div className="pie-novedades">

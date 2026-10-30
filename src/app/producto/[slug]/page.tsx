@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Advertencia from "@/components/Advertencia";
 import AgregarAlCarro from "@/components/AgregarAlCarro";
 import ArteProducto from "@/components/ArteProducto";
-import CalculaDespacho from "@/components/CalculaDespacho";
 import FechaCompra from "@/components/FechaCompra";
 import EscalaNicotina from "@/components/EscalaNicotina";
 import PagoSeguro from "@/components/PagoSeguro";
@@ -77,7 +76,7 @@ export default async function FichaProducto({ params }: Props) {
             </p>
             <p>{p.descripcion}</p>
 
-            {p.stock > 0 ? <FechaCompra /> : null}
+            {p.stock > 0 ? <FechaCompra items={[{ slug: p.slug, cantidad: 1 }]} /> : null}
             <AgregarAlCarro p={p} />
             <PagoSeguro />
 
@@ -95,8 +94,6 @@ export default async function FichaProducto({ params }: Props) {
               <li>Se entrega solo a una persona mayor de 18 años con carnet.</li>
               <li>{GARANTIA_CORTA}</li>
             </ul>
-
-            <CalculaDespacho items={[{ slug: p.slug, cantidad: 1 }]} />
 
             <div className="acordeon">
               <details open>

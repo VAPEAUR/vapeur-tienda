@@ -29,7 +29,8 @@ function validarDatos(d: Datos, declaracion: boolean): Errores {
   const e: Errores = {};
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.correo)) e.correo = "Escribe un correo válido.";
   if (d.nombre.trim().length < 3) e.nombre = "Escribe tu nombre y apellido.";
-  if (!rutValido(d.rut)) e.rut = "Revisa tu RUT: el dígito verificador no coincide.";
+  if (!d.rut.trim()) e.rut = "Escribe tu RUT.";
+  else if (!rutValido(d.rut)) e.rut = "Revisa tu RUT: el dígito verificador no coincide.";
   const edad = calcularEdad(Number(d.dia), Number(d.mes), Number(d.anio));
   if (edad === null) e.edad = "Revisa tu fecha de nacimiento.";
   else if (edad < EDAD_MINIMA)

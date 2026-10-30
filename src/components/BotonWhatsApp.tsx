@@ -11,7 +11,9 @@ import { enlaceWhatsApp } from "@/lib/contacto";
 // dentro de la página (AyudaCompra). El globo tapaba el precio con IVA y las
 // advertencias (revisión de branding, 30-oct): ahora sale solo en computador
 // (en celular lo oculta el CSS), solo en la portada y solo arriba, antes de
-// bajar a las tarjetas con advertencia.
+// bajar a las tarjetas con advertencia. En el celular el botón tapaba el
+// precio del carrusel y el texto de retracto de la ficha (diagnóstico 30-oct):
+// ahora es más chico y se esconde mientras se baja, y vuelve al subir.
 const CLAVE_GLOBO = "vapeur-ayuda-cerrada";
 const SIN_BOTON = ["/carro", "/checkout"];
 
@@ -19,6 +21,7 @@ export default function BotonWhatsApp() {
   const ruta = usePathname();
   const [globo, setGlobo] = useState(false);
   const [bajo, setBajo] = useState(false);
+  const [oculto, setOculto] = useState(false);
 
   useEffect(() => {
     try {
@@ -36,6 +39,18 @@ export default function BotonWhatsApp() {
     return () => window.removeEventListener("scroll", revisar);
   }, [ruta]);
 
+  useEffect(() => {
+    let anterior = window.scrollY;
+    const alMover = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - anterior) < 6) return;
+      setOculto(y > anterior && y > 120);
+      anterior = y;
+    };
+    window.addEventListener("scroll", alMover, { passive: true });
+    return () => window.removeEventListener("scroll", alMover);
+  }, []);
+
   function cerrarGlobo() {
     setGlobo(false);
     try {
@@ -49,7 +64,7 @@ export default function BotonWhatsApp() {
 
   const enlace = enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur.");
   return (
-    <div className="whatsapp-flotante">
+    <div className={oculto ? "whatsapp-flotante al-bajar" : "whatsapp-flotante"}>
       {globo && ruta === "/" && !bajo ? (
         <div className="globo-ayuda">
           <a href={enlace} target="_blank" rel="noopener noreferrer" onClick={cerrarGlobo}>

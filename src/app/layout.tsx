@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Sans, Manrope } from "next/font/google";
+import { IBM_Plex_Sans, Manrope } from "next/font/google";
 import "./globals.css";
 import "./despacho.css";
 import AgeGate, { SCRIPT_EDAD } from "@/components/AgeGate";
@@ -17,14 +17,6 @@ import { SITIO, sePuedeIndexar } from "@/lib/seo";
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--f-texto",
-  display: "swap",
-});
-
-// El logo conserva su letra: Archivo comprimida.
-const archivo = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--f-logo",
   display: "swap",
 });
 
@@ -64,7 +56,7 @@ export default async function RootLayout({
 }>) {
   const { productos } = await obtenerCatalogo();
   return (
-    <html lang="es-CL" className={`${manrope.variable} ${archivo.variable} ${plex.variable}`} suppressHydrationWarning>
+    <html lang="es-CL" className={`${manrope.variable} ${plex.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_EDAD }} />
       </head>
