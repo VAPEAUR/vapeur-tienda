@@ -1,0 +1,26 @@
+<!-- Correo con el código para entrar a la cuenta (30-oct-2026).
+     Pegar en Supabase → Authentication → Emails → Templates, en DOS plantillas:
+     "Magic link" y "Confirm signup" (la primera vez Supabase usa la segunda).
+     Asunto de ambas: Tu código para entrar a Vapeur: {{ .Token }}
+     {{ .Token }} es el código y {{ .SiteURL }} la dirección de la tienda
+     (Authentication → URL Configuration → Site URL). Sin enlaces para hacer
+     clic: el cliente escribe el código en la tienda. -->
+<!doctype html>
+<html lang="es-CL">
+<body style="margin:0;background:#F5F5F5;font-family:Arial,Helvetica,sans-serif;color:#15191B;line-height:1.45">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F5F5;padding:24px 12px">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border-radius:8px;border-top:4px solid #1D5A58">
+<tr><td style="padding:24px 24px 8px"><img src="{{ .SiteURL }}/correo-logo.png" width="180" height="36" alt="VAPEUR" style="display:block;border:0;font-size:22px;font-weight:bold;letter-spacing:3px;color:#15191B"></td></tr>
+<tr><td style="padding:8px 24px 0">
+<h1 style="margin:0 0 12px;font-size:22px">Tu código para entrar</h1>
+<p style="margin:0 0 16px;font-size:15px">Escribe este código en la tienda para entrar a tu cuenta. Vence en 1 hora.</p>
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td style="background:#F5F5F5;border-radius:6px;padding:14px 22px;font-size:30px;font-weight:bold;letter-spacing:8px;color:#1D5A58">{{ .Token }}</td></tr></table>
+<p style="margin:0 0 16px;font-size:14px;color:#4F585D">Si no pediste este código, ignora este correo: nadie puede entrar a tu cuenta sin él. Vapeur nunca te pedirá este código por teléfono ni WhatsApp.</p>
+</td></tr>
+<tr><td style="padding:16px 24px 24px;border-top:1px solid #D9DEDF;font-size:12px;color:#4F585D">Vapeur SpA · Venta exclusiva para mayores de 18 años.</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

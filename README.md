@@ -59,6 +59,22 @@ Puesta en marcha:
 4. Webpay de prueba no necesita variables. Tarjetas de prueba de Transbank: crédito VISA 4051 8856 0044 6623, CVV 123, cualquier fecha futura; RUT 11.111.111-1 y clave 123 en la pantalla del banco.
 5. Paso a producción (cuando Transbank entregue el código de comercio): `WEBPAY_AMBIENTE=produccion`, `WEBPAY_CODIGO_COMERCIO` y `WEBPAY_API_KEY` (Secret). No hay que cambiar código.
 
+## Cuentas de cliente (30-oct-2026)
+
+El cliente entra en `/cuenta` con un código de 6 dígitos que le llega al correo (Supabase Auth, sin contraseña). La primera vez declara tener 18 años o más y acepta Términos y Privacidad. Comprar como invitado sigue igual.
+
+- `src/components/Cuenta.tsx`: sesión en el navegador (clave `vapeur-cuenta`, aparte del panel) y perfil con datos de despacho (`public.perfiles`, RLS: cada cliente solo su fila).
+- `/api/cuenta`: `GET` lista los pedidos pagados con el correo de la cuenta (también los hechos como invitado); `DELETE` borra la cuenta y su perfil. Los pedidos se conservan (obligación tributaria). El servidor comprueba el token y que el correo esté confirmado.
+- El checkout llena los datos guardados y ofrece guardarlos al pagar. Nunca se guardan RUT, fecha de nacimiento ni tarjeta.
+
+Puesta en marcha:
+
+1. Supabase → SQL Editor: correr `supabase/cuentas.sql` (después de `pedidos.sql`).
+2. Supabase → Authentication → Sign In / Providers → Email: dejar activos "Allow new users to sign up" y "Confirm email".
+3. Supabase → Authentication → Emails → Templates: pegar `supabase/correo-codigo.html` en "Magic link" y en "Confirm signup" (asunto en el archivo).
+4. Supabase → Authentication → URL Configuration → Site URL: la dirección de la tienda.
+5. Correo propio (antes de abrir al público): Supabase → Authentication → Emails → SMTP Settings con Resend (`smtp.resend.com`, puerto 465, usuario `resend`, clave = una API key de Resend, remitente `cuenta@vapeur.cl`). Sin SMTP propio, Supabase manda muy pocos correos por hora y solo a correos del equipo.
+
 ## Cloudflare
 
 1. Variables (Workers → vapeur-tienda → Settings → Variables and Secrets): `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`; como Secret: `SUPABASE_SECRET_KEY` y `RESEND_API_KEY`.
