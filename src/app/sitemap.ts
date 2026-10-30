@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIAS, slugMarca } from "@/lib/catalogo";
 import { obtenerCatalogo } from "@/lib/datos";
+import { GUIAS } from "@/lib/guias";
 import { AYUDA, LEGAL } from "@/lib/paginas";
 import { SITIO } from "@/lib/seo";
 
@@ -19,6 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter((e) => repuestosPara(e.slug).length > 0)
       .map((e) => `/repuestos/${e.slug}`),
     ...productos.map((p) => `/producto/${p.slug}`),
+    "/guias",
+    ...GUIAS.map((g) => `/guias/${g.slug}`),
     ...Object.keys(AYUDA).map((t) => `/ayuda/${t}`),
     "/ayuda/contacto",
     ...Object.keys(LEGAL).map((t) => `/legal/${t}`),

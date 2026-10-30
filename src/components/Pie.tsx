@@ -58,6 +58,7 @@ export default function Pie() {
         <div>
           <h2>Ayuda</h2>
           <ul>
+            <li><Link href="/guias">Guías</Link></li>
             <li><Link href="/ayuda/despacho">Despacho y plazos</Link></li>
             <li><Link href="/ayuda/cambios-y-garantia">Cambios y garantía</Link></li>
             <li><Link href="/ayuda/preguntas-frecuentes">Preguntas frecuentes</Link></li>
