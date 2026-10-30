@@ -61,7 +61,7 @@ Puesta en marcha:
 
 ## Cuentas de cliente (30-oct-2026)
 
-El cliente entra en `/cuenta` con un código de 6 dígitos que le llega al correo (Supabase Auth, sin contraseña). La primera vez declara tener 18 años o más y acepta Términos y Privacidad. Comprar como invitado sigue igual.
+El cliente entra en `/cuenta` con un código que le llega al correo (Supabase Auth, sin contraseña; 8 dígitos según Email OTP length). La primera vez declara tener 18 años o más y acepta Términos y Privacidad. Comprar como invitado sigue igual.
 
 - `src/components/Cuenta.tsx`: sesión en el navegador (clave `vapeur-cuenta`, aparte del panel) y perfil con datos de despacho (`public.perfiles`, RLS: cada cliente solo su fila).
 - `/api/cuenta`: `GET` lista los pedidos pagados con el correo de la cuenta (también los hechos como invitado); `DELETE` borra la cuenta y su perfil. Los pedidos se conservan (obligación tributaria). El servidor comprueba el token y que el correo esté confirmado.
@@ -69,11 +69,11 @@ El cliente entra en `/cuenta` con un código de 6 dígitos que le llega al corre
 
 Puesta en marcha:
 
-1. Supabase → SQL Editor: correr `supabase/cuentas.sql` (después de `pedidos.sql`).
-2. Supabase → Authentication → Sign In / Providers → Email: dejar activos "Allow new users to sign up" y "Confirm email".
-3. Supabase → Authentication → Emails → Templates: pegar `supabase/correo-codigo.html` en "Magic link" y en "Confirm signup" (asunto en el archivo).
-4. Supabase → Authentication → URL Configuration → Site URL: la dirección de la tienda.
-5. Correo propio (antes de abrir al público): Supabase → Authentication → Emails → SMTP Settings con Resend (`smtp.resend.com`, puerto 465, usuario `resend`, clave = una API key de Resend, remitente `cuenta@vapeur.cl`). Sin SMTP propio, Supabase manda muy pocos correos por hora y solo a correos del equipo.
+1. Supabase → SQL Editor: correr `supabase/cuentas.sql` (después de `pedidos.sql`). Hecho el 30-oct-2026.
+2. Supabase → Authentication → Sign In / Providers: activos "Allow new users to sign up" y "Confirm email". Hecho el 30-oct-2026.
+3. Supabase → Authentication → URL Configuration → Site URL: la dirección de la tienda. Hecho el 30-oct-2026 (workers.dev; cambiar a `https://vapeur.cl` al lanzar).
+4. Correo propio: Supabase → Authentication → Emails → SMTP Settings con Resend (`smtp.resend.com`, puerto 465, usuario `resend`, clave = una API key de Resend con permiso de envío). Remitente: `onboarding@resend.dev` mientras vapeur.cl no esté verificado en Resend (solo llega al correo de la cuenta de Resend); después `cuenta@vapeur.cl`. Sin SMTP propio Supabase manda un enlace en vez del código, muy pocos correos por hora y solo a correos del equipo, y no deja editar las plantillas.
+5. Con el SMTP listo: Authentication → Emails → Templates, pegar `supabase/correo-codigo.html` en "Magic link or OTP" y en "Confirm sign up" (asunto en el archivo).
 
 ## Cloudflare
 

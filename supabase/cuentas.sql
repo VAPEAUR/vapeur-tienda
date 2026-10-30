@@ -2,7 +2,7 @@
 -- Pegar completo en Supabase → SQL Editor → Run, DESPUÉS de pedidos.sql.
 -- Se puede correr más de una vez.
 --
--- El cliente entra con un código de 6 dígitos que le llega al correo (Supabase
+-- El cliente entra con un código que le llega al correo (Supabase
 -- Auth, sin contraseña). Cada cuenta tiene a lo más un perfil con sus datos de
 -- despacho para llenar el checkout.
 --

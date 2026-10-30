@@ -1,6 +1,7 @@
 <!-- Correo con el código para entrar a la cuenta (30-oct-2026).
      Pegar en Supabase → Authentication → Emails → Templates, en DOS plantillas:
-     "Magic link" y "Confirm signup" (la primera vez Supabase usa la segunda).
+     "Magic link or OTP" y "Confirm sign up" (la primera vez Supabase usa la
+     segunda). Supabase solo deja editarlas con SMTP propio (ver README).
      Asunto de ambas: Tu código para entrar a Vapeur: {{ .Token }}
      {{ .Token }} es el código y {{ .SiteURL }} la dirección de la tienda
      (Authentication → URL Configuration → Site URL). Sin enlaces para hacer
