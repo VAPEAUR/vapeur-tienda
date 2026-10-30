@@ -251,7 +251,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
     titulo: "Política de privacidad",
     vigencia: `${VIGENCIA} Cumple la Ley 19.628 y la Ley 21.719, que rige desde el 1 de diciembre de 2026.`,
     parrafos: [
-      "Pedimos solo los datos necesarios para venderte, despacharte y verificar tu edad. No vendemos tus datos, no los usamos para publicidad y no enviamos boletines.",
+      "Pedimos solo los datos necesarios para venderte, despacharte y verificar tu edad. No vendemos tus datos ni los usamos para publicidad. Solo si te inscribes en el pie de página te enviamos avisos informativos por correo, nunca promociones.",
     ],
     secciones: [
       {
@@ -269,6 +269,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Detalle de la compra (productos, montos, fecha y número de pedido). Para la contabilidad y los impuestos de Vapeur. Base legal: obligación legal tributaria.",
           "Cuenta (opcional): tu correo, la fecha en que declaraste tener 18 años o más y aceptaste estos términos, y los datos de despacho que decidas guardar (nombre, teléfono, región, comuna y dirección). Para que entres con un código que te enviamos al correo, veas tus pedidos y no tengas que escribir tus datos en cada compra. Puedes comprar sin cuenta. Base legal: tu solicitud y el contrato de uso de la cuenta.",
           "Consultas por correo o WhatsApp: tu nombre, contacto y mensaje. Solo para responderte. Base legal: tu solicitud.",
+          "Avisos por correo (opcional): tu correo, la fecha en que te inscribiste, tu aceptación y tu declaración de tener 18 años o más. Para avisarte de reposición de stock, guías nuevas y cambios en plazos de despacho; nunca promociones ni publicidad de productos. No pedimos RUT, fecha de nacimiento ni nombre. Base legal: tu consentimiento, que puedes retirar cuando quieras en vapeur.cl/novedades/baja, con el enlace de cada aviso o escribiéndonos.",
           "Datos técnicos (dirección IP y tipo de navegador), que registran nuestros proveedores de alojamiento por seguridad. Base legal: interés legítimo en proteger el sitio y evitar fraudes.",
         ],
       },
@@ -288,7 +289,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Courier que despacha tu pedido. Su nombre aparece en el correo de despacho.",
           "Cloudflare (alojamiento y seguridad del sitio), con servidores en Estados Unidos y otros países.",
           "Supabase (base de datos de la tienda), con servidores en São Paulo, Brasil.",
-          "Resend (envío del correo de confirmación de tu compra y del código para entrar a tu cuenta), con servidores en Estados Unidos.",
+          "Resend (envío del correo de confirmación de tu compra, del código para entrar a tu cuenta y, si te inscribes, de los avisos), con servidores en Estados Unidos.",
           "Google (correo de atención) y WhatsApp, de Meta, solo si nos escribes por esos canales.",
           "Autoridades, solo cuando la ley lo exige (por ejemplo, el SII, la autoridad sanitaria o un tribunal).",
         ],
@@ -306,6 +307,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
           "Datos de compra y despacho: el tiempo que exige la ley tributaria (hasta 6 años) y, mientras tanto, para atender garantías y reclamos.",
           "Cuenta y datos de despacho guardados: mientras tengas la cuenta. Puedes eliminarla tú mismo en Mi cuenta y se borra de inmediato; los pedidos ya hechos se conservan por la obligación tributaria indicada arriba.",
           "Consultas por correo o WhatsApp: hasta 12 meses después de la última respuesta.",
+          "Avisos por correo: mientras sigas inscrito. Al darte de baja borramos tu correo de la lista de inmediato.",
           "Luego los eliminamos o anonimizamos.",
         ],
       },

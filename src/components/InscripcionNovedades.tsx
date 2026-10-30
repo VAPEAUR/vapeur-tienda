@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "@/components/Logo";
+import { AVISOS_CONSENTIMIENTO, AVISOS_DESCRIPCION } from "@/lib/suscriptores";
 
 type Estado = "reposo" | "enviando" | "ok" | "error";
 
 export default function InscripcionNovedades() {
   const [correo, setCorreo] = useState("");
+  const [aceptaAvisos, setAceptaAvisos] = useState(false);
+  const [declara18, setDeclara18] = useState(false);
   const [estado, setEstado] = useState<Estado>("reposo");
 
   async function enviar(e: React.FormEvent) {
@@ -17,7 +20,7 @@ export default function InscripcionNovedades() {
       const resp = await fetch("/api/suscriptores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo }),
+        body: JSON.stringify({ correo, aceptaAvisos, declara18 }),
       });
       if (!resp.ok) throw new Error();
       setEstado("ok");
@@ -32,16 +35,16 @@ export default function InscripcionNovedades() {
       <div className="wrap pie-novedades-fila">
         <div>
           <Logo className="logo logo-grande" />
-          <span className="pie-novedades-subtitulo">Regístrate para estar al tanto de las últimas novedades, nuevos lanzamientos y mucho más.</span>
+          <span className="pie-novedades-subtitulo">{AVISOS_DESCRIPCION}</span>
         </div>
         {estado === "ok" ? (
           <p className="pie-novedades-ok" role="status">
-            Listo, te avisaremos a tu correo.
+            Listo, quedaste inscrito. Puedes darte de baja cuando quieras.
           </p>
         ) : (
           <div className="pie-novedades-derecha">
-            <div className="pie-novedades-caja">
-              <form className="pie-novedades-form" onSubmit={enviar}>
+            <form className="pie-novedades-caja" onSubmit={enviar}>
+              <div className="pie-novedades-form">
                 <input
                   type="email"
                   required
@@ -53,12 +56,23 @@ export default function InscripcionNovedades() {
                 <button type="submit" className="boton" disabled={estado === "enviando"}>
                   {estado === "enviando" ? "Enviando…" : "Inscribirme"}
                 </button>
-              </form>
+              </div>
+              <div className="pie-novedades-casillas">
+                <label className="check">
+                  <input type="checkbox" required checked={aceptaAvisos} onChange={(e) => setAceptaAvisos(e.target.checked)} />
+                  <span>{AVISOS_CONSENTIMIENTO}</span>
+                </label>
+                <label className="check">
+                  <input type="checkbox" required checked={declara18} onChange={(e) => setDeclara18(e.target.checked)} />
+                  <span>Declaro que tengo 18 años o más.</span>
+                </label>
+              </div>
               <p className="pie-novedades-legal">
-                Al inscribirte aceptas nuestra <Link href="/legal/privacidad">Política de privacidad</Link>.
+                Guardamos solo tu correo. Lee la <Link href="/legal/privacidad">Política de privacidad</Link> o{" "}
+                <Link href="/novedades/baja">date de baja</Link>.
                 {estado === "error" ? " No se pudo inscribir tu correo, inténtalo de nuevo." : ""}
               </p>
-            </div>
+            </form>
           </div>
         )}
       </div>
