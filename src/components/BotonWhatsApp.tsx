@@ -8,14 +8,17 @@ import { enlaceWhatsApp } from "@/lib/contacto";
 // cerrado en este navegador (pedido de Amerhi, 30-oct-2026). Va detrás de la
 // puerta de edad, igual que el resto del sitio. No va en el carro ni en el
 // checkout: en el celular tapaba campos y botones, y ahí la ayuda es un enlace
-// dentro de la página (AyudaCompra).
+// dentro de la página (AyudaCompra). El globo tapaba el precio con IVA y las
+// advertencias (revisión de branding, 30-oct): ahora sale solo en computador
+// (en celular lo oculta el CSS), solo en la portada y solo arriba, antes de
+// bajar a las tarjetas con advertencia.
 const CLAVE_GLOBO = "vapeur-ayuda-cerrada";
 const SIN_BOTON = ["/carro", "/checkout"];
 
 export default function BotonWhatsApp() {
   const ruta = usePathname();
   const [globo, setGlobo] = useState(false);
-  const [arriba, setArriba] = useState(false);
+  const [bajo, setBajo] = useState(false);
 
   useEffect(() => {
     try {
@@ -25,22 +28,12 @@ export default function BotonWhatsApp() {
     }
   }, []);
 
-  // En la portada del celular el globo espera a que se baje un poco: arriba
-  // tapaba los controles del carrusel.
   useEffect(() => {
-    if (ruta !== "/") {
-      setArriba(false);
-      return;
-    }
-    const celular = window.matchMedia("(max-width: 719px)");
-    const revisar = () => setArriba(celular.matches && window.scrollY < 320);
+    if (ruta !== "/") return;
+    const revisar = () => setBajo(window.scrollY > 200);
     revisar();
     window.addEventListener("scroll", revisar, { passive: true });
-    celular.addEventListener("change", revisar);
-    return () => {
-      window.removeEventListener("scroll", revisar);
-      celular.removeEventListener("change", revisar);
-    };
+    return () => window.removeEventListener("scroll", revisar);
   }, [ruta]);
 
   function cerrarGlobo() {
@@ -57,7 +50,7 @@ export default function BotonWhatsApp() {
   const enlace = enlaceWhatsApp("Hola, tengo una consulta sobre Vapeur.");
   return (
     <div className="whatsapp-flotante">
-      {globo && !arriba ? (
+      {globo && ruta === "/" && !bajo ? (
         <div className="globo-ayuda">
           <a href={enlace} target="_blank" rel="noopener noreferrer" onClick={cerrarGlobo}>
             ¿Necesitas ayuda? Escríbenos.

@@ -734,6 +734,32 @@ body.con-puerta {
   padding: 40px 0;
 }
 
+/* Carro vacío en bloque piedra con accesos por tipo (antes era blanco y plano). */
+.carro-vacio {
+  display: grid;
+  gap: 20px;
+  margin-top: 8px;
+  padding: 24px 16px;
+  border-radius: 20px;
+  background: var(--piedra);
+}
+
+.carro-vacio-texto p {
+  margin: 0;
+}
+
+.carro-vacio-texto .carro-vacio-titulo {
+  margin-bottom: 4px;
+  font-size: var(--tx-l);
+  font-weight: 700;
+}
+
+.carro-vacio .ayuda-compra {
+  margin-top: 0;
+  text-align: left;
+  color: var(--ink);
+}
+
 /* ---------- Portada ---------- */
 .portada {
   position: relative;
@@ -894,27 +920,27 @@ body.con-puerta {
   text-decoration: underline;
 }
 
+/* Una sola cápsula oscura con ‹ · puntos · › · pausa (antes eran 4 piezas
+   sueltas). La pausa se queda: WCAG pide poder detener lo que se mueve solo. */
 .controles-portada {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
   bottom: 14px;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  pointer-events: none;
+  gap: 0;
+  padding: 0 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  background: rgba(21, 25, 27, 0.72);
 }
 
-.controles-portada > * {
-  pointer-events: auto;
-}
-
-/* En celular van a la izquierda: a la derecha los tapaba el botón de WhatsApp. */
+/* En celular va a la izquierda: a la derecha la tapaba el botón de WhatsApp. */
 @media (max-width: 719px) {
   .controles-portada {
-    justify-content: flex-start;
-    padding-left: 16px;
+    left: 16px;
+    transform: none;
   }
 }
 
@@ -936,8 +962,17 @@ body.con-puerta {
 }
 
 .controles-portada .flecha {
-  border-color: rgba(21, 25, 27, 0.15);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+}
+
+.controles-portada .flecha:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.controles-portada .puntos {
+  background: none;
 }
 
 .puntos {
@@ -1371,7 +1406,7 @@ input[aria-invalid="true"] {
 }
 
 .stock-poco {
-  color: #8a5300;
+  color: var(--muted);
 }
 
 .stock-no {
@@ -1746,10 +1781,12 @@ input[aria-invalid="true"] {
   gap: 22px;
 }
 
+/* Foto 4:3 en celular y tablet, para que nombre y precio entren en la primera
+   pantalla; cuadrada en computador, donde va al lado de la información. */
 .galeria .principal {
   display: grid;
   place-items: center;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 3;
   border-radius: 20px;
 }
 
@@ -2835,6 +2872,18 @@ input[aria-invalid="true"] {
   text-underline-offset: 3px;
 }
 
+/* En el celular solo el botón: el globo tapaba el precio con IVA y las
+   advertencias. El pie deja espacio para que el botón no tape su última línea. */
+@media (max-width: 719px) {
+  .globo-ayuda {
+    display: none;
+  }
+
+  .pie {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+}
+
 @media (min-width: 720px) {
   .whatsapp-flotante {
     right: 24px;
@@ -2985,6 +3034,14 @@ input[aria-invalid="true"] {
   .tipos {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
+  }
+
+  .tipos-cuatro {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .carro-vacio {
+    padding: 32px;
   }
 
   .tipo-baldosa .foto {
@@ -3261,6 +3318,10 @@ input[aria-invalid="true"] {
     align-items: start;
   }
 
+  .galeria .principal {
+    aspect-ratio: 1;
+  }
+
   .galeria {
     position: sticky;
     top: calc(var(--alto-franja) + 80px);
@@ -3413,10 +3474,17 @@ textarea {
   line-height: 1.45;
 }
 
-.aviso-retracto a {
+/* Texto normal; solo "Ver detalle" es enlace (antes las tres líneas iban
+   subrayadas y se leían como letra chica). */
+.aviso-retracto {
   color: var(--muted);
-  text-decoration-color: var(--borde-control);
+}
+
+.aviso-retracto a {
+  color: var(--accent);
+  font-weight: 600;
   text-underline-offset: 3px;
+  white-space: nowrap;
 }
 
 /* ---------- Buscador del encabezado ---------- */

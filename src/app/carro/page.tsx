@@ -7,9 +7,23 @@ import AyudaCompra from "@/components/AyudaCompra";
 import CalculaDespacho from "@/components/CalculaDespacho";
 import { useCarro } from "@/components/Carro";
 import { useCatalogo } from "@/components/Catalogo";
+import { type Arte, CATEGORIAS } from "@/lib/catalogo";
 import PagoSeguro from "@/components/PagoSeguro";
 import { clp, sinCorte } from "@/lib/formato";
-import { colorArte, NOMBRE_TIPO, tipoDe } from "@/lib/tipo-producto";
+import { colorArte, NOMBRE_TIPO, type Tipo, tipoDe } from "@/lib/tipo-producto";
+
+// Accesos del carro vacío: los mismos de "¿Qué buscas hoy?" de la portada, cada
+// uno con el fondo de su tipo. Sin ofertas ni "lo más vendido" (Ley 21.642).
+const ACCESOS = [
+  ...CATEGORIAS.filter((c) => ["equipos", "repuestos", "liquidos"].includes(c.slug)).map((c) => ({
+    href: `/${c.slug}`,
+    nombre: c.nombre,
+    bajada: c.bajada,
+    arte: c.arte,
+    tipo: tipoDe(c.slug),
+  })),
+  { href: "/kits", nombre: "Kits", bajada: "Equipo y repuestos juntos", arte: "mod" as Arte, tipo: "kits" as Tipo },
+];
 
 // Carro en la vitrina de estudio: cada producto sobre el fondo de su tipo y el
 // cierre de la compra en una tarjeta de piedra (al lado en escritorio).
@@ -24,12 +38,27 @@ export default function PaginaCarro() {
     <div className="wrap pagina compra">
       <h1>Tu carro</h1>
       {items.length === 0 ? (
-        <div className="vacio">
-          <p>Tu carro está vacío.</p>
-          <Link href="/equipos" className="boton">
-            Ver equipos
-          </Link>
-        </div>
+        <section className="carro-vacio">
+          <div className="carro-vacio-texto">
+            <p className="carro-vacio-titulo">Tu carro está vacío.</p>
+            <p className="muted">Elige por dónde partir.</p>
+          </div>
+          <div className="tipos tipos-cuatro">
+            {ACCESOS.map((t) => (
+              <Link key={t.href} href={t.href} className={`tipo-baldosa tipo-${t.tipo}`}>
+                <div className="foto foto-estudio" aria-hidden="true">
+                  <ArteProducto arte={t.arte} />
+                </div>
+                <span className="banda" aria-hidden="true" />
+                <span className="texto">
+                  <b>{t.nombre}</b>
+                  <span>{t.bajada}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+          <AyudaCompra />
+        </section>
       ) : (
         <div className="compra-grilla">
           <ul className="lineas">

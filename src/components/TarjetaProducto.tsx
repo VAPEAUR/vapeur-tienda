@@ -6,9 +6,11 @@ import { clp, sinCorte } from "@/lib/formato";
 import { advertenciaPara } from "@/lib/legal";
 import { colorArte, NOMBRE_TIPO, tipoDe } from "@/lib/tipo-producto";
 
+// Stock bajo en gris y como dato ("3 disponibles"), sin tono de urgencia:
+// "Quedan 3" en ámbar se leía como falsa escasez (revisión de branding, 30-oct).
 export function TextoStock({ stock }: { stock: number }) {
   if (stock === 0) return <span className="stock stock-no">Sin stock por ahora</span>;
-  if (stock <= 3) return <span className="stock stock-poco">Quedan {stock}</span>;
+  if (stock <= 3) return <span className="stock stock-poco">{stock} {stock === 1 ? "disponible" : "disponibles"}</span>;
   return <span className="stock">En stock</span>;
 }
 
