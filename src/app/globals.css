@@ -2672,19 +2672,6 @@ input[aria-invalid="true"] {
 
 .pie-novedades .logo {
   color: #ffffff;
-  margin-bottom: 6px;
-}
-
-.pie-novedades-titulo {
-  color: #ffffff;
-  font-size: var(--tx-l);
-  font-weight: 800;
-}
-
-.pie-novedades-fila .pie-novedades-subtitulo {
-  color: var(--txt-hondo);
-  font-size: var(--tx-s);
-  line-height: 1.5;
 }
 
 .pie-novedades-caja {
@@ -2755,25 +2742,44 @@ input[aria-invalid="true"] {
 /* Casilla sobre petróleo profundo: fila translúcida, cuadro con borde blanco
    y, marcada, relleno petróleo claro con la marca en negro cálido. */
 .casilla.oscura {
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  font-size: var(--tx-s);
+  gap: 10px;
+  padding: 4px 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--txt-hondo);
+  font-size: var(--tx-xs);
+  line-height: 1.5;
 }
 
 .casilla.oscura:has(input:checked) {
-  box-shadow: inset 0 0 0 1.5px var(--resalte);
+  box-shadow: none;
+  color: #ffffff;
 }
 
 .casilla.oscura.con-error {
-  box-shadow: inset 0 0 0 2px #ffb4ab;
+  box-shadow: none;
+  color: #ffb4ab;
 }
 
 .casilla.oscura input {
-  width: 22px;
-  height: 22px;
-  border-color: rgba(255, 255, 255, 0.8);
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 4px;
   background: transparent;
+}
+
+.casilla.oscura input::before {
+  width: 8px;
+  height: 4px;
+  border-left-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.casilla.oscura.con-error input {
+  border-color: #ffb4ab;
 }
 
 .casilla.oscura input:checked {

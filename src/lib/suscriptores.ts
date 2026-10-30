@@ -8,9 +8,6 @@
 
 export const TEXTO_VERSION = "2026-10-30";
 
-export const AVISOS_DESCRIPCION =
-  "Avisos informativos por correo: reposición de stock, guías nuevas y cambios en plazos de despacho. Sin promociones.";
-
 export const AVISOS_CONSENTIMIENTO =
   "Acepto recibir avisos informativos de Vapeur por correo. Puedo darme de baja cuando quiera.";
 
