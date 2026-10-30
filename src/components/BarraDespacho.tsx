@@ -8,12 +8,18 @@ import { REGIONES, buscarRegion } from "@/lib/comunas";
 import { fechaEstimada, sinCobertura, textoRangoCorto, type FechaEstimada } from "@/lib/fecha-entrega";
 
 // Barra de despacho bajo el encabezado (propuesta B, elegida por Amerhi el
-// 30-oct-2026; más destacada el mismo día porque pasaba desapercibida). Nunca
+// 30-oct-2026; destacada el mismo día y luego afinada para que la fecha resalte
+// por peso y color, no por tamaño, sin competir con el encabezado). Nunca
 // reemplaza ni se junta con la franja de advertencia de arriba. Solo dice lo
 // que es verdad hoy: despacho a todo Chile, 1 día hábil de preparación y, con
 // la comuna elegida, la fecha estimada. Sin precio hasta que se decida la
 // tarifa de Santiago, y sin "express", "hoy" ni "gratis".
-export default function BarraDespacho() {
+//
+// Va bajo la franja negra de arriba: en la mayoría de las páginas eso es el
+// encabezado (`arriba`, desde el layout); en la portada y los listados, que
+// siguen el encabezado con una cabecera negra, la página la pone después de
+// esa cabecera y la de arriba se oculta (ver despacho.css).
+export default function BarraDespacho({ arriba = false }: { arriba?: boolean }) {
   const { destino, fecha } = useFechaDestino();
   const [abierta, setAbierta] = useState(false);
   const ruta = usePathname();
@@ -23,27 +29,22 @@ export default function BarraDespacho() {
   if (ruta.startsWith("/admin")) return null;
 
   return (
-    <aside className="barra-despacho" aria-label="Despacho">
+    <aside className={arriba ? "barra-despacho barra-despacho-arriba" : "barra-despacho"} aria-label="Despacho">
       <div className="wrap barra-despacho-in">
         <span className="barra-despacho-camion" aria-hidden="true">
-          <Icono d={CAMION} size={22} />
+          <Icono d={CAMION} size={18} />
         </span>
         <span className="barra-despacho-fecha" aria-live="polite">
           {fecha && destino ? (
             <>
-              <small>Llega a {destino.comuna}</small>
-              <b>{textoRangoCorto(fecha)}</b>
+              Llega a {destino.comuna}: <b>{textoRangoCorto(fecha)}</b>
             </>
           ) : destino ? (
             <>
-              <small>{destino.comuna}</small>
-              <b>Coordinamos tu despacho por WhatsApp</b>
+              {destino.comuna}: <b>coordinamos tu despacho por WhatsApp</b>
             </>
           ) : (
-            <>
-              <small>Despacho a domicilio</small>
-              <b>¿Cuándo llega tu pedido?</b>
-            </>
+            <b>¿Cuándo llega tu pedido?</b>
           )}
         </span>
         <span className="barra-despacho-datos">

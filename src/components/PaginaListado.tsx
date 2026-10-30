@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
+import BarraDespacho from "@/components/BarraDespacho";
 import ListaProductos from "@/components/ListaProductos";
 import type { Arte, Producto } from "@/lib/catalogo";
 import type { Tipo } from "@/lib/tipo-producto";
@@ -15,26 +16,29 @@ type Cabecera = {
 };
 
 // Cabecera de listado en negro cálido, como la portada: migas, título, bajada y
-// la foto del tipo sobre su fondo.
+// la foto del tipo sobre su fondo. La barra de despacho va justo debajo.
 export function CabeceraListado({ titulo, bajada, migas, foto, children }: Cabecera) {
   return (
-    <header className="cabecera-listado sobre-oscuro">
-      <div className={foto ? "wrap cabecera-listado-caja" : "wrap cabecera-listado-caja sin-foto"}>
-        <div className="cabecera-listado-texto">
-          <nav className="migas" aria-label="Migas">
-            <Link href="/">Inicio</Link> / <span>{migas}</span>
-          </nav>
-          <h1>{titulo}</h1>
-          <p className="bajada">{bajada}</p>
-          {children ? <div className="cabecera-listado-extra">{children}</div> : null}
-        </div>
-        {foto ? (
-          <div className={`foto foto-estudio tipo-${foto.tipo}`} aria-hidden="true">
-            <ArteProducto arte={foto.arte} color={foto.color} />
+    <>
+      <header className="cabecera-listado sobre-oscuro">
+        <div className={foto ? "wrap cabecera-listado-caja" : "wrap cabecera-listado-caja sin-foto"}>
+          <div className="cabecera-listado-texto">
+            <nav className="migas" aria-label="Migas">
+              <Link href="/">Inicio</Link> / <span>{migas}</span>
+            </nav>
+            <h1>{titulo}</h1>
+            <p className="bajada">{bajada}</p>
+            {children ? <div className="cabecera-listado-extra">{children}</div> : null}
           </div>
-        ) : null}
-      </div>
-    </header>
+          {foto ? (
+            <div className={`foto foto-estudio tipo-${foto.tipo}`} aria-hidden="true">
+              <ArteProducto arte={foto.arte} color={foto.color} />
+            </div>
+          ) : null}
+        </div>
+      </header>
+      <BarraDespacho />
+    </>
   );
 }
 

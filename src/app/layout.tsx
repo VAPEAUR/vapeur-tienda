@@ -80,7 +80,7 @@ export default async function RootLayout({
               {/* Cuenta del cliente: la clave publicable puede ir al navegador, los permisos los pone RLS. */}
               <CuentaProvider url={process.env.SUPABASE_URL} clave={process.env.SUPABASE_PUBLISHABLE_KEY}>
                 <Encabezado />
-                <BarraDespacho />
+                <BarraDespacho arriba />
                 <main className="contenido">{children}</main>
                 <Pie />
                 <BotonWhatsApp />

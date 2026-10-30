@@ -4,50 +4,42 @@
    fondos oscuros el petróleo normal no se lee (ver globals.css). */
 .barra-despacho {
   background: var(--bloque);
-  color: #ffffff;
-  font-size: var(--tx-xs);
-  line-height: 1.3;
-  border-bottom: 3px solid var(--resalte);
+  color: var(--txt-hondo);
+  font-size: var(--tx-s);
+  line-height: 1.35;
 }
 
-/* Celular: camión, fecha grande y botón blanco en una sola fila. */
+/* En la portada y los listados la barra va bajo la cabecera negra, para que el
+   encabezado y la cabecera se lean como una sola franja (Amerhi, 30-oct-2026):
+   esas páginas la ponen después de su cabecera y la de arriba se oculta. */
+body:has(.portada, .cabecera-listado) .barra-despacho-arriba {
+  display: none;
+}
+
+/* Una sola línea: la fecha resalta por peso y color (blanco, negrita), no por
+   tamaño. La versión grande competía con el encabezado (Amerhi, 30-oct-2026). */
 .barra-despacho-in {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  gap: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
 .barra-despacho-camion {
   flex: none;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--resalte);
-  color: var(--bloque);
+  display: flex;
+  color: var(--resalte);
 }
 
 .barra-despacho-fecha {
   flex: 1;
   min-width: 0;
-  display: grid;
-}
-
-.barra-despacho-fecha small {
-  color: var(--resalte);
-  font-size: var(--tx-2xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .barra-despacho-fecha b {
-  font-size: var(--tx-m);
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .barra-despacho svg {
@@ -61,13 +53,14 @@
 
 .barra-despacho-cambiar {
   flex: none;
-  min-height: 40px;
-  padding: 0 16px;
+  min-height: 32px;
+  padding: 0 14px;
   border: 0;
   border-radius: 999px;
   background: #ffffff;
   color: var(--accent);
   font: inherit;
+  font-size: var(--tx-xs);
   font-weight: 700;
   cursor: pointer;
 }
@@ -117,7 +110,6 @@
 @media (min-width: 1000px) {
   .barra-despacho-in {
     justify-content: center;
-    gap: 16px;
   }
 
   .barra-despacho-fecha {
@@ -125,7 +117,7 @@
   }
 
   .barra-despacho-fecha b {
-    font-size: var(--tx-l);
+    font-size: var(--tx-base);
   }
 
   .barra-despacho-largo {
@@ -166,20 +158,20 @@
 /* Fecha estimada junto al botón de compra de la ficha. */
 .fecha-compra {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: flex-start;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-radius: var(--radius-s);
   background: var(--accent-soft);
-  border-left: 5px solid var(--accent);
+  border-left: 4px solid var(--accent);
 }
 
 .fecha-compra-icono {
   flex: none;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--bloque);
   color: var(--resalte);
@@ -194,18 +186,15 @@
 
 .fecha-compra-texto small {
   color: var(--accent);
-  font-size: var(--tx-xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: var(--tx-s);
+  font-weight: 600;
 }
 
 .fecha-compra-texto b {
   color: var(--bloque);
-  font-size: var(--tx-l);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  font-size: var(--tx-m);
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .fecha-compra-texto span {

@@ -13,7 +13,7 @@ export default function FechaCompra() {
   return (
     <div className="fecha-compra" aria-live="polite">
       <span className="fecha-compra-icono" aria-hidden="true">
-        <Icono d={CAMION} size={24} />
+        <Icono d={CAMION} size={20} />
       </span>
       <div className="fecha-compra-texto">
         {fecha && destino && !eligiendo ? (

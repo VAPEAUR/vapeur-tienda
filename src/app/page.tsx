@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArteProducto from "@/components/ArteProducto";
+import BarraDespacho from "@/components/BarraDespacho";
 import BuscadorRepuestos from "@/components/BuscadorRepuestos";
 import Carrusel from "@/components/Carrusel";
 import CarruselPortada from "@/components/CarruselPortada";
@@ -53,6 +54,7 @@ export default async function Inicio() {
             : null
         }
       />
+      <BarraDespacho />
 
       <section className="marcas" aria-label="Marcas">
         <div className="wrap fila-marcas">
