@@ -15,9 +15,11 @@ export function zona(region: string, comuna = ""): Zona {
 
 /**
  * Días hábiles que nos toma preparar el pedido antes de entregarlo a
- * Chilexpress. Igual que en Ayuda › Despacho, la confirmación y el correo.
+ * Chilexpress (decisión de Amerhi, 30-oct-2026). Si cambia, actualizar
+ * también Ayuda › Despacho y Términos (paginas.ts), la confirmación del
+ * pedido y el correo de compra.
  */
-export const PREPARACION = { min: 1, max: 2 };
+export const DIAS_PREPARACION = 1;
 
 /** Días hábiles de Chilexpress desde que recibe el paquete. */
 export const PLAZO_COURIER: Record<Zona, { min: number; max: number }> = {
@@ -44,12 +46,12 @@ export function estimarDespacho(region: string, comuna: string): number | null {
   return TARIFA_ESTIMADA[zona(region, comuna)];
 }
 
-/** "Llega en 2 a 4 días hábiles desde el pago" (preparación + courier). */
+/** "Llega en 2 a 3 días hábiles desde el pago" (preparación + courier). */
 export function textoPlazo(region: string, comuna = "") {
   const z = zona(region, comuna);
   const { min, max } = PLAZO_COURIER[z];
-  if (z === "extrema") return `Llega en hasta ${max + PREPARACION.max} días hábiles desde el pago`;
-  return `Llega en ${min + PREPARACION.min} a ${max + PREPARACION.max} días hábiles desde el pago`;
+  if (z === "extrema") return `Llega en hasta ${max + DIAS_PREPARACION} días hábiles desde el pago`;
+  return `Llega en ${min + DIAS_PREPARACION} a ${max + DIAS_PREPARACION} días hábiles desde el pago`;
 }
 
 export type ItemDespacho = { slug: string; cantidad: number };

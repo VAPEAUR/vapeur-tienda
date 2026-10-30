@@ -24,7 +24,7 @@ export const AYUDA: Record<string, PaginaInfo> = {
     parrafos: [
       "Despachamos a todo Chile con courier a domicilio.",
       "El costo y el plazo dependen de tu comuna y los ves antes de pagar. El total que pagas ya incluye el despacho.",
-      "Preparamos tu pedido en 1 a 2 días hábiles desde que se aprueba el pago.",
+      "Preparamos tu pedido en 1 día hábil desde que se aprueba el pago.",
       "El pedido se entrega solo a una persona mayor de 18 años que muestre su carnet. Si no hay una persona mayor de edad, el courier no lo entrega y te contactamos para coordinar un nuevo intento o anular la compra con devolución de lo pagado.",
       "Enviamos en empaque discreto, sin marcas ni imágenes de productos a la vista.",
     ],
@@ -196,7 +196,7 @@ export const LEGAL: Record<string, PaginaInfo> = {
       {
         titulo: "7. Despacho",
         parrafos: [
-          "Despachamos a todo Chile con courier a domicilio. El costo y el plazo según tu comuna se informan antes de pagar, y preparamos el pedido en 1 a 2 días hábiles desde que se aprueba el pago.",
+          "Despachamos a todo Chile con courier a domicilio. El costo y el plazo según tu comuna se informan antes de pagar, y preparamos el pedido en 1 día hábil desde que se aprueba el pago.",
           "El pedido se entrega solo a una persona mayor de 18 años que muestre su carnet. Si no se puede entregar, te contactamos para coordinar un nuevo intento o anular la compra con devolución de lo pagado.",
           "Revisa el paquete al recibirlo. Si llega dañado o incompleto, escríbenos dentro de las siguientes 48 horas, con fotos, para resolverlo rápido; esto no limita tus derechos de retracto ni de garantía.",
         ],
