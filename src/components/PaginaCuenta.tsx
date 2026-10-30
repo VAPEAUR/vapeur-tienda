@@ -6,7 +6,8 @@ import { PERFIL_VACIO, useCuenta, type Perfil } from "@/components/Cuenta";
 import { DESPACHO } from "@/lib/catalogo";
 import { clp } from "@/lib/formato";
 
-// Ingresar o crear cuenta en una sola pantalla: correo → código de 6 dígitos.
+// Ingresar o crear cuenta en una sola pantalla: correo → código que llega al
+// correo (su largo lo fija Supabase: Email OTP length, hoy 8 dígitos).
 // La primera vez se pide declarar la mayoría de edad y aceptar los términos.
 // Después, Mi cuenta: pedidos, datos de despacho y eliminar la cuenta.
 
@@ -81,7 +82,7 @@ function Ingresar({ volver }: { volver: string | null }) {
   async function verificar(ev: React.FormEvent) {
     ev.preventDefault();
     const c = codigo.replace(/\D/g, "");
-    if (c.length < 6) return setError("Escribe el código de 6 dígitos que te enviamos.");
+    if (c.length < 6) return setError("Escribe el código completo que te enviamos.");
     setError("");
     setOcupado(true);
     try {
@@ -139,7 +140,6 @@ function Ingresar({ volver }: { volver: string | null }) {
                 inputMode="numeric"
                 autoComplete="one-time-code"
                 maxLength={10}
-                placeholder="123456"
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
                 aria-invalid={error ? true : undefined}
