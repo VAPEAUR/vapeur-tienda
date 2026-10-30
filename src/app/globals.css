@@ -33,10 +33,11 @@
   --t-repuestos: #5e7c80;
   --t-liquidos: #231f20;
   --t-kits: #8c877b;
-  --f-equipos: #1d5a58;
+  /* Fotos sobre gris claro, como el retail; el color del tipo va en la banda. */
+  --f-equipos: #f5f5f5;
   --f-repuestos: #f5f5f5;
-  --f-liquidos: #d3d1c6;
-  --f-kits: #d3d1c6;
+  --f-liquidos: #f5f5f5;
+  --f-kits: #f5f5f5;
   --art-bg: #f1f4f4;
   --art-body: #2b3236;
   --art-body-2: #586269;
@@ -50,8 +51,8 @@
   --err-soft: #fbe9e7;
   --aviso: #ffffff;
   --aviso-borde: #111111;
-  --radius: 14px;
-  --radius-s: 10px;
+  --radius: 6px; /* esquinas casi rectas, como el retail (30-oct) */
+  --radius-s: 4px;
   --alto-control: 50px;
   --alto-franja: 36px;
   /* Escala tipográfica (revisión 28-oct-2026). Base 16 px en Manrope, la misma
@@ -66,7 +67,7 @@
   --tx-xl: 24px; /* títulos de banner y paneles destacados */
   --tx-2xl: 28px; /* títulos de sección y precio en la ficha */
   --tx-3xl: 34px; /* título principal (h1) de cada página */
-  --tx-portada: 42px; /* frase grande del carrusel de portada */
+  --tx-portada: 36px; /* frase grande del carrusel de portada */
   color-scheme: light;
 }
 
@@ -180,7 +181,7 @@ button {
   justify-content: center;
   min-height: var(--alto-control);
   padding: 0 24px;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   border: 1.5px solid var(--btn);
   background: var(--btn);
   color: var(--btn-ink);
@@ -260,7 +261,7 @@ button {
 .chip {
   min-height: 40px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   border: 1px solid var(--borde-control);
   background: var(--bg);
   font-size: var(--tx-s);
@@ -378,8 +379,9 @@ body.con-puerta {
   position: sticky;
   top: var(--alto-franja);
   z-index: 20;
-  background: var(--hondo);
-  color: #ffffff;
+  background: var(--bg);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
 }
 
 /* Lo que se despliega bajo la barra (menú del celular, Comprar por, buscador)
@@ -389,15 +391,6 @@ body.con-puerta {
 .encabezado .buscador.abierto,
 .encabezado .sugerencias {
   color: var(--ink);
-}
-
-.encabezado .icono:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.encabezado .contador {
-  background: var(--resalte);
-  color: var(--hondo);
 }
 
 /* Advertencia sanitaria en blanco y negro, siempre arriba (sobre la puerta de edad). */
@@ -494,15 +487,8 @@ body.con-puerta {
   place-items: center;
 }
 
-/* Foco: petróleo claro sobre la barra oscura; petróleo en los paneles claros. */
+/* Foco petróleo en toda la barra (es blanca). */
 .encabezado :focus-visible {
-  outline-color: var(--resalte);
-}
-
-.encabezado .menu.abierto :focus-visible,
-.encabezado .buscador.abierto :focus-visible,
-.encabezado .menu .mega :focus-visible,
-.encabezado .sugerencias :focus-visible {
   outline-color: var(--accent);
 }
 
@@ -713,7 +699,7 @@ body.con-puerta {
   place-items: center;
   width: 76px;
   height: 76px;
-  border-radius: 14px;
+  border-radius: var(--radius);
 }
 
 .cabecera-listado .foto .arte {
@@ -727,7 +713,7 @@ body.con-puerta {
 
 .cabecera-listado select {
   border-color: #ffffff;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   padding: 0 18px;
   color: var(--ink);
 }
@@ -746,7 +732,7 @@ body.con-puerta {
   gap: 20px;
   margin-top: 8px;
   padding: 24px 16px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--piedra);
 }
 
@@ -876,7 +862,7 @@ body.con-puerta {
   display: grid;
   place-items: center;
   height: 260px;
-  border-radius: 20px;
+  border-radius: var(--radius);
 }
 
 .set .arte {
@@ -904,7 +890,7 @@ body.con-puerta {
   display: grid;
   max-width: calc(100% - 24px);
   padding: 10px 14px;
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: var(--hondo);
   color: var(--txt-hondo);
   font-size: var(--tx-xs);
@@ -938,7 +924,7 @@ body.con-puerta {
   gap: 0;
   padding: 0 4px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
+  border-radius: var(--radius);
   background: rgba(21, 25, 27, 0.72);
 }
 
@@ -986,7 +972,7 @@ body.con-puerta {
   align-items: center;
   height: 44px;
   padding: 0 6px;
-  border-radius: 22px;
+  border-radius: var(--radius);
   background: rgba(21, 25, 27, 0.55);
 }
 
@@ -1066,7 +1052,7 @@ body.con-puerta {
   flex-direction: column;
   min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg);
   text-decoration: none;
@@ -1124,7 +1110,7 @@ body.con-puerta {
   align-items: stretch;
   gap: 0;
   padding: 0;
-  border-radius: 20px;
+  border-radius: var(--radius);
   overflow: hidden;
   background: var(--bloque);
   color: #ffffff;
@@ -1183,7 +1169,7 @@ body.con-puerta {
 
 .panel-repuestos.oscuro select {
   border-color: #ffffff;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   padding: 0 18px;
   color: var(--ink);
 }
@@ -1261,11 +1247,6 @@ input[aria-invalid="true"] {
   z-index: 1;
 }
 
-.tipo-equipos .foto-estudio,
-.foto-estudio.tipo-equipos {
-  --art-shadow: rgba(0, 0, 0, 0.35);
-}
-
 .banda {
   display: block;
   height: 6px;
@@ -1305,7 +1286,7 @@ input[aria-invalid="true"] {
   flex-direction: column;
   min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg);
 }
@@ -1344,7 +1325,7 @@ input[aria-invalid="true"] {
   position: absolute;
   inset: 0;
   z-index: 3;
-  border-radius: 18px;
+  border-radius: var(--radius);
 }
 
 .tarjeta:hover .nombre {
@@ -1382,7 +1363,7 @@ input[aria-invalid="true"] {
   z-index: 2;
   background: #ffffff;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   font-size: var(--tx-2xs);
   font-weight: 600;
   padding: 3px 9px;
@@ -1469,7 +1450,7 @@ input[aria-invalid="true"] {
   display: grid;
   gap: 18px;
   padding: 20px 18px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--surface);
 }
 
@@ -1497,7 +1478,7 @@ input[aria-invalid="true"] {
   gap: 14px;
   align-items: center;
   background: var(--bg);
-  border-radius: 18px;
+  border-radius: var(--radius);
   padding: 12px;
   text-decoration: none;
 }
@@ -1510,7 +1491,7 @@ input[aria-invalid="true"] {
 
 .res .foto {
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: var(--radius-s);
 }
 
 /* ---------- Kits ---------- */
@@ -1524,7 +1505,7 @@ input[aria-invalid="true"] {
   flex-direction: column;
   min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg);
 }
@@ -1632,7 +1613,7 @@ input[aria-invalid="true"] {
   align-items: center;
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius);
   background: var(--bg);
 }
 
@@ -1651,7 +1632,7 @@ input[aria-invalid="true"] {
   display: grid;
   place-items: center;
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: var(--radius-s);
 }
 
 .num {
@@ -1682,7 +1663,7 @@ input[aria-invalid="true"] {
   place-items: center;
   height: 130px;
   margin-bottom: 4px;
-  border-radius: 18px;
+  border-radius: var(--radius);
 }
 
 .guia-tarjeta .arte {
@@ -1799,7 +1780,7 @@ input[aria-invalid="true"] {
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
-  border-radius: 20px;
+  border-radius: var(--radius);
 }
 
 .galeria .principal .arte {
@@ -1973,7 +1954,7 @@ input[aria-invalid="true"] {
   flex-direction: column;
   gap: 16px;
   padding: 20px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--piedra);
 }
 
@@ -2025,7 +2006,7 @@ input[aria-invalid="true"] {
   place-items: center;
   align-self: start;
   aspect-ratio: 1;
-  border-radius: 14px;
+  border-radius: var(--radius);
 }
 
 .linea .foto .arte {
@@ -2392,7 +2373,7 @@ input[aria-invalid="true"] {
 .recibo-tarjeta {
   background: var(--piedra);
   color: var(--ink);
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 20px;
   display: grid;
   gap: 9px;
@@ -2719,7 +2700,7 @@ input[aria-invalid="true"] {
   height: var(--alto-control);
   padding: 0 20px;
   border: 1.5px solid rgba(255, 255, 255, 0.45);
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
 }
@@ -2909,7 +2890,7 @@ input[aria-invalid="true"] {
   max-width: calc(100vw - 112px);
   padding: 4px 4px 4px 16px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: #ffffff;
   color: var(--ink);
   box-shadow: 0 8px 24px rgba(21, 25, 27, 0.18);
@@ -3181,11 +3162,11 @@ input[aria-invalid="true"] {
 
   .panel-repuestos.oscuro {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    border-radius: 26px;
+    border-radius: var(--radius);
   }
 
   .galeria .principal {
-    border-radius: 26px;
+    border-radius: var(--radius);
   }
 
   .cabecera-listado {
@@ -3212,7 +3193,7 @@ input[aria-invalid="true"] {
   .cabecera-listado .foto {
     width: auto;
     height: 200px;
-    border-radius: 20px;
+    border-radius: var(--radius);
   }
 
   .cabecera-listado .foto .arte {
@@ -3292,7 +3273,7 @@ input[aria-invalid="true"] {
   .set,
   .set.con-etiqueta {
     height: 360px;
-    border-radius: 26px;
+    border-radius: var(--radius);
   }
 
   .set .arte,
@@ -3327,7 +3308,7 @@ input[aria-invalid="true"] {
     --tx-xl: 30px;
     --tx-2xl: 36px;
     --tx-3xl: 44px;
-    --tx-portada: 68px;
+    --tx-portada: 48px;
   }
 
   .wrap {
@@ -3354,21 +3335,8 @@ input[aria-invalid="true"] {
     margin-left: 32px;
   }
 
-  /* En escritorio el menú va sobre la barra oscura. */
-  .encabezado .menu.abierto {
-    color: inherit;
-  }
-
-  .encabezado .menu.abierto :focus-visible {
-    outline-color: var(--resalte);
-  }
-
-  .encabezado .menu .mega :focus-visible {
-    outline-color: var(--accent);
-  }
-
   .encabezado .menu > a[aria-current="page"] {
-    color: var(--resalte);
+    color: var(--accent);
   }
 
   .comprar-por .mega {
@@ -3545,7 +3513,7 @@ textarea {
   justify-self: start;
   font-size: var(--tx-xs);
   font-weight: 600;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   padding: 3px 10px;
 }
 
@@ -3635,7 +3603,7 @@ textarea {
   width: 100%;
   min-height: 44px;
   border: 1.5px solid var(--borde-control);
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   padding: 0 18px;
   background: var(--bg);
   font-size: var(--tx-base);
@@ -3705,27 +3673,14 @@ textarea {
     box-shadow: none;
   }
 
-  /* El campo de búsqueda queda sobre la barra oscura. */
-  .encabezado .buscador.abierto {
-    color: inherit;
-  }
-
-  .encabezado .buscador.abierto :focus-visible {
-    outline-color: var(--resalte);
-  }
-
-  .encabezado .buscador.abierto .sugerencias :focus-visible {
-    outline-color: var(--accent);
-  }
-
+  /* El campo de búsqueda va en gris claro sobre la barra blanca. */
   .buscador input {
-    border-color: rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.06);
-    color: #ffffff;
+    background: var(--surface);
+    color: var(--ink);
   }
 
   .buscador input::placeholder {
-    color: var(--txt-hondo);
+    color: var(--muted);
   }
 
   .sugerencias {
@@ -3744,7 +3699,7 @@ textarea {
 @media (min-width: 1200px) {
   .buscador,
   .buscador.abierto {
-    width: 260px;
+    width: 340px;
   }
 }
 
@@ -3822,8 +3777,8 @@ textarea {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--resalte);
-  box-shadow: 0 0 0 2px var(--hondo);
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg);
 }
 
 .pagina.cuenta.angosta {
@@ -3846,7 +3801,7 @@ textarea {
 .cuenta-caja {
   padding: 28px 24px;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--bg);
 }
 
@@ -3899,7 +3854,7 @@ textarea {
 
 .cuenta-columna .cuenta-seccion:first-child {
   padding: 20px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--piedra);
 }
 
@@ -4030,7 +3985,7 @@ textarea {
   flex-direction: column;
   gap: 14px;
   padding: 24px 20px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--piedra);
   color: var(--ink);
 }
@@ -4071,7 +4026,7 @@ textarea {
 
 .ingreso-form input[type="email"] {
   border-color: transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-s);
   padding: 0 20px;
   box-shadow: inset 0 0 0 1.5px var(--borde-control);
 }
@@ -4162,7 +4117,7 @@ textarea {
   flex-direction: column;
   gap: 12px;
   padding: 24px 20px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--bloque);
   color: #ffffff;
 }
