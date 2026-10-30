@@ -5,6 +5,7 @@ import Advertencia from "@/components/Advertencia";
 import AgregarAlCarro from "@/components/AgregarAlCarro";
 import ArteProducto from "@/components/ArteProducto";
 import CalculaDespacho from "@/components/CalculaDespacho";
+import FechaCompra from "@/components/FechaCompra";
 import EscalaNicotina from "@/components/EscalaNicotina";
 import PagoSeguro from "@/components/PagoSeguro";
 import TarjetaProducto, { TextoStock } from "@/components/TarjetaProducto";
@@ -76,6 +77,7 @@ export default async function FichaProducto({ params }: Props) {
             </p>
             <p>{p.descripcion}</p>
 
+            {p.stock > 0 ? <FechaCompra /> : null}
             <AgregarAlCarro p={p} />
             <PagoSeguro />
 
