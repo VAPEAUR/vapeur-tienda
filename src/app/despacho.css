@@ -247,3 +247,8 @@ body:has(.portada, .cabecera-listado) .barra-despacho-arriba {
     grid-template-columns: 1fr;
   }
 }
+
+/* Fecha estimada en el checkout, junto al costo del envío. */
+.envio-fecha b {
+  color: var(--bloque);
+}

@@ -10,6 +10,7 @@ import { useCatalogo } from "@/components/Catalogo";
 import { useCuenta } from "@/components/Cuenta";
 import { DESPACHO } from "@/lib/catalogo";
 import { EDAD_MINIMA, calcularEdad } from "@/lib/edad";
+import { fechaEstimada, sinCobertura, textoRango } from "@/lib/fecha-entrega";
 import { clp } from "@/lib/formato";
 import { RETRACTO_CORTO } from "@/lib/legal";
 import { formatearRut, rutValido } from "@/lib/rut";
@@ -321,6 +322,11 @@ export default function Checkout() {
                     {costoDespacho === undefined ? "calculando…" : <b className="tab">{clp(costoDespacho)}</b>}
                   </span>
                 )}
+                {cotizacion && costoDespacho !== null && !sinCobertura(region, comuna) ? (
+                  <span className="envio-fecha">
+                    Si pagas hoy, llega <b>{textoRango(fechaEstimada(region, comuna))}</b> (fecha estimada).
+                  </span>
+                ) : null}
                 {cotizacion ? <span className="muted">{cotizacion.plazo}.</span> : null}
                 <span className="muted">Se entrega solo a una persona mayor de 18 años con carnet.</span>
               </div>
