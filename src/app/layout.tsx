@@ -7,6 +7,7 @@ import BarraDespacho from "@/components/BarraDespacho";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
 import { CarroProvider } from "@/components/Carro";
 import { CatalogoProvider } from "@/components/Catalogo";
+import { CuentaProvider } from "@/components/Cuenta";
 import Encabezado from "@/components/Encabezado";
 import Pie from "@/components/Pie";
 import { obtenerCatalogo } from "@/lib/datos";
@@ -76,11 +77,14 @@ export default async function RootLayout({
         <AgeGate>
           <CatalogoProvider productos={productos}>
             <CarroProvider>
-              <Encabezado />
-              <BarraDespacho />
-              <main className="contenido">{children}</main>
-              <Pie />
-              <BotonWhatsApp />
+              {/* Cuenta del cliente: la clave publicable puede ir al navegador, los permisos los pone RLS. */}
+              <CuentaProvider url={process.env.SUPABASE_URL} clave={process.env.SUPABASE_PUBLISHABLE_KEY}>
+                <Encabezado />
+                <BarraDespacho />
+                <main className="contenido">{children}</main>
+                <Pie />
+                <BotonWhatsApp />
+              </CuentaProvider>
             </CarroProvider>
           </CatalogoProvider>
         </AgeGate>

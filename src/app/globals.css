@@ -3642,9 +3642,12 @@ textarea {
   margin: 0;
 }
 
+/* Región y comuna lado a lado solo si cada una cabe entera ("Región
+   Metropolitana", "Pedro Aguirre Cerda"); en la ficha del celular van una
+   debajo de la otra. */
 .calcula-campos {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 8px;
 }
 
@@ -3684,5 +3687,213 @@ textarea {
   .franja {
     font-size: 11.5px;
     line-height: 1.3;
+  }
+}
+
+/* ---------- Cuenta del cliente (30-oct-2026) ---------- */
+/* Ingresar: una tarjeta blanca centrada, como el ejemplo de Shopify. Mi cuenta:
+   pedidos a la izquierda y datos de despacho en piedra a la derecha. */
+.encabezado .punto-sesion {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--resalte);
+  box-shadow: 0 0 0 2px var(--hondo);
+}
+
+.pagina.cuenta.angosta {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cuenta-caja {
+  padding: 28px 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg);
+}
+
+.pagina.cuenta h1 {
+  font-size: var(--tx-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.cuenta .chico {
+  font-size: var(--tx-s);
+}
+
+.cuenta .codigo {
+  font-size: var(--tx-xl);
+  letter-spacing: 0.3em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cuenta-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cuenta-acciones .enlace:disabled {
+  color: var(--muted);
+  text-decoration: none;
+  cursor: default;
+}
+
+.cuenta-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cuenta-grilla {
+  display: grid;
+  gap: 24px;
+}
+
+.cuenta-columna {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.cuenta-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cuenta-seccion h2 {
+  font-size: var(--tx-l);
+  font-weight: 800;
+}
+
+.cuenta-columna .cuenta-seccion:first-child {
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--piedra);
+}
+
+.cuenta-columna .cuenta-seccion:first-child .muted {
+  color: var(--ink);
+}
+
+.cuenta-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.cuenta-pedidos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cuenta-pedidos a {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+}
+
+.cuenta-pedidos a:hover {
+  border-color: var(--borde-control);
+}
+
+.cuenta-pedido-arriba,
+.cuenta-pedido-abajo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cuenta-pedido-items {
+  font-size: var(--tx-s);
+  overflow-wrap: anywhere;
+}
+
+.cuenta-pedidos .enlace-falso {
+  color: var(--accent);
+  text-decoration: underline;
+  font-size: var(--tx-s);
+}
+
+.estado.estado-pagado,
+.estado.estado-enviado {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.estado.estado-entregado {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.estado.estado-devuelto,
+.estado.estado-anulado {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.ok-texto {
+  font-size: var(--tx-s);
+  font-weight: 600;
+  color: var(--ok);
+}
+
+.cuenta-eliminar {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  align-items: flex-start;
+}
+
+.boton.peligro {
+  background: var(--err);
+  border-color: var(--err);
+}
+
+.boton.peligro:hover {
+  background: #8f1e18;
+  border-color: #8f1e18;
+}
+
+.cuenta-sugerencia {
+  padding: 12px 14px;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-s);
+  background: var(--accent-soft);
+  font-size: var(--tx-s);
+}
+
+@media (min-width: 900px) {
+  .cuenta-grilla {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
   }
 }
