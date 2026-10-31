@@ -29,7 +29,7 @@ export type Destacado = { nombre: string; detalle: string; precio: string; href:
 const DIAPOSITIVAS: Diapositiva[] = [
   {
     clase: "noche",
-    etiqueta: "Tienda de vaper en Chile · Solo adultos",
+    etiqueta: "Tienda de vaper en Chile",
     titulo: "Tu vape,",
     resalte: "sin vueltas.",
     bajada: "Equipos, repuestos y líquidos para adultos. Te decimos qué sirve para tu equipo antes de que compres.",
