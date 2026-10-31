@@ -1,0 +1,67 @@
+# Respaldo diario de la base de datos (Supabase) fuera de Supabase.
+# Necesario en el plan gratis, que no trae respaldos descargables.
+# El archivo queda CIFRADO (contiene datos personales de clientes, Ley 21.719)
+# como artefacto privado del repositorio durante 30 días.
+#
+# Secrets que hay que cargar en GitHub (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL      Cadena de conexión "Session pooler" (puerto 5432) de Supabase
+#                        → Project Settings → Database → Connection string.
+#                        Usar el pooler: la conexión directa es solo IPv6 y GitHub no la alcanza.
+#   RESPALDO_CLAVE       Frase larga para cifrar. Guardarla también fuera de GitHub:
+#                        sin ella el respaldo no se puede abrir.
+#
+# Para restaurar: descargar el artefacto, descifrar con
+#   gpg --batch --passphrase "<frase>" -d respaldo.sql.gz.gpg | gunzip > respaldo.sql
+# y cargarlo con psql en una base nueva.
+name: Respaldo base de datos
+
+on:
+  schedule:
+    - cron: "30 7 * * *" # todos los días 04:30 hora de Chile (verano)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Revisar secrets
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          RESPALDO_CLAVE: ${{ secrets.RESPALDO_CLAVE }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ] || [ -z "$RESPALDO_CLAVE" ]; then
+            echo "::error::Faltan los secrets SUPABASE_DB_URL o RESPALDO_CLAVE"
+            exit 1
+          fi
+
+      - name: Volcar y cifrar
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          RESPALDO_CLAVE: ${{ secrets.RESPALDO_CLAVE }}
+        run: |
+          set -euo pipefail
+          fecha=$(date -u +%Y-%m-%d)
+          # Tablas de la tienda (public) y cuentas de clientes (auth).
+          docker run --rm -e URL="$SUPABASE_DB_URL" postgres:17 \
+            sh -c 'pg_dump "$URL" --schema=public --schema=auth --no-owner --no-privileges' \
+            | gzip -9 \
+            | gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$RESPALDO_CLAVE" \
+                -o "respaldo-$fecha.sql.gz.gpg"
+          tam=$(stat -c %s "respaldo-$fecha.sql.gz.gpg")
+          echo "Respaldo $fecha: $tam bytes"
+          if [ "$tam" -lt 2000 ]; then
+            echo "::error::El respaldo salió casi vacío; revisar la conexión"
+            exit 1
+          fi
+
+      - name: Guardar como artefacto (30 días)
+        uses: actions/upload-artifact@v4
+        with:
+          name: respaldo-base-datos-${{ github.run_id }}
+          path: respaldo-*.sql.gz.gpg
+          retention-days: 30
+          if-no-files-found: error
